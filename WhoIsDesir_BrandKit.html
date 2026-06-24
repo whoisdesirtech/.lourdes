@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhoIsDésir Concierge AI — Brand Kit Preview</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Brand Color Variables */
+      --bg-primary: #141414;
+      --bg-secondary: #252525;
+      --bg-surface: #323232;
+      --color-gold: #ffa200;
+      --color-gold-glow: rgba(255, 162, 0, 0.4);
+      --color-accent-red: #ed1c23;
+      --color-accent-orange: #ea6911;
+      --text-light: #ffffff;
+      --text-muted: #c5c5c5;
+      --text-dark: #141414;
+      --font-heading: 'Oswald', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --border-radius: 12px;
+      --border-radius-pill: 30px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Header & Branding */
+    header {
+      text-align: center;
+      padding: 40px 0;
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(20, 20, 20, 0.8) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 162, 0, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .logo-preview {
+      font-family: var(--font-heading);
+      font-size: 3.2rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      margin-bottom: 8px;
+    }
+
+    .logo-preview span {
+      color: var(--color-gold);
+      position: relative;
+      text-shadow: 0 0 15px var(--color-gold-glow);
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Content Sections */
+    section {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: var(--border-radius);
+      padding: 35px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-gold);
+      margin-bottom: 25px;
+      border-bottom: 2px solid var(--color-accent-orange);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+
+    /* Grid layout for strategic insights */
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .strategy-card {
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 20px;
+      transition: var(--transition);
+    }
+
+    .strategy-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--color-gold-glow);
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    .strategy-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      color: var(--text-light);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .strategy-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Color Swatches styling */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .color-card {
+      background-color: var(--bg-surface);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .color-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .color-swatch {
+      height: 120px;
+      width: 100%;
+      transition: var(--transition);
+    }
+
+    .color-info {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .color-name {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 1rem;
+      color: var(--text-light);
+    }
+
+    .color-hex {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: var(--color-gold);
+    }
+
+    .color-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Typography Showcase */
+    .typo-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .typo-row {
+      display: flex;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 15px;
+    }
+
+    .typo-row:last-child {
+      border: none;
+      padding: 0;
+    }
+
+    .typo-label {
+      width: 150px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-family: monospace;
+    }
+
+    .typo-sample-h1 {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .typo-sample-h2 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      text-transform: uppercase;
+    }
+
+    .typo-sample-body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Live Component Preview */
+    .components-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .preview-box {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-premium {
+      display: inline-block;
+      padding: 14px 35px;
+      font-family: var(--font-heading);
+      font-size: 15px;
+      color: var(--text-dark);
+      background: var(--color-gold);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      transition: var(--transition);
+      box-shadow: 0px 5px 15px var(--color-gold-glow);
+      text-decoration: none;
+      font-weight: bold;
+      border: 2px solid var(--color-gold);
+      cursor: pointer;
+    }
+
+    .btn-premium:hover {
+      background: transparent;
+      color: var(--color-gold);
+      box-shadow: 0px 5px 20px rgba(255, 162, 0, 0.2);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 14px 35px;
+      font-family: var(--font-heading);
+      font-size: 15px;
+      color: var(--text-light);
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      transition: var(--transition);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--color-gold);
+      color: var(--color-gold);
+    }
+
+    /* Rental Card Demo */
+    .rental-card {
+      width: 100%;
+      max-width: 380px;
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transition: var(--transition);
+    }
+
+    .rental-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--color-gold);
+      box-shadow: 0 15px 30px rgba(255, 162, 0, 0.15);
+    }
+
+    .rental-img {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .rental-tag {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: var(--color-gold);
+      color: var(--text-dark);
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: var(--border-radius-pill);
+    }
+
+    .rental-details {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .rental-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .rental-features {
+      display: flex;
+      gap: 15px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .rental-price-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 15px;
+    }
+
+    .rental-price {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      color: var(--color-gold);
+    }
+
+    .rental-price span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Clipboard toast feedback */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--color-gold);
+      color: var(--text-dark);
+      font-weight: bold;
+      padding: 12px 24px;
+      border-radius: var(--border-radius-pill);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="logo-preview">WhoIsDésir <span>Concierge AI</span></div>
+      <p class="subtitle">Brand Kit & Styling Guideline</p>
+    </header>
+
+    <!-- Strategic Foundations -->
+    <section>
+      <h2>Strategic Foundations</h2>
+      <div class="strategy-grid">
+        <div class="strategy-card">
+          <h3>[ D ] Brand Name</h3>
+          <p><strong>WhoIsDésir Concierge</strong><br>Logo representation matches the AI-powered digital evolution: <strong>WhoIsDésir Concierge AI</strong></p>
+        </div>
+        <div class="strategy-card">
+          <h3>[ E ] Industry</h3>
+          <p>Ultra-luxury executive rentals, high-end vehicle charters, yacht booking, luxury mansions, and exclusive VIP reservation hosting.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>[ F ] Target Audience</h3>
+          <p>UHNWIs, corporate managers, tech executives, athletes, and celebs. Expects prestigious status and fast-paced responsive delivery.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>[ I ] Competitors</h3>
+          <p>MVP Miami, Lou La Vie. Differentiated via state-of-the-art predictive AI concierge services and high-tech scheduling integration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Color Palette -->
+    <section>
+      <h2>Color Palette (Click to Copy HEX)</h2>
+      <div class="color-grid">
+        <div class="color-card" onclick="copyHex('#141414')">
+          <div class="color-swatch" style="background-color: #141414;"></div>
+          <div class="color-info">
+            <span class="color-name">Jet Black</span>
+            <span class="color-hex">#141414</span>
+            <span class="color-desc">Header, footer, cards and dark page layouts.</span>
+          </div>
+        </div>
+        <div class="color-card" onclick="copyHex('#252525')">
+          <div class="color-swatch" style="background-color: #252525;"></div>
+          <div class="color-info">
+            <span class="color-name">Deep Charcoal</span>
+            <span class="color-hex">#252525</span>
+            <span class="color-desc">Primary page background color for premium readability.</span>
+          </div>
+        </div>
+        <div class="color-card" onclick="copyHex('#ffa200')">
+          <div class="color-swatch" style="background-color: #ffa200;"></div>
+          <div class="color-info">
+            <span class="color-name">Miami Gold</span>
+            <span class="color-hex">#ffa200</span>
+            <span class="color-desc">Key brand accents, logos, borders, and callouts.</span>
+          </div>
+        </div>
+        <div class="color-card" onclick="copyHex('#ed1c23')">
+          <div class="color-swatch" style="background-color: #ed1c23;"></div>
+          <div class="color-info">
+            <span class="color-name">Action Red</span>
+            <span class="color-hex">#ed1c23</span>
+            <span class="color-desc">High-priority call-to-actions, buttons and warnings.</span>
+          </div>
+        </div>
+        <div class="color-card" onclick="copyHex('#323232')">
+          <div class="color-swatch" style="background-color: #323232;"></div>
+          <div class="color-info">
+            <span class="color-name">Slate Surface</span>
+            <span class="color-hex">#323232</span>
+            <span class="color-desc">Interactive surfaces, inputs, drop-downs, and forms.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typography -->
+    <section>
+      <h2>Typography Feel</h2>
+      <div class="typo-showcase">
+        <div class="typo-row">
+          <div class="typo-label">Header (Oswald)</div>
+          <div class="typo-sample-h1">WHOISDÉSIR CONCIERGE AI</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label">Sub-Header</div>
+          <div class="typo-sample-h2">EXECUTIVE RENTALS & CHARTERS</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label">Body (Inter)</div>
+          <div class="typo-sample-body">
+            Experience the ultimate luxury service. From elite private yachts to customized exotic supercars, WhoIsDésir Concierge AI merges smart predictive assistance with high-status lifestyle management.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Component Preview -->
+    <section>
+      <h2>Brand Component Previews</h2>
+      <div class="components-showcase">
+        <div class="preview-box">
+          <button class="btn-premium">Rent Now</button>
+          <button class="btn-outline">Inquire Service</button>
+        </div>
+        
+        <div style="display: flex; justify-content: center;">
+          <!-- Luxury Concierge Card Demo -->
+          <div class="rental-card">
+            <!-- Simulated image using inline gradient -->
+            <div class="rental-img" style="background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=600'); background-size: cover;">
+              <span class="rental-tag">Lamborghini</span>
+            </div>
+            <div class="rental-details">
+              <h3 class="rental-title">Aventador SVJ Roadster</h3>
+              <div class="rental-features">
+                <span>V12 Engine</span>
+                <span>•</span>
+                <span>770 HP</span>
+                <span>•</span>
+                <span>Miami Fleet</span>
+              </div>
+              <div class="rental-price-wrap">
+                <div class="rental-price">$2,499 <span>/ Day</span></div>
+                <button class="btn-premium" style="padding: 8px 20px; font-size: 13px;">Book</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Toast Element -->
+  <div id="toast" class="toast">HEX Code Copied!</div>
+
+  <script>
+    function copyHex(hexCode) {
+      navigator.clipboard.writeText(hexCode).then(() => {
+        const toast = document.getElementById('toast');
+        toast.innerText = 'Copied: ' + hexCode;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

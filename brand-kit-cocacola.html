@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coca-Cola — Brand Kit Preview</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Brand Color Variables */
+      --bg-primary: #f9f9f9;
+      --bg-secondary: #ffffff;
+      --bg-surface: #f4f4f4;
+      --color-brand-red: #ea0000;
+      --color-brand-red-glow: rgba(234, 0, 0, 0.25);
+      --color-brand-white: #ffffff;
+      --color-brand-black: #000000;
+      --text-light: #ffffff;
+      --text-dark: #0f0f0f;
+      --text-muted: #666666;
+      --font-script: 'Great Vibes', cursive;
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --border-radius: 16px;
+      --border-radius-pill: 8000px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-dark);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Header & Branding */
+    header {
+      text-align: center;
+      padding: 50px 20px;
+      background: linear-gradient(135deg, var(--color-brand-red) 0%, #aa0000 100%);
+      border-radius: var(--border-radius);
+      box-shadow: 0 15px 35px var(--color-brand-red-glow);
+      position: relative;
+      overflow: hidden;
+      color: var(--text-light);
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .logo-preview {
+      font-family: var(--font-script);
+      font-size: 5rem;
+      font-weight: 400;
+      color: var(--text-light);
+      line-height: 1.1;
+      margin-bottom: 5px;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .subtitle {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    /* Content Sections */
+    section {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: var(--border-radius);
+      padding: 35px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-brand-red);
+      margin-bottom: 25px;
+      border-bottom: 3px solid var(--color-brand-red);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+
+    /* Grid layout for strategic insights */
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .strategy-card {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      transition: var(--transition);
+    }
+
+    .strategy-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--color-brand-red);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+
+    .strategy-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .strategy-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Color Swatches styling */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .color-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+    }
+
+    .color-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border-color: var(--color-brand-red);
+    }
+
+    .color-swatch {
+      height: 120px;
+      width: 100%;
+      transition: var(--transition);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .color-info {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .color-name {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    .color-hex {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: var(--color-brand-red);
+      font-weight: bold;
+    }
+
+    .color-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Typography */
+    .typo-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .typo-row {
+      display: flex;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding-bottom: 15px;
+    }
+
+    .typo-row:last-child {
+      border: none;
+      padding: 0;
+    }
+
+    .typo-label {
+      width: 150px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-family: monospace;
+    }
+
+    .typo-sample-script {
+      font-family: var(--font-script);
+      font-size: 3.5rem;
+      color: var(--color-brand-red);
+    }
+
+    .typo-sample-h1 {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    .typo-sample-body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Live Component Preview */
+    .components-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .preview-box {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-brand {
+      display: inline-block;
+      padding: 14px 35px;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-light);
+      background: var(--color-brand-red);
+      border: 2px solid var(--color-brand-red);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      transition: var(--transition);
+      box-shadow: 0px 5px 15px var(--color-brand-red-glow);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-brand:hover {
+      background: var(--color-brand-black);
+      border-color: var(--color-brand-black);
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 14px 35px;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-dark);
+      background: transparent;
+      border: 2px solid rgba(0, 0, 0, 0.15);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      transition: var(--transition);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--color-brand-red);
+      color: var(--color-brand-red);
+    }
+
+    /* Product Card Demo */
+    .product-card {
+      width: 100%;
+      max-width: 380px;
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--color-brand-red);
+      box-shadow: 0 15px 30px var(--color-brand-red-glow);
+    }
+
+    .product-img {
+      height: 220px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-tag {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: var(--color-brand-black);
+      color: var(--text-light);
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: var(--border-radius-pill);
+    }
+
+    .product-details {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .product-title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: var(--text-dark);
+      font-weight: 800;
+    }
+
+    .product-features {
+      display: flex;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .product-price-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      padding-top: 15px;
+    }
+
+    .product-price {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      color: var(--color-brand-red);
+      font-weight: 800;
+    }
+
+    .product-price span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Clipboard toast feedback */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--color-brand-black);
+      color: var(--text-light);
+      font-weight: bold;
+      padding: 12px 24px;
+      border-radius: var(--border-radius-pill);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+      font-size: 0.9rem;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="logo-preview">Coca-Cola</div>
+      <p class="subtitle">Brand Kit & Styling Guideline</p>
+    </header>
+
+    <!-- Strategic Foundations -->
+    <section>
+      <h2>Strategic Foundations</h2>
+      <div class="strategy-grid">
+        <div class="strategy-card">
+          <h3>Purpose</h3>
+          <p><strong>"Refresh the world. Make a difference."</strong><br>Communicated directly across corporate hubs and community projects.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Vision</h3>
+          <p>Crafting choices of drinks that people love to refresh body and spirit, in sustainable ways for a shared future.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Voice & Tone</h3>
+          <p>Optimistic, uplifting, welcoming, and storytelling-driven. Focused on connection and global shared moments.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Campaign Theme</h3>
+          <p><strong>"Real Magic"</strong><br>Global campaign focusing on real human moments and community celebration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Color Palette -->
+    <section>
+      <h2>Color Palette (Click to Copy HEX)</h2>
+      <div class="color-grid">
+        <div class="color-card" onclick="copyHex('#EA0000')">
+          <div class="color-swatch" style="background-color: #EA0000;"></div>
+          <div class="color-info">
+            <span class="color-name">Coca-Cola Red</span>
+            <span class="color-hex">#EA0000</span>
+            <span class="color-desc">Primary brand red for headers, UI highlights, and logos.</span>
+          </div>
+        </div>
+        <div class="color-card" onclick="copyHex('#FFFFFF')">
+          <div class="color-swatch" style="background-color: #FFFFFF; border: 1px solid rgba(0,0,0,0.05);"></div>
+          <div class="color-info">
+            <span class="color-name">White</span>
+            <span class="color-hex">#FFFFFF</span>
+            <span class="color-desc">Main backgrounds, reverse typography, layouts.</span>
+          </div>
+        </div>
+        <div class="color-card" onclick="copyHex('#000000')">
+          <div class="color-swatch" style="background-color: #000000;"></div>
+          <div class="color-info">
+            <span class="color-name">Black</span>
+            <span class="color-hex">#000000</span>
+            <span class="color-desc">Zero sugar branding, dark elements, main text.</span>
+          </div>
+        </div>
+        <div class="color-card" onclick="copyHex('#EEEEEE')">
+          <div class="color-swatch" style="background-color: #EEEEEE;"></div>
+          <div class="color-info">
+            <span class="color-name">Neutral Soft</span>
+            <span class="color-hex">#EEEEEE</span>
+            <span class="color-desc">Card panels, sub-backgrounds, UI dividers.</span>
+          </div>
+        </div>
+        <div class="color-card" onclick="copyHex('#D5D5D5')">
+          <div class="color-swatch" style="background-color: #D5D5D5;"></div>
+          <div class="color-info">
+            <span class="color-name">Subtle Border</span>
+            <span class="color-hex">#D5D5D5</span>
+            <span class="color-desc">Main borders, outline items, secondary structures.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typography -->
+    <section>
+      <h2>Typography</h2>
+      <div class="typo-showcase">
+        <div class="typo-row">
+          <div class="typo-label">Brand Logo Script</div>
+          <div class="typo-sample-script">Coca-Cola</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label">Heading Font</div>
+          <div class="typo-sample-h1">REFRESH THE WORLD</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label">Body Font (Inter)</div>
+          <div class="typo-sample-body">
+            We craft the brands and choice of drinks that people love, to refresh them in body and spirit. This is done in ways that build a more sustainable business and better shared future.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Component Preview -->
+    <section>
+      <h2>Brand Component Previews</h2>
+      <div class="components-showcase">
+        <div class="preview-box">
+          <button class="btn-brand">Add To Cart</button>
+          <button class="btn-outline">Find Store</button>
+        </div>
+        
+        <div style="display: flex; justify-content: center;">
+          <!-- Product Card Demo -->
+          <div class="product-card">
+            <div class="product-img" style="background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&q=80&w=600'); background-size: cover;">
+              <span class="product-tag">Zero Sugar</span>
+            </div>
+            <div class="product-details">
+              <h3 class="product-title">Coca-Cola Zero Sugar</h3>
+              <div class="product-features">
+                <span>Zero Sugar</span>
+                <span>•</span>
+                <span>12 fl oz Can</span>
+                <span>•</span>
+                <span>Real Taste</span>
+              </div>
+              <div class="product-price-wrap">
+                <div class="product-price">$1.89 <span>/ Can</span></div>
+                <button class="btn-brand" style="padding: 8px 20px; font-size: 12px; font-weight:700;">Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Toast Element -->
+  <div id="toast" class="toast">HEX Code Copied!</div>
+
+  <script>
+    function copyHex(hexCode) {
+      navigator.clipboard.writeText(hexCode).then(() => {
+        const toast = document.getElementById('toast');
+        toast.innerText = 'Copied Code: ' + hexCode;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

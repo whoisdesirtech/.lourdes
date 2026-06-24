@@ -1,0 +1,248 @@
+{
+  "skills": [
+    {
+      "name": "skill_builder",
+      "description": "Helps design, refine, and build system prompts and skills for the Lourdes AI agent.",
+      "accepted_input_types": ["text", "prompt_spec", "feedback"],
+      "trigger_phrases": [
+        "create a new skill",
+        "build a skill",
+        "design a system prompt",
+        "generate a new skill template",
+        "help me construct a skill"
+      ],
+      "file": "skills/skill_builder.md"
+    },
+    {
+      "name": "orchestrator",
+      "description": "Coordinates multiple agent tasks, delegates sub-actions, and manages workflow execution.",
+      "accepted_input_types": ["text", "routing_command", "config_override"],
+      "trigger_phrases": [
+        "orchestrate these tasks",
+        "coordinate the agents",
+        "run the workflow",
+        "manage task execution",
+        "delegate sub-actions"
+      ],
+      "file": "skills/orchestrator.md"
+    },
+    {
+      "name": "brand_kit",
+      "description": "Provides styling guidelines, colors, logos, and typography rules for keeping UI designs on-brand.",
+      "accepted_input_types": ["text", "css_variables", "design_assets"],
+      "trigger_phrases": [
+        "apply brand guidelines",
+        "use the brand kit",
+        "check our design guidelines",
+        "get styling assets",
+        "load design system properties"
+      ],
+      "file": "skills/brand_kit.md"
+    },
+    {
+      "name": "carousel",
+      "description": "Assists in constructing interactive, multi-slide markdown carousel components for user walkthroughs.",
+      "accepted_input_types": ["text", "markdown_slides", "carousel_spec"],
+      "trigger_phrases": [
+        "create a carousel",
+        "generate a slide presentation",
+        "build a slide deck",
+        "format as a carousel",
+        "add slides to the view"
+      ],
+      "file": "skills/carousel.md"
+    },
+    {
+      "name": "instagram_carousel",
+      "description": "Generates a complete Instagram carousel with a hook slide, content slides, and a CTA slide — then offers 3 caption options (short, medium, long) with hashtags.",
+      "accepted_input_types": ["text", "topic_spec", "audience_description", "goal_statement"],
+      "trigger_phrases": [
+        "create an instagram carousel",
+        "generate a carousel",
+        "build a carousel post",
+        "make an ig carousel",
+        "write a carousel for instagram",
+        "instagram carousel generator",
+        "create carousel content"
+      ],
+      "file": "skills/instagram_carousel.md"
+    },
+    {
+      "name": "brand-kit-generator",
+      "description": "Generates a complete, accurate brand kit from a website URL, brand name, files, or text, with an optional competitive comparison using the BRANDEX framework.",
+      "accepted_input_types": ["text", "urls", "files", "brand_name"],
+      "trigger_phrases": [
+        "/brand-kit",
+        "generate a brand kit",
+        "create a brand kit",
+        "brand-kit-generator",
+        "audit brand identity"
+      ],
+      "file": "skills/brand_kit_generator.md"
+    },
+    {
+      "name": "client_intake_agent",
+      "description": "Client Intake Agent that collects tax documents and answers needed before an appointment for mostly individual 1040 filers and some sole proprietors.",
+      "accepted_input_types": ["text", "files", "tax_documents", "ocr_data"],
+      "trigger_phrases": [
+        "/intake",
+        "start client intake",
+        "run client intake agent",
+        "process client tax documents",
+        "client tax intake",
+        "tax document intake agent"
+      ],
+      "file": "skills/client_intake_agent.md"
+    },
+    {
+      "name": "hindsight_memory",
+      "description": "Lourdes's long-term memory layer powered by the Hindsight framework. Stores, recalls, reflects on, and consolidates facts, client preferences, decisions, and interaction history so Lourdes learns over time — not just remembers.",
+      "accepted_input_types": ["text", "fact_statement", "conversation_excerpt", "recall_query"],
+      "trigger_phrases": [
+        "/memory",
+        "/hindsight",
+        "/recall",
+        "/remember",
+        "remember this",
+        "store this",
+        "save that",
+        "what do you know about",
+        "do you remember",
+        "update memory",
+        "correct that",
+        "forget that",
+        "clean up memory",
+        "consolidate",
+        "memory audit",
+        "show what you know",
+        "memory stats"
+      ],
+      "file": "skills/hindsight_memory.md"
+    },
+    {
+      "name": "luxcare_concierge",
+      "description": "White-glove luxury concierge response agent for WhoIsDésir® Concierge. Processes all inbound client requests using the LUXCARE framework — assessing urgency, categorizing requests, surfacing missing information, drafting polished client-facing replies signed by Bri, and generating structured internal action items and Google Sheets MCP log recommendations.",
+      "accepted_input_types": ["text", "client_message", "voice_transcript"],
+      "trigger_phrases": [
+        "/luxcare",
+        "run luxcare",
+        "process client request",
+        "concierge response",
+        "handle client message",
+        "luxury concierge intake",
+        "new client request",
+        "client message intake"
+      ],
+      "file": "skills/luxcare_concierge.md"
+    },
+    {
+      "name": "gws_workspace_cli",
+      "description": "Enables Lourdes to interact with Google Workspace (Drive, Gmail, Calendar, Sheets, Chat, and 40+ APIs) using the gws CLI. Handles auth setup, file operations, email management, calendar events, spreadsheet creation, and any Workspace API call via structured JSON output.",
+      "accepted_input_types": ["text", "workspace_command", "file_path", "email_request", "calendar_request"],
+      "trigger_phrases": [
+        "/gws",
+        "use gws",
+        "google workspace",
+        "check my drive",
+        "list my files",
+        "send an email via workspace",
+        "check my calendar",
+        "create a google sheet",
+        "create a spreadsheet",
+        "send a chat message",
+        "workspace cli",
+        "drive files",
+        "gmail",
+        "google calendar",
+        "gws auth",
+        "authenticate workspace",
+        "workspace api"
+      ],
+      "file": "skills/gws_workspace_cli.md"
+    },
+    {
+      "name": "context_mode",
+      "description": "Operates in a high-efficiency context-optimizing mode, using sandbox-executed scripts to think in code, indexing files in SQLite/FTS5, searching via BM25, and running diagnostics to keep context window usage minimal.",
+      "accepted_input_types": ["text", "command", "script", "file_path"],
+      "trigger_phrases": [
+        "/context-mode",
+        "/context-mode:ctx-stats",
+        "/context-mode:ctx-doctor",
+        "/context-mode:ctx-index",
+        "/context-mode:ctx-search",
+        "ctx stats",
+        "ctx doctor",
+        "ctx index",
+        "ctx search",
+        "ctx upgrade",
+        "ctx purge",
+        "ctx insight",
+        "optimize context",
+        "think in code",
+        "run in context-mode",
+        "minimize context footprint"
+      ],
+      "file": "skills/context_mode.md"
+    },
+    {
+      "name": "autoresearch",
+      "description": "Autonomous skill self-improvement loop inspired by Karpathy's autoresearch. Lourdes reads program.md for the research goal, proposes improvement hypotheses for its own skill files, applies changes, scores results on a 4-dimension rubric (clarity, conciseness, trigger_accuracy, output_quality), and keeps or discards based on measurable improvement. All experiments are logged to memory/autoresearch_log.jsonl. The human edits program.md to steer the research; Lourdes runs the experiments.",
+      "accepted_input_types": ["text", "session_config", "skill_target"],
+      "trigger_phrases": [
+        "/autoresearch",
+        "run skill experiments",
+        "improve my skills",
+        "autonomous skill refinement",
+        "skill iteration session",
+        "run an autoresearch session",
+        "self-improve",
+        "what skills need improvement",
+        "optimize my skill prompts"
+      ],
+      "file": "skills/autoresearch.md"
+    },
+    {
+      "name": "design_taste_frontend",
+      "description": "Anti-slop frontend design skill (taste-skill v2). Applies a structured design engineering framework for landing pages, portfolios, and redesigns — with brief inference, three-dial configuration (Design Variance, Motion Intensity, Visual Density), design system selection, typography rules, color calibration, layout discipline, image strategy, and a mandatory pre-flight checklist. Prevents LLM design clichés like centered hero + dark mesh, AI-purple gradients, and generic glassmorphism. Lourdes reads the brief, outputs a Design Read, sets dials, then generates premium interfaces.",
+      "accepted_input_types": ["text", "url", "screenshot", "brief", "redesign_request"],
+      "trigger_phrases": [
+        "/taste",
+        "use taste-skill",
+        "apply taste",
+        "design read",
+        "anti-slop design",
+        "no slop",
+        "premium frontend",
+        "make it look good",
+        "make it premium",
+        "design this landing page",
+        "build a landing page",
+        "design a portfolio",
+        "redesign this",
+        "make it better",
+        "high-quality frontend",
+        "design engineering",
+        "design-taste-frontend",
+        "taste skill"
+      ],
+      "file": "skills/design_taste_frontend.md"
+    },
+    {
+      "name": "skill_creator",
+      "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
+      "accepted_input_types": ["text", "prompt_spec", "feedback"],
+      "trigger_phrases": [
+        "/skill-creator",
+        "create a new skill",
+        "build a skill",
+        "design a system prompt",
+        "generate a new skill template",
+        "help me construct a skill",
+        "run skill creator",
+        "improve my skills",
+        "autonomous skill refinement"
+      ],
+      "file": "skills/skill_creator.md"
+    }
+  ]
+}

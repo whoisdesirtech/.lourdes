@@ -1,0 +1,76 @@
+brand_name: "Coca-Cola"
+tagline: "Real Magic"
+industry: "Beverages"
+colors:
+  primary:
+    hex: "#EA0000"
+    rgb: "rgb(234, 0, 0)"
+    cmyk: "cmyk(0, 100, 100, 8)"
+    hsl: "hsl(0, 100%, 46%)"
+    pantone: "Pantone 485 C"
+    status: "CONFIRMED"
+    confidence: "HIGH"
+  secondary:
+    hex: "#FFFFFF"
+    rgb: "rgb(255, 255, 255)"
+    cmyk: "cmyk(0, 0, 0, 0)"
+    hsl: "hsl(0, 0%, 100%)"
+    pantone: "Pantone White C"
+    status: "CONFIRMED"
+    confidence: "HIGH"
+  accent:
+    hex: "#000000"
+    rgb: "rgb(0, 0, 0)"
+    cmyk: "cmyk(0, 0, 0, 100)"
+    hsl: "hsl(0, 0%, 0%)"
+    pantone: "Pantone Black C"
+    status: "CONFIRMED"
+    confidence: "HIGH"
+  neutral_soft:
+    hex: "#EEEEEE"
+    rgb: "rgb(238, 238, 238)"
+    cmyk: "cmyk(0, 0, 0, 7)"
+    hsl: "hsl(0, 0%, 93%)"
+    pantone: "Cool Gray 2 C"
+    status: "CONFIRMED"
+    confidence: "HIGH"
+  neutral_border:
+    hex: "#D5D5D5"
+    rgb: "rgb(213, 213, 213)"
+    cmyk: "cmyk(0, 0, 0, 16)"
+    hsl: "hsl(0, 0%, 84%)"
+    pantone: "Cool Gray 4 C"
+    status: "CONFIRMED"
+    confidence: "HIGH"
+typography:
+  headings:
+    name: "TCCC-UnityText"
+    fallback: "Arial, Helvetica, sans-serif"
+    google_fonts_match: "Montserrat"
+    status: "CONFIRMED"
+    confidence: "HIGH"
+  body:
+    name: "TCCC-UnityText"
+    fallback: "sans-serif"
+    google_fonts_match: "Inter"
+    status: "CONFIRMED"
+    confidence: "HIGH"
+  script:
+    name: "Spencerian Script"
+    fallback: "cursive"
+    google_fonts_match: "Great Vibes"
+    status: "CONFIRMED"
+    confidence: "HIGH"
+voice_tone:
+  descriptors:
+    - "optimistic"
+    - "uplifting"
+    - "refreshing"
+    - "universal"
+  on_brand:
+    - "Refresh the world. Make a difference."
+    - "Real magic happens when people come together."
+    - "Crafting the brands and choice of drinks that people love."
+  off_brand:
+    - "A carbonated syrup solution optimizing modern refreshment rates."
+    - "For the select few who appreciate high-quality refreshment."
