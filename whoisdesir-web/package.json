@@ -1,0 +1,10 @@
+{
+  "name": "whoisdesir-web",
+  "version": "1.0.0",
+  "description": "WhoIsDésir Concierge AI Luxury Portal",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx -y firebase-tools@latest emulators:start --only hosting"
+  },
+  "dependencies": {}
+}

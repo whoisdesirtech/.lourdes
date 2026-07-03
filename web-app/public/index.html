@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple CRM</title>
+  <style>
+/* Reset and Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f9fafb;
+  color: #111827;
+  line-height: 1.5;
+}
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+
+.text-btn {
+  background: none;
+  border: none;
+  color: #2563EB;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+.text-btn:hover {
+  text-decoration: underline;
+}
+
+.error-text {
+  color: #DC2626;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  min-height: 1.25rem;
+}
+
+.success-text {
+  color: #059669;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  min-height: 1.25rem;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 44px; /* Mobile tap target */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #2563EB;
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #1D4ED8;
+}
+
+.btn-secondary {
+  background-color: #E5E7EB;
+  color: #374151;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #D1D5DB;
+}
+
+.btn-danger {
+  background-color: #FEE2E2;
+  color: #DC2626;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #FECACA;
+}
+
+/* Toast */
+#error-toast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #EF4444;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Auth View */
+.auth-container {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.auth-container h1 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #111827;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.375rem;
+  min-height: 44px; /* Mobile tap target */
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 1px #2563EB;
+}
+
+.auth-container button[type="submit"] {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+/* Main App View */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #E5E7EB;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.nav-links {
+  display: flex;
+  height: 100%;
+}
+
+.nav-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4B5563;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.nav-tab.active {
+  color: #2563EB;
+  border-bottom-color: #2563EB;
+}
+
+.content-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+.loading-state, .empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #6B7280;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  border: 1px dashed #D1D5DB;
+}
+
+/* Lists and Tables */
+.item-list {
+  list-style: none;
+}
+
+.item-row {
+  background-color: #ffffff;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.item-info h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.25rem;
+}
+
+.item-info p {
+  color: #4B5563;
+  font-size: 0.875rem;
+}
+
+.item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  border: 1px solid #E5E7EB;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.data-table th {
+  background-color: #F9FAFB;
+  font-weight: 500;
+  color: #374151;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Modals */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .item-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .item-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+  </style>
+</head>
+<body>
+  <div id="error-toast" class="hidden">Something went wrong, please try again later.</div>
+
+  <!-- Authentication View -->
+  <main id="auth-view" class="view">
+    <div class="auth-container">
+      <h1 id="auth-title">Sign In</h1>
+      <form id="auth-form">
+        <div class="form-group">
+          <label for="auth-email">Email</label>
+          <input type="email" id="auth-email" required>
+        </div>
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" required>
+        </div>
+        <div id="auth-error" class="error-text"></div>
+        <div id="auth-message" class="success-text"></div>
+        <button type="submit" id="auth-submit-btn" class="btn btn-primary">Sign In</button>
+      </form>
+      <div class="auth-links">
+        <button type="button" id="toggle-auth-mode-btn" class="text-btn">Create an account</button>
+        <button type="button" id="forgot-password-btn" class="text-btn">Forgot Password?</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Main App View -->
+  <main id="app-view" class="view hidden">
+    <nav class="navbar">
+      <div class="nav-links">
+        <button id="tab-contacts" class="nav-tab active">Contacts</button>
+        <button id="tab-deals" class="nav-tab">Deals</button>
+      </div>
+      <button id="logout-btn" class="btn btn-secondary">Logout</button>
+    </nav>
+
+    <div class="content-container">
+      <!-- Loading State -->
+      <div id="loading-indicator" class="loading-state hidden">Loading data...</div>
+
+      <!-- Contacts Section -->
+      <section id="section-contacts" class="app-section">
+        <div class="section-header">
+          <h2>Contacts</h2>
+          <button id="add-contact-btn" class="btn btn-primary">Add Contact</button>
+        </div>
+        <div class="list-container">
+          <div id="contacts-empty" class="empty-state">No contacts yet.</div>
+          <ul id="contacts-list" class="item-list"></ul>
+        </div>
+      </section>
+
+      <!-- Deals Section -->
+      <section id="section-deals" class="app-section hidden">
+        <div class="section-header">
+          <h2>Deals</h2>
+          <button id="add-deal-btn" class="btn btn-primary">Add Deal</button>
+        </div>
+        <div class="list-container">
+          <div id="deals-empty" class="empty-state">No deals yet.</div>
+          <table id="deals-table" class="data-table hidden">
+            <thead>
+              <tr>
+                <th>Deal Name</th>
+                <th>Value</th>
+                <th>Stage</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="deals-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Contact Modal -->
+  <div id="contact-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="contact-modal-title">Add Contact</h3>
+      <form id="contact-form">
+        <input type="hidden" id="contact-id">
+        <div class="form-group">
+          <label for="contact-name">Name *</label>
+          <input type="text" id="contact-name" required>
+        </div>
+        <div class="form-group">
+          <label for="contact-email">Email</label>
+          <input type="email" id="contact-email">
+        </div>
+        <div class="form-group">
+          <label for="contact-company">Company</label>
+          <input type="text" id="contact-company">
+        </div>
+        <div class="form-group">
+          <label for="contact-notes">Notes</label>
+          <textarea id="contact-notes"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Deal Modal -->
+  <div id="deal-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="deal-modal-title">Add Deal</h3>
+      <form id="deal-form">
+        <input type="hidden" id="deal-id">
+        <div class="form-group">
+          <label for="deal-name">Deal Name *</label>
+          <input type="text" id="deal-name" required>
+        </div>
+        <div class="form-group">
+          <label for="deal-value">Value ($) *</label>
+          <input type="number" id="deal-value" min="0" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="deal-stage">Stage *</label>
+          <select id="deal-stage" required>
+            <option value="Lead">Lead</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Proposal">Proposal</option>
+            <option value="Won">Won</option>
+            <option value="Lost">Lost</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  sendPasswordResetEmail, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  doc, 
+  onSnapshot, 
+  serverTimestamp, 
+  query, 
+  orderBy 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBfiNN2RiJYnxYcJp6qcVQNbMNaFB3nFMw",
+  authDomain: "lourdes-crm.firebaseapp.com",
+  projectId: "lourdes-crm",
+  storageBucket: "lourdes-crm.firebasestorage.app",
+  messagingSenderId: "479582108535",
+  appId: "1:479582108535:web:2a42c6387043ad7dde3f72"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// State
+let currentUser = null;
+let currentAuthMode = 'login'; // 'login' or 'register'
+let unsubContacts = null;
+let unsubDeals = null;
+
+// DOM Elements - Auth
+const authView = document.getElementById('auth-view');
+const appView = document.getElementById('app-view');
+const authTitle = document.getElementById('auth-title');
+const authForm = document.getElementById('auth-form');
+const authEmail = document.getElementById('auth-email');
+const authPassword = document.getElementById('auth-password');
+const authError = document.getElementById('auth-error');
+const authMessage = document.getElementById('auth-message');
+const authSubmitBtn = document.getElementById('auth-submit-btn');
+const toggleAuthModeBtn = document.getElementById('toggle-auth-mode-btn');
+const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+
+// DOM Elements - App Nav
+const tabContacts = document.getElementById('tab-contacts');
+const tabDeals = document.getElementById('tab-deals');
+const sectionContacts = document.getElementById('section-contacts');
+const sectionDeals = document.getElementById('section-deals');
+const logoutBtn = document.getElementById('logout-btn');
+const loadingIndicator = document.getElementById('loading-indicator');
+const errorToast = document.getElementById('error-toast');
+
+// DOM Elements - Contacts
+const contactsEmpty = document.getElementById('contacts-empty');
+const contactsList = document.getElementById('contacts-list');
+const addContactBtn = document.getElementById('add-contact-btn');
+const contactModal = document.getElementById('contact-modal');
+const contactModalTitle = document.getElementById('contact-modal-title');
+const contactForm = document.getElementById('contact-form');
+const contactIdInput = document.getElementById('contact-id');
+
+// DOM Elements - Deals
+const dealsEmpty = document.getElementById('deals-empty');
+const dealsTable = document.getElementById('deals-table');
+const dealsTbody = document.getElementById('deals-tbody');
+const addDealBtn = document.getElementById('add-deal-btn');
+const dealModal = document.getElementById('deal-modal');
+const dealModalTitle = document.getElementById('deal-modal-title');
+const dealForm = document.getElementById('deal-form');
+const dealIdInput = document.getElementById('deal-id');
+
+// Utility to show global error
+function showErrorToast() {
+  errorToast.classList.remove('hidden');
+  setTimeout(() => {
+    errorToast.classList.add('hidden');
+  }, 4000);
+}
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// --- Auth Logic ---
+
+toggleAuthModeBtn.addEventListener('click', () => {
+  currentAuthMode = currentAuthMode === 'login' ? 'register' : 'login';
+  authTitle.textContent = currentAuthMode === 'login' ? 'Sign In' : 'Create Account';
+  authSubmitBtn.textContent = currentAuthMode === 'login' ? 'Sign In' : 'Sign Up';
+  toggleAuthModeBtn.textContent = currentAuthMode === 'login' ? 'Create an account' : 'Already have an account? Sign in';
+  authError.textContent = '';
+  authMessage.textContent = '';
+});
+
+forgotPasswordBtn.addEventListener('click', async () => {
+  const email = authEmail.value;
+  if (!email) {
+    authError.textContent = 'Please enter your email to reset password.';
+    return;
+  }
+  try {
+    authSubmitBtn.disabled = true;
+    await sendPasswordResetEmail(auth, email);
+    authMessage.textContent = 'Password reset email sent!';
+    authError.textContent = '';
+  } catch (err) {
+    authError.textContent = err.message;
+  } finally {
+    authSubmitBtn.disabled = false;
+  }
+});
+
+authForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = authEmail.value;
+  const password = authPassword.value;
+  authError.textContent = '';
+  authMessage.textContent = '';
+  authSubmitBtn.disabled = true;
+
+  try {
+    if (currentAuthMode === 'login') {
+      await signInWithEmailAndPassword(auth, email, password);
+    } else {
+      await createUserWithEmailAndPassword(auth, email, password);
+    }
+  } catch (err) {
+    authError.textContent = err.message;
+  } finally {
+    authSubmitBtn.disabled = false;
+  }
+});
+
+logoutBtn.addEventListener('click', () => {
+  signOut(auth);
+});
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+    authView.classList.add('hidden');
+    appView.classList.remove('hidden');
+    initDataListeners();
+  } else {
+    currentUser = null;
+    appView.classList.add('hidden');
+    authView.classList.remove('hidden');
+    authForm.reset();
+    authError.textContent = '';
+    authMessage.textContent = '';
+    
+    if (unsubContacts) unsubContacts();
+    if (unsubDeals) unsubDeals();
+    unsubContacts = null;
+    unsubDeals = null;
+    
+    // Clear UI
+    contactsList.innerHTML = '';
+    dealsTbody.innerHTML = '';
+  }
+});
+
+// --- Tab Navigation ---
+
+function switchTab(tab) {
+  if (tab === 'contacts') {
+    tabContacts.classList.add('active');
+    tabDeals.classList.remove('active');
+    sectionContacts.classList.remove('hidden');
+    sectionDeals.classList.add('hidden');
+  } else {
+    tabDeals.classList.add('active');
+    tabContacts.classList.remove('active');
+    sectionDeals.classList.remove('hidden');
+    sectionContacts.classList.add('hidden');
+  }
+}
+
+tabContacts.addEventListener('click', () => switchTab('contacts'));
+tabDeals.addEventListener('click', () => switchTab('deals'));
+
+// --- Modal Logic ---
+document.querySelectorAll('.modal-cancel-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.target.closest('.modal').classList.add('hidden');
+  });
+});
+
+// --- Contacts CRUD ---
+
+addContactBtn.addEventListener('click', () => {
+  contactForm.reset();
+  contactIdInput.value = '';
+  contactModalTitle.textContent = 'Add Contact';
+  contactModal.classList.remove('hidden');
+});
+
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = contactForm.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  
+  const id = contactIdInput.value;
+  const name = document.getElementById('contact-name').value;
+  const email = document.getElementById('contact-email').value;
+  const company = document.getElementById('contact-company').value;
+  const notes = document.getElementById('contact-notes').value;
+
+  const data = {
+    name, email, company, notes
+  };
+
+  try {
+    const contactsRef = collection(db, `users/${currentUser.uid}/contacts`);
+    if (id) {
+      await updateDoc(doc(db, `users/${currentUser.uid}/contacts`, id), data);
+    } else {
+      data.createdAt = serverTimestamp();
+      await addDoc(contactsRef, data);
+    }
+    contactModal.classList.add('hidden');
+  } catch (err) {
+    showErrorToast();
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+window.editContact = (id, name, email, company, notes) => {
+  contactIdInput.value = id;
+  document.getElementById('contact-name').value = name;
+  document.getElementById('contact-email').value = email;
+  document.getElementById('contact-company').value = company;
+  document.getElementById('contact-notes').value = notes;
+  contactModalTitle.textContent = 'Edit Contact';
+  contactModal.classList.remove('hidden');
+};
+
+window.deleteContact = async (id) => {
+  if (confirm('Are you sure you want to delete this contact?')) {
+    try {
+      await deleteDoc(doc(db, `users/${currentUser.uid}/contacts`, id));
+    } catch (err) {
+      showErrorToast();
+      console.error(err);
+    }
+  }
+};
+
+// --- Deals CRUD ---
+
+addDealBtn.addEventListener('click', () => {
+  dealForm.reset();
+  dealIdInput.value = '';
+  dealModalTitle.textContent = 'Add Deal';
+  dealModal.classList.remove('hidden');
+});
+
+dealForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = dealForm.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  
+  const id = dealIdInput.value;
+  const dealName = document.getElementById('deal-name').value;
+  const value = parseFloat(document.getElementById('deal-value').value);
+  const stage = document.getElementById('deal-stage').value;
+
+  const data = {
+    dealName, value, stage
+  };
+
+  try {
+    const dealsRef = collection(db, `users/${currentUser.uid}/deals`);
+    if (id) {
+      await updateDoc(doc(db, `users/${currentUser.uid}/deals`, id), data);
+    } else {
+      data.createdAt = serverTimestamp();
+      await addDoc(dealsRef, data);
+    }
+    dealModal.classList.add('hidden');
+  } catch (err) {
+    showErrorToast();
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+window.editDeal = (id, name, value, stage) => {
+  dealIdInput.value = id;
+  document.getElementById('deal-name').value = name;
+  document.getElementById('deal-value').value = value;
+  document.getElementById('deal-stage').value = stage;
+  dealModalTitle.textContent = 'Edit Deal';
+  dealModal.classList.remove('hidden');
+};
+
+window.deleteDeal = async (id) => {
+  if (confirm('Are you sure you want to delete this deal?')) {
+    try {
+      await deleteDoc(doc(db, `users/${currentUser.uid}/deals`, id));
+    } catch (err) {
+      showErrorToast();
+      console.error(err);
+    }
+  }
+};
+
+// Format currency
+function formatCurrency(val) {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+}
+
+// --- Data Listeners ---
+
+function initDataListeners() {
+  loadingIndicator.classList.remove('hidden');
+  
+  // Contacts
+  const contactsQ = query(collection(db, `users/${currentUser.uid}/contacts`), orderBy('createdAt', 'desc'));
+  unsubContacts = onSnapshot(contactsQ, (snapshot) => {
+    contactsList.innerHTML = '';
+    if (snapshot.empty) {
+      contactsEmpty.classList.remove('hidden');
+    } else {
+      contactsEmpty.classList.add('hidden');
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const li = document.createElement('li');
+        li.className = 'item-row';
+        li.innerHTML = `
+          <div class="item-info">
+            <h3>${escapeHTML(data.name)}</h3>
+            <p>${escapeHTML(data.email)} ${data.company ? '| ' + escapeHTML(data.company) : ''}</p>
+            ${data.notes ? `<p><em>${escapeHTML(data.notes)}</em></p>` : ''}
+          </div>
+          <div class="item-actions">
+          </div>
+        `;
+        
+        const actionsDiv = li.querySelector('.item-actions');
+        
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn btn-secondary';
+        editBtn.textContent = 'Edit';
+        editBtn.onclick = () => editContact(docSnap.id, data.name || '', data.email || '', data.company || '', data.notes || '');
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-danger';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.onclick = () => deleteContact(docSnap.id);
+        
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(deleteBtn);
+        
+        contactsList.appendChild(li);
+      });
+    }
+    loadingIndicator.classList.add('hidden');
+  }, (err) => {
+    console.error(err);
+    showErrorToast();
+    loadingIndicator.classList.add('hidden');
+  });
+
+  // Deals
+  const dealsQ = query(collection(db, `users/${currentUser.uid}/deals`), orderBy('createdAt', 'desc'));
+  unsubDeals = onSnapshot(dealsQ, (snapshot) => {
+    dealsTbody.innerHTML = '';
+    if (snapshot.empty) {
+      dealsEmpty.classList.remove('hidden');
+      dealsTable.classList.add('hidden');
+    } else {
+      dealsEmpty.classList.add('hidden');
+      dealsTable.classList.remove('hidden');
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${escapeHTML(data.dealName)}</strong></td>
+          <td>${formatCurrency(data.value)}</td>
+          <td><span class="badge stage-${escapeHTML(data.stage).toLowerCase()}">${escapeHTML(data.stage)}</span></td>
+          <td>
+            <div class="item-actions">
+            </div>
+          </td>
+        `;
+        const actionsDiv = tr.querySelector('.item-actions');
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn btn-secondary';
+        editBtn.textContent = 'Edit';
+        editBtn.onclick = () => editDeal(docSnap.id, data.dealName || '', data.value || 0, data.stage || '');
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-danger';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.onclick = () => deleteDeal(docSnap.id);
+        
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(deleteBtn);
+        
+        dealsTbody.appendChild(tr);
+      });
+    }
+  }, (err) => {
+    console.error(err);
+    showErrorToast();
+  });
+}
+  </script>
+</body>
+</html>

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhoIsDésir Concierge AI — Ultra-Luxury Miami Rentals & VIP Services</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Predictive AI-powered luxury concierge and executive rentals in Miami. Instantly book exotic supercars, luxury yachts, and private mansions.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Design Tokens */
+      --bg-primary: #141414;      /* Jet Black */
+      --bg-secondary: #252525;    /* Deep Charcoal */
+      --bg-surface: #323232;      /* Slate Surface */
+      --color-gold: #ffa200;       /* Miami Gold */
+      --color-gold-glow: rgba(255, 162, 0, 0.4);
+      --color-accent-red: #ed1c23; /* Action Red */
+      --color-accent-orange: #ea6911; /* Warning/Border Orange */
+      --text-light: #ffffff;
+      --text-muted: #c5c5c5;
+      --text-dark: #141414;
+      
+      --font-heading: 'Oswald', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      
+      --border-radius: 16px;
+      --border-radius-pill: 30px;
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-surface);
+      border-radius: 5px;
+      border: 2px solid var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-gold);
+    }
+
+    /* Navigation Bar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(20, 20, 20, 0.85);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-scrolled {
+      padding: 12px 40px;
+      background: rgba(10, 10, 10, 0.95);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-light);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--color-gold);
+      text-shadow: 0 0 10px var(--color-gold-glow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--color-gold);
+    }
+
+    /* Highlighted Book Now Button in Nav */
+    .btn-nav-book {
+      display: inline-block;
+      padding: 10px 25px;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      color: var(--text-dark) !important;
+      background: var(--color-gold);
+      border: 2px solid var(--color-gold);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      font-weight: bold;
+      transition: var(--transition);
+      box-shadow: 0 0 15px var(--color-gold-glow);
+      cursor: pointer;
+    }
+
+    .btn-nav-book:hover {
+      background: transparent;
+      color: var(--color-gold) !important;
+      box-shadow: 0 0 25px rgba(255, 162, 0, 0.1);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 20px;
+      overflow: hidden;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(20,20,20,1) 100%), 
+                  url('https://images.unsplash.com/photo-1540959733332-eab4deceeaf7?auto=format&fit=crop&q=80&w=1920') no-repeat center center;
+      background-size: cover;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      margin-top: 60px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: 4.8rem;
+      font-weight: 700;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+    .hero h1 span {
+      color: var(--color-gold);
+      text-shadow: 0 0 20px var(--color-gold-glow);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    /* Highlights: Book Now Button */
+    .btn-book-now {
+      padding: 16px 40px;
+      font-family: var(--font-heading);
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--text-dark);
+      background: var(--color-gold);
+      border: 2px solid var(--color-gold);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 8px 30px rgba(255, 162, 0, 0.4);
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn-book-now:hover {
+      background: transparent;
+      color: var(--color-gold);
+      box-shadow: 0 8px 30px rgba(255, 162, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      padding: 16px 40px;
+      font-family: var(--font-heading);
+      font-size: 16px;
+      color: var(--text-light);
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--color-gold);
+      color: var(--color-gold);
+      transform: translateY(-2px);
+    }
+
+    /* Global Sections */
+    section {
+      padding: 100px 40px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 2.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-light);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title span {
+      color: var(--color-gold);
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 80px;
+      height: 4px;
+      background-color: var(--color-accent-orange);
+      border-radius: 2px;
+    }
+
+    /* Grid layouts */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 35px;
+    }
+
+    /* Premium Rental Cards */
+    .card {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: var(--color-gold-glow);
+      box-shadow: 0 20px 40px rgba(255, 162, 0, 0.15);
+    }
+
+    .card-img {
+      height: 250px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--color-gold);
+      color: var(--text-dark);
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      font-weight: bold;
+      padding: 6px 16px;
+      border-radius: var(--border-radius-pill);
+    }
+
+    .card-content {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 5px;
+    }
+
+    .card-features {
+      display: flex;
+      gap: 15px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .card-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 20px;
+    }
+
+    .card-price {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--color-gold);
+    }
+
+    .card-price span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Services Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .service-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: var(--border-radius);
+      padding: 40px;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .service-card:hover {
+      background-color: var(--bg-surface);
+      border-color: var(--color-gold-glow);
+    }
+
+    .service-icon {
+      font-size: 2.5rem;
+      color: var(--color-gold);
+      margin-bottom: 20px;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* AI Concierge Form Section */
+    .concierge-booking {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(20,20,20,0.8) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--border-radius);
+      padding: 60px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .concierge-booking h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .concierge-sub {
+      text-align: center;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      font-size: 1.05rem;
+    }
+
+    .booking-form {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group-full {
+      grid-column: span 2;
+    }
+
+    .booking-form label {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .booking-form input, .booking-form select, .booking-form textarea {
+      background-color: var(--bg-surface);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 14px 20px;
+      color: var(--text-light);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus {
+      border-color: var(--color-gold);
+      box-shadow: 0 0 10px rgba(255, 162, 0, 0.15);
+    }
+
+    .booking-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn-submit-booking {
+      grid-column: span 2;
+      justify-self: center;
+      margin-top: 15px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0b0b0b;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    .footer-logo span {
+      color: var(--color-gold);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--color-gold);
+    }
+
+    .footer-copy {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* Responsiveness */
+    @media (max-width: 991px) {
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+      nav {
+        padding: 15px 25px;
+      }
+      .nav-scrolled {
+        padding: 10px 25px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+      .booking-form {
+        grid-template-columns: 1fr;
+      }
+      .form-group-full {
+        grid-column: span 1;
+      }
+      .btn-submit-booking {
+        grid-column: span 1;
+        width: 100%;
+        text-align: center;
+      }
+      nav {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+      }
+      .hero-content {
+        margin-top: 100px;
+      }
+      section {
+        padding: 60px 20px;
+      }
+      .section-title {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav id="navbar">
+    <a href="#" class="logo">WhoIsDésir <span>Concierge AI</span></a>
+    <ul class="nav-links">
+      <li><a href="#fleet">Fleet</a></li>
+      <li><a href="#yachts">Yachts</a></li>
+      <li><a href="#mansions">Mansions</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#booking" class="btn-nav-book">Book Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>EXCLUSIVE RENTALS FOR <br>THE ELITE IN <span>MIAMI</span></h1>
+      <p>Intelligent, predictive AI luxury hosting combined with Miami's most elegant fleet of exotic supercars, private mega-yachts, and coastal mansions.</p>
+      <div class="hero-buttons">
+        <a href="#booking" class="btn-book-now">Book Now</a>
+        <a href="#fleet" class="btn-outline">Explore Fleet</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Core Services Showcase -->
+  <section id="services">
+    <h2 class="section-title">AI-Powered <span>Luxury Services</span></h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>Predictive AI Concierge</h3>
+        <p>Our intelligent system anticipates your schedules, preferences, and desires, curating custom charter routes and matching your elite lifestyle instantly.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏎️</div>
+        <h3>Exotic Car Fleet</h3>
+        <p>Access the absolute highest tier of sports cars and luxury cruisers, completely detailed and delivered to your tarmac or villa upon arrival.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛥️</div>
+        <h3>Yacht & Villa Charters</h3>
+        <p>Private luxury mega-yachts fully crewed with elite chefs, paired with handpicked coastal estates offering absolute security and privacy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exotic Fleet Section -->
+  <section id="fleet">
+    <h2 class="section-title">The <span>Exotic Fleet</span></h2>
+    <div class="grid">
+      
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=600');">
+          <span class="card-tag">Lamborghini</span>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-title">Aventador SVJ Roadster</h3>
+            <div class="card-features">
+              <span>V12 Engine</span>
+              <span>•</span>
+              <span>770 HP</span>
+              <span>•</span>
+              <span>Gloss Gold Detail</span>
+            </div>
+          </div>
+          <div class="card-price-row">
+            <div class="card-price">$2,499 <span>/ Day</span></div>
+            <a href="#booking" class="btn-book-now" style="padding: 10px 25px; font-size: 13px;">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=600');">
+          <span class="card-tag">Ferrari</span>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-title">F8 Tributo Spyder</h3>
+            <div class="card-features">
+              <span>V8 Twin-Turbo</span>
+              <span>•</span>
+              <span>710 HP</span>
+              <span>•</span>
+              <span>Rosso Corsa</span>
+            </div>
+          </div>
+          <div class="card-price-row">
+            <div class="card-price">$1,999 <span>/ Day</span></div>
+            <a href="#booking" class="btn-book-now" style="padding: 10px 25px; font-size: 13px;">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1632245889027-e406faaa19ee?auto=format&fit=crop&q=80&w=600');">
+          <span class="card-tag">Rolls-Royce</span>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-title">Ghost Black Badge</h3>
+            <div class="card-features">
+              <span>V12 Twin-Turbo</span>
+              <span>•</span>
+              <span>563 HP</span>
+              <span>•</span>
+              <span>Executive Cruising</span>
+            </div>
+          </div>
+          <div class="card-price-row">
+            <div class="card-price">$1,599 <span>/ Day</span></div>
+            <a href="#booking" class="btn-book-now" style="padding: 10px 25px; font-size: 13px;">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Yachts Section -->
+  <section id="yachts">
+    <h2 class="section-title">Luxury <span>Yachts</span></h2>
+    <div class="grid">
+      
+      <!-- Yacht Card -->
+      <div class="card">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&q=80&w=600');">
+          <span class="card-tag">Oceanfast</span>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-title">120ft Custom Mega Yacht</h3>
+            <div class="card-features">
+              <span>12 Guests</span>
+              <span>•</span>
+              <span>Elite Crew Included</span>
+              <span>•</span>
+              <span>Jacuzzi & Jet Skis</span>
+            </div>
+          </div>
+          <div class="card-price-row">
+            <div class="card-price">$9,000 <span>/ Day</span></div>
+            <a href="#booking" class="btn-book-now" style="padding: 10px 25px; font-size: 13px;">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mansion Card -->
+      <div class="card" id="mansions">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600');">
+          <span class="card-tag">Mansion</span>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-title">Villa Désir — Biscayne Bay</h3>
+            <div class="card-features">
+              <span>8 Bedrooms</span>
+              <span>•</span>
+              <span>10 Baths</span>
+              <span>•</span>
+              <span>Private Marina</span>
+            </div>
+          </div>
+          <div class="card-price-row">
+            <div class="card-price">$8,500 <span>/ Night</span></div>
+            <a href="#booking" class="btn-book-now" style="padding: 10px 25px; font-size: 13px;">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive AI Booking Form -->
+  <section id="booking">
+    <div class="concierge-booking">
+      <h2>AI Concierge <span>Booking Portal</span></h2>
+      <p class="concierge-sub">Submit your reservation details below. Our intelligent system will instantly cross-reference our active Miami fleet and generate a customized quote.</p>
+      
+      <form class="booking-form" onsubmit="event.preventDefault(); alert('AI concierge is processing your elite request...');">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="john@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="service-type">Asset Category</label>
+          <select id="service-type">
+            <option value="car">Exotic Supercar</option>
+            <option value="yacht">Luxury Mega Yacht</option>
+            <option value="mansion">Executive Mansion</option>
+            <option value="all">Full Custom Package</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="specific-asset">Preferred Asset</label>
+          <select id="specific-asset">
+            <option value="lambo">Lamborghini Aventador SVJ</option>
+            <option value="ferrari">Ferrari F8 Tributo</option>
+            <option value="ghost">Rolls-Royce Ghost</option>
+            <option value="oceanfast">120ft Custom Mega Yacht</option>
+            <option value="villa">Villa Désir — Biscayne Bay</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="start-date">Reservation Start Date</label>
+          <input type="date" id="start-date" required>
+        </div>
+        <div class="form-group">
+          <label for="duration">Duration (Days)</label>
+          <input type="number" id="duration" min="1" max="30" value="1" required>
+        </div>
+        <div class="form-group form-group-full">
+          <label for="notes">Custom VIP Requests & Notes</label>
+          <textarea id="notes" placeholder="Specify any flight details, personalized yacht catering preferences, or custom security requirements..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit-booking btn-book-now">Send Booking Request</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">WhoIsDésir <span>Concierge AI</span></div>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#fleet">Fleet</a>
+      <a href="#yachts">Yachts</a>
+      <a href="#mansions">Mansions</a>
+      <a href="#booking">Book Now</a>
+    </div>
+    <p class="footer-copy">© 2026 WhoIsDésir Concierge AI. All Luxury Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Navigation bar effect on scroll
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
