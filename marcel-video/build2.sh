@@ -21,8 +21,15 @@ printf "file 'segA.mp4'\nfile 'segB.mp4'\nfile 'segC.mp4'\n" > segments/list2.tx
 
 ffmpeg -y -loglevel error -f concat -safe 0 -i segments/list2.txt -c copy segments/video2.mp4
 
+# Narration: prefer OpenAI TTS, fall back to macOS say
+if [ -f audio/narration-openai.mp3 ]; then
+  NARR=audio/narration-openai.mp3
+else
+  NARR=audio/narration.wav
+fi
+
 # Narration starts at title end (3s), pads to video end
-ffmpeg -y -loglevel error -i segments/video2.mp4 -i audio/narration.wav \
+ffmpeg -y -loglevel error -i segments/video2.mp4 -i "$NARR" \
   -filter_complex "[1:a]adelay=3000|3000,apad[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -shortest marcel-ai-promo-live.mp4
 

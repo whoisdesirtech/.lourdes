@@ -210,7 +210,7 @@ class AA_Amazon_API {
 			$body_args['refresh_token'] = $refresh_token;
 		} else {
 			$body_args['grant_type']    = 'client_credentials';
-			$body_args['scope']         = 'amazon_associates:api';
+			$body_args['scope']         = 'creatorsapi::default';
 		}
 
 		$response = wp_remote_post(
