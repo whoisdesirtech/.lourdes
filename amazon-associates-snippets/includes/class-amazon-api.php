@@ -1,6 +1,6 @@
 <?php
 /**
- * Amazon PA-API 5.0 Client with AWS SigV4 Signing & Transients Caching
+ * Amazon PA-API 5.0 Client with AWS SigV4 & OAuth 2.0 Access Token Authentication
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -89,7 +89,6 @@ class AA_Amazon_API {
 		$markets      = self::get_marketplaces();
 		$domain       = isset( $markets[ $marketplace ] ) ? $markets[ $marketplace ]['domain'] : 'amazon.com';
 
-		// If full URL was provided
 		if ( filter_var( $asin_or_url, FILTER_VALIDATE_URL ) ) {
 			if ( ! empty( $partner_tag ) ) {
 				return add_query_arg( 'tag', $partner_tag, $asin_or_url );
@@ -97,7 +96,6 @@ class AA_Amazon_API {
 			return $asin_or_url;
 		}
 
-		// ASIN provided
 		$asin = strtoupper( trim( $asin_or_url ) );
 		$url  = "https://www.{$domain}/dp/{$asin}";
 
@@ -109,7 +107,7 @@ class AA_Amazon_API {
 	}
 
 	/**
-	 * Fetch Item Details by ASIN from PA-API 5.0 (with Transient Caching)
+	 * Fetch Item Details by ASIN with Transient Caching
 	 */
 	public function get_item( $asin ) {
 		$asin = strtoupper( trim( $asin ) );
@@ -117,20 +115,30 @@ class AA_Amazon_API {
 			return false;
 		}
 
-		$partner_tag  = trim( get_option( 'aa_partner_tag', '' ) );
+		$partner_tag   = trim( get_option( 'aa_partner_tag', '' ) );
 		$transient_key = 'aa_item_' . md5( $asin . '_' . $partner_tag );
-		$cached_data  = get_transient( $transient_key );
+		$cached_data   = get_transient( $transient_key );
 
 		if ( false !== $cached_data ) {
 			return $cached_data;
 		}
 
-		// Check credentials
-		$access_key = trim( get_option( 'aa_access_key', '' ) );
-		$secret_key = trim( get_option( 'aa_secret_key', '' ) );
+		$auth_mode = get_option( 'aa_auth_mode', 'sigv4' );
 
-		if ( empty( $access_key ) || empty( $secret_key ) || empty( $partner_tag ) ) {
-			return $this->get_fallback_product( $asin, __( 'Amazon API credentials missing. Showing fallback link.', 'amazon-associates-snippets' ) );
+		if ( 'oauth2' === $auth_mode ) {
+			$client_id     = trim( get_option( 'aa_oauth_client_id', '' ) );
+			$access_token  = $this->get_oauth_access_token();
+
+			if ( empty( $partner_tag ) || ( empty( $client_id ) && empty( $access_token ) ) ) {
+				return $this->get_fallback_product( $asin, __( 'OAuth 2.0 Credentials or Access Token missing. Showing fallback link.', 'amazon-associates-snippets' ) );
+			}
+		} else {
+			$access_key = trim( get_option( 'aa_access_key', '' ) );
+			$secret_key = trim( get_option( 'aa_secret_key', '' ) );
+
+			if ( empty( $access_key ) || empty( $secret_key ) || empty( $partner_tag ) ) {
+				return $this->get_fallback_product( $asin, __( 'Amazon API credentials missing. Showing fallback link.', 'amazon-associates-snippets' ) );
+			}
 		}
 
 		$response = $this->call_pa_api_get_items( array( $asin ) );
@@ -141,7 +149,6 @@ class AA_Amazon_API {
 
 		$data = $this->parse_item_response( $response, $asin );
 
-		// Cache valid response
 		$cache_hours = intval( get_option( 'aa_cache_expiry', 24 ) );
 		if ( $cache_hours <= 0 ) {
 			$cache_hours = 24;
@@ -153,13 +160,93 @@ class AA_Amazon_API {
 	}
 
 	/**
-	 * PA-API 5.0 Request for GetItems
+	 * Get OAuth 2.0 Access Token (Cached or Refreshed via Token Endpoint)
+	 */
+	public function get_oauth_access_token() {
+		// 1. Direct manual token override if saved
+		$manual_token = trim( get_option( 'aa_oauth_access_token', '' ) );
+		if ( ! empty( $manual_token ) ) {
+			return $manual_token;
+		}
+
+		// 2. Cached transient token
+		$cached_token = get_transient( 'aa_oauth_active_access_token' );
+		if ( false !== $cached_token ) {
+			return $cached_token;
+		}
+
+		// 3. Request fresh token via client_credentials / refresh_token
+		$token_data = $this->request_fresh_oauth_token();
+		if ( ! is_wp_error( $token_data ) && ! empty( $token_data['access_token'] ) ) {
+			$expires_in = isset( $token_data['expires_in'] ) ? intval( $token_data['expires_in'] ) - 60 : 3500;
+			set_transient( 'aa_oauth_active_access_token', $token_data['access_token'], max( 300, $expires_in ) );
+			return $token_data['access_token'];
+		}
+
+		return false;
+	}
+
+	/**
+	 * Request fresh OAuth 2.0 Token from Amazon Auth Server
+	 */
+	public function request_fresh_oauth_token() {
+		$client_id     = trim( get_option( 'aa_oauth_client_id', '' ) );
+		$client_secret = trim( get_option( 'aa_oauth_client_secret', '' ) );
+		$refresh_token = trim( get_option( 'aa_oauth_refresh_token', '' ) );
+
+		if ( empty( $client_id ) || empty( $client_secret ) ) {
+			return new WP_Error( 'oauth_missing_credentials', __( 'Client ID or Client Secret is missing.', 'amazon-associates-snippets' ) );
+		}
+
+		$token_url = 'https://api.amazon.com/auth/o2/token';
+		
+		$body_args = array(
+			'client_id'     => $client_id,
+			'client_secret' => $client_secret,
+		);
+
+		if ( ! empty( $refresh_token ) ) {
+			$body_args['grant_type']    = 'refresh_token';
+			$body_args['refresh_token'] = $refresh_token;
+		} else {
+			$body_args['grant_type']    = 'client_credentials';
+			$body_args['scope']         = 'amazon_associates:api';
+		}
+
+		$response = wp_remote_post(
+			$token_url,
+			array(
+				'method'  => 'POST',
+				'headers' => array(
+					'Content-Type' => 'application/x-www-form-urlencoded;charset=UTF-8',
+				),
+				'body'    => http_build_query( $body_args ),
+				'timeout' => 15,
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$body    = wp_remote_retrieve_body( $response );
+		$decoded = json_decode( $body, true );
+
+		if ( isset( $decoded['error'] ) ) {
+			$err_msg = isset( $decoded['error_description'] ) ? $decoded['error_description'] : $decoded['error'];
+			return new WP_Error( 'oauth_auth_error', $err_msg );
+		}
+
+		return $decoded;
+	}
+
+	/**
+	 * PA-API Request for GetItems
 	 */
 	private function call_pa_api_get_items( array $asins ) {
-		$access_key  = trim( get_option( 'aa_access_key', '' ) );
-		$secret_key  = trim( get_option( 'aa_secret_key', '' ) );
 		$partner_tag = trim( get_option( 'aa_partner_tag', '' ) );
 		$marketplace = get_option( 'aa_marketplace', 'US' );
+		$auth_mode   = get_option( 'aa_auth_mode', 'sigv4' );
 		$markets     = self::get_marketplaces();
 
 		$market_info = isset( $markets[ $marketplace ] ) ? $markets[ $marketplace ] : $markets['US'];
@@ -187,15 +274,35 @@ class AA_Amazon_API {
 		$uri          = '/paapi5/getitems';
 		$target       = 'com.amazon.paapi5.v1.ProductAdvertisingAPIv1.GetItems';
 
-		$headers = $this->generate_aws_sigv4_headers(
-			$access_key,
-			$secret_key,
-			$host,
-			$region,
-			$uri,
-			$target,
-			$payload_json
-		);
+		if ( 'oauth2' === $auth_mode ) {
+			$token = $this->get_oauth_access_token();
+			if ( ! $token ) {
+				return new WP_Error( 'oauth_token_failed', __( 'Could not obtain valid OAuth 2.0 Access Token.', 'amazon-associates-snippets' ) );
+			}
+
+			$headers = array(
+				'Content-Encoding' => 'amz-1.0',
+				'Content-Type'     => 'application/json; charset=UTF-8',
+				'Host'             => $host,
+				'X-Amz-Date'       => gmdate( 'Ymd\THis\Z' ),
+				'X-Amz-Target'     => $target,
+				'Authorization'    => 'Bearer ' . $token,
+				'x-amz-access-token' => $token,
+			);
+		} else {
+			$access_key = trim( get_option( 'aa_access_key', '' ) );
+			$secret_key = trim( get_option( 'aa_secret_key', '' ) );
+
+			$headers = $this->generate_aws_sigv4_headers(
+				$access_key,
+				$secret_key,
+				$host,
+				$region,
+				$uri,
+				$target,
+				$payload_json
+			);
+		}
 
 		$request_url = 'https://' . $host . $uri;
 
@@ -235,7 +342,7 @@ class AA_Amazon_API {
 		$amz_date     = gmdate( 'Ymd\THis\Z', $time );
 		$date_stamp   = gmdate( 'Ymd', $time );
 
-		$canonical_uri = $uri;
+		$canonical_uri        = $uri;
 		$canonical_querystring = '';
 
 		$headers = array(
@@ -251,7 +358,7 @@ class AA_Amazon_API {
 		$canonical_headers = '';
 		$signed_headers_arr = array();
 		foreach ( $headers as $key => $val ) {
-			$canonical_headers .= $key . ':' . trim( $val ) . "\n";
+			$canonical_headers  .= $key . ':' . trim( $val ) . "\n";
 			$signed_headers_arr[] = $key;
 		}
 		$signed_headers = implode( ';', $signed_headers_arr );
@@ -271,8 +378,7 @@ class AA_Amazon_API {
 			$credential_scope . "\n" .
 			hash( 'sha256', $canonical_request );
 
-		// Calculate Signature
-		$k_date    = hash_hmac( 'sha256', $date_stamp, 'AWS4' + $secret_key ? 'AWS4' . $secret_key : '', true );
+		$k_date    = hash_hmac( 'sha256', $date_stamp, 'AWS4' . $secret_key, true );
 		$k_region  = hash_hmac( 'sha256', $region, $k_date, true );
 		$k_service = hash_hmac( 'sha256', $service, $k_region, true );
 		$k_signing = hash_hmac( 'sha256', 'aws4_request', $k_service, true );
@@ -311,9 +417,9 @@ class AA_Amazon_API {
 			$image = $item['Images']['Primary']['Medium']['URL'];
 		}
 
-		$price = '';
+		$price        = '';
 		$saving_basis = '';
-		$is_prime = false;
+		$is_prime     = false;
 
 		if ( ! empty( $item['Offers']['Listings'][0] ) ) {
 			$listing = $item['Offers']['Listings'][0];

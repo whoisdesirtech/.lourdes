@@ -1,11 +1,46 @@
 /**
- * Admin Dashboard Interactivity Script
+ * Admin Dashboard Interactivity Script with OAuth 2.0 Support
  */
 
 jQuery(document).ready(function ($) {
 	'use strict';
 
-	// 1. One-Click Copy to Clipboard
+	// 1. Authentication Mode Toggle Handler
+	$('.aa-auth-toggle').on('change', function () {
+		var selectedMode = $('input[name="aa_auth_mode"]:checked').val();
+		if ('oauth2' === selectedMode) {
+			$('#aa-sigv4-section').slideUp(200);
+			$('#aa-oauth2-section').slideDown(200);
+		} else {
+			$('#aa-oauth2-section').slideUp(200);
+			$('#aa-sigv4-section').slideDown(200);
+		}
+	});
+
+	// 2. Fetch Fresh OAuth Access Token via AJAX
+	$('#aa-fetch-token-btn').on('click', function (e) {
+		e.preventDefault();
+		var $btn = $(this);
+		var $status = $('#aa-token-status');
+
+		$btn.prop('disabled', true);
+		$status.text('Requesting OAuth 2.0 Access Token...').css('color', '#0284c7');
+
+		$.post(aaSnippetsAdmin.ajax_url, {
+			action: 'aa_refresh_oauth_token',
+			nonce: aaSnippetsAdmin.nonce
+		}, function (res) {
+			$btn.prop('disabled', false);
+			if (res.success) {
+				$('#aa_oauth_access_token').val(res.data.access_token);
+				$status.text(res.data.message).css('color', '#16a34a');
+			} else {
+				$status.text('OAuth Error: ' + (res.data.message || 'Failed to fetch token')).css('color', '#dc2626');
+			}
+		});
+	});
+
+	// 3. One-Click Copy to Clipboard
 	$(document).on('click', '.aa-copy-btn', function (e) {
 		e.preventDefault();
 		var $btn = $(this);
@@ -34,7 +69,7 @@ jQuery(document).ready(function ($) {
 		}, 1800);
 	}
 
-	// 2. Interactive Generator Dynamic ASIN Updater
+	// 4. Interactive Generator Dynamic ASIN Updater
 	$('#aa-generate-btn').on('click', function () {
 		var asin = $('#aa-gen-asin').val().trim() || 'B08N5WRWNW';
 		asin = asin.toUpperCase();
@@ -45,13 +80,10 @@ jQuery(document).ready(function ($) {
 		$('#sc-btn').text('[amazon_button asin="' + asin + '" text="Check Price on Amazon"]');
 		$('#php-btn').text("<?php echo aa_render_button( '" + asin + "', 'Check Price on Amazon' ); ?>");
 
-		$('#sc-link').text('[amazon_link asin="' + asin + '" text="View Product on Amazon"]');
-		$('#php-link').text("<?php echo aa_render_link( '" + asin + "', 'View Product on Amazon' ); ?>");
-
 		$('#php-raw').text("<?php\n$product = aa_get_product_data( '" + asin + "' );\nif ( $product ) {\n    echo esc_html( $product['title'] ) . ' - ' . esc_html( $product['price'] );\n}\n?>");
 	});
 
-	// 3. Purge Transient Cache
+	// 5. Purge Transient Cache
 	$('#aa-clear-cache-btn').on('click', function () {
 		var $btn = $(this);
 		var $status = $('#aa-cache-status');
@@ -72,14 +104,14 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
-	// 4. Live API Connection Tester
+	// 6. Live API Connection Tester
 	$('#aa-run-test-btn').on('click', function () {
 		var $btn = $(this);
 		var $terminal = $('#aa-test-log-output');
 		var asin = $('#aa-test-asin').val().trim() || 'B08N5WRWNW';
 
 		$btn.prop('disabled', true);
-		$terminal.text('> Initiating PA-API 5.0 connection test for ASIN: ' + asin + '...\n');
+		$terminal.text('> Initiating API connection test for ASIN: ' + asin + '...\n');
 
 		$.post(aaSnippetsAdmin.ajax_url, {
 			action: 'aa_test_api_connection',

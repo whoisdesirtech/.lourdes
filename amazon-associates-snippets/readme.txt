@@ -16,7 +16,7 @@ Easily display Amazon Associates affiliate product cards, buttons, text links, a
 
 ### Key Features
 
-* **Amazon PA-API 5.0 Support**: Pure PHP AWS SigV4 authorization header generation (no external heavy SDK dependencies required).
+* **Dual Authentication Modes**: Supports both standard **AWS Signature Version 4 (SigV4)** credentials and **OAuth 2.0 Bearer Access Tokens** with automated token refresh.
 * **PHP Snippet Helpers**: Global PHP functions (`aa_get_product_data()`, `aa_render_product_box()`, `aa_render_button()`) ready for custom theme templates, `functions.php`, or the Code Snippets plugin.
 * **WordPress Shortcodes**:
   * `[amazon_box asin="B08N5WRWNW"]` - Product Showcase Card.
