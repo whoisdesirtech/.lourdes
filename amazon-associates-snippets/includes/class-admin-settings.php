@@ -15,6 +15,16 @@ class AA_Admin_Settings {
 		add_action( 'wp_ajax_aa_test_api_connection', array( $this, 'ajax_test_api_connection' ) );
 		add_action( 'wp_ajax_aa_clear_plugin_cache', array( $this, 'ajax_clear_plugin_cache' ) );
 		add_action( 'wp_ajax_aa_refresh_oauth_token', array( $this, 'ajax_refresh_oauth_token' ) );
+		add_action( 'updated_option', array( $this, 'clear_cache_on_option_update' ), 10, 3 );
+	}
+
+	public function clear_cache_on_option_update( $option, $old_value, $value ) {
+		if ( strpos( $option, 'aa_' ) === 0 ) {
+			global $wpdb;
+			if ( isset( $wpdb->options ) ) {
+				$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_aa_item_%' OR option_name LIKE '_transient_timeout_aa_item_%'" );
+			}
+		}
 	}
 
 	public function add_admin_menu() {
@@ -28,18 +38,21 @@ class AA_Admin_Settings {
 	}
 
 	public function register_settings() {
-		register_setting( 'aa_snippets_options', 'aa_auth_mode', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_options', 'aa_access_key', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_options', 'aa_secret_key', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_options', 'aa_oauth_client_id', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_options', 'aa_oauth_client_secret', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_options', 'aa_oauth_access_token', 'sanitize_textarea_field' );
-		register_setting( 'aa_snippets_options', 'aa_oauth_refresh_token', 'sanitize_textarea_field' );
-		register_setting( 'aa_snippets_options', 'aa_partner_tag', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_options', 'aa_marketplace', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_options', 'aa_cache_expiry', 'absint' );
-		register_setting( 'aa_snippets_options', 'aa_button_text', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_options', 'aa_disclosure_text', 'sanitize_textarea_field' );
+		// Group 1: Credentials & API Settings
+		register_setting( 'aa_snippets_credentials_options', 'aa_auth_mode', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_access_key', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_secret_key', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_client_id', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_client_secret', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_access_token', 'sanitize_textarea_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_refresh_token', 'sanitize_textarea_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_partner_tag', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_marketplace', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_cache_expiry', 'absint' );
+
+		// Group 2: Display & Compliance Settings
+		register_setting( 'aa_snippets_display_options', 'aa_button_text', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_display_options', 'aa_disclosure_text', 'sanitize_textarea_field' );
 	}
 
 	public function render_admin_page() {
@@ -107,8 +120,8 @@ class AA_Admin_Settings {
 		?>
 		<form method="post" action="options.php">
 			<?php
-			settings_fields( 'aa_snippets_options' );
-			do_settings_sections( 'aa_snippets_options' );
+			settings_fields( 'aa_snippets_credentials_options' );
+			do_settings_sections( 'aa_snippets_credentials_options' );
 			?>
 			<table class="form-table">
 				<tr>
@@ -233,8 +246,8 @@ class AA_Admin_Settings {
 		?>
 		<form method="post" action="options.php">
 			<?php
-			settings_fields( 'aa_snippets_options' );
-			do_settings_sections( 'aa_snippets_options' );
+			settings_fields( 'aa_snippets_display_options' );
+			do_settings_sections( 'aa_snippets_display_options' );
 			?>
 			<table class="form-table">
 				<tr>

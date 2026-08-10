@@ -417,6 +417,14 @@ class AA_Amazon_API {
 			$image = $item['Images']['Primary']['Medium']['URL'];
 		}
 
+		if ( empty( $image ) && isset( $item['Images']['Primary']['Small']['URL'] ) ) {
+			$image = $item['Images']['Primary']['Small']['URL'];
+		}
+
+		if ( empty( $image ) ) {
+			$image = AA_SNIPPETS_URL . 'assets/img/placeholder.png';
+		}
+
 		$price        = '';
 		$saving_basis = '';
 		$is_prime     = false;
