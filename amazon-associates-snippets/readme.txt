@@ -4,7 +4,7 @@ Donate link: mailto:digitalvurv@gmail.com
 Tags: amazon, amazon associates, affiliate, pa-api, php snippets, shortcode, amazon box
 Requires at least: 5.6
 Tested up to: 6.6
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,6 +45,11 @@ No! If you haven't received API access yet, the plugin operates in Fallback Mode
 Go to **Settings > Amazon Snippets > PHP Snippet Generator**. Enter an ASIN to instantly generate clean PHP code snippets that you can paste into your theme's `single.php` or inside plugins like Code Snippets.
 
 == Changelog ==
+
+= 1.2.0 - August 9, 2026 =
+* Fixed OAuth 2.0 "Fetch Fresh Access Token" — corrected token endpoint scope from `amazon_associates:api` to `creatorsapi::default`.
+* Added lead capture gate (first name, last name, email, city) to plugin download button on landing page.
+* Lead data saved to PostgreSQL database via `/api/plugin-lead` endpoint with email notification support.
 
 = 1.1.0 - August 9, 2026 =
 * Added `[amazon_comparison products="ASIN1,ASIN2"]` shortcode and responsive side-by-side comparison grid CSS rules.
