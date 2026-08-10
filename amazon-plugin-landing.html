@@ -122,6 +122,7 @@
             text-decoration: none;
             transition: all 0.2s ease;
             box-shadow: 0 4px 14px rgba(255, 216, 20, 0.25);
+            cursor: pointer;
         }
 
         .btn-header:hover {
@@ -202,6 +203,7 @@
             gap: 10px;
             transition: all 0.25s ease;
             box-shadow: 0 4px 18px rgba(255, 216, 20, 0.3);
+            cursor: pointer;
         }
 
         .btn-primary:hover {
@@ -499,6 +501,123 @@
             font-size: 14px;
         }
 
+        /* Lead Capture Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-lg);
+            max-width: 480px;
+            width: 100%;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            position: relative;
+            color: #f8fafc;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .modal-header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-amazon);
+        }
+
+        .btn-submit-lead {
+            width: 100%;
+            background: linear-gradient(180deg, var(--accent-yellow) 0%, var(--accent-yellow-hover) 100%);
+            color: #000;
+            font-weight: 800;
+            font-size: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 14px rgba(255, 216, 20, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit-lead:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(255, 216, 20, 0.45);
+        }
+
         /* Footer */
         footer {
             border-top: 1px solid var(--border-color);
@@ -529,7 +648,7 @@
                 <a href="#features">Features</a>
                 <a href="#generator">Code Generator</a>
                 <a href="#installation">Installation</a>
-                <a href="amazon-associates-snippets.zip" class="btn-header" download>Download .ZIP</a>
+                <button type="button" class="btn-header trigger-download">Download .ZIP</button>
             </div>
         </nav>
 
@@ -544,10 +663,10 @@
                 <h1>Monetize Your WordPress Site with Amazon Associates</h1>
                 <p>A lightweight, high-performance WordPress plugin & PHP snippet toolkit. Render beautiful product cards, CTA buttons, and shortcodes with AWS SigV4 security and automatic caching.</p>
                 <div class="hero-cta">
-                    <a href="amazon-associates-snippets.zip" class="btn-primary" download>
+                    <button type="button" class="btn-primary trigger-download">
                         <span>Download Plugin (.ZIP)</span>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </a>
+                    </button>
                     <a href="#generator" class="btn-secondary">Explore Snippets Generator</a>
                 </div>
             </div>
@@ -594,7 +713,7 @@
                 <div class="feature-card">
                     <div class="feature-icon">📦</div>
                     <h3>WordPress Shortcodes</h3>
-                    <p>Embed cards, CTA buttons, inline links, or 3-column product grids using standard shortcodes: <code>[amazon_box]</code>.</p>
+                    <p>Embed cards, CTA buttons, inline links, or comparison grids using standard shortcodes: <code>[amazon_box]</code>.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">💻</div>
@@ -641,27 +760,22 @@
                     <pre id="code-btn">[amazon_button asin="B08N5WRWNW" text="Check Price on Amazon"]</pre>
                 </div>
 
+                <!-- Comparison Snippet -->
+                <div class="code-block-wrapper">
+                    <div class="code-block-header">
+                        <span>3. Product Comparison Grid (New in v1.1.0)</span>
+                        <button class="btn-copy" onclick="copyCode('code-comp')">Copy Code</button>
+                    </div>
+                    <pre id="code-comp">[amazon_comparison products="B08N5WRWNW,B09B2W5X1S"]</pre>
+                </div>
+
                 <!-- PHP Snippet -->
                 <div class="code-block-wrapper">
                     <div class="code-block-header">
-                        <span>3. Custom PHP Snippet (Theme / Code Snippets Plugin)</span>
+                        <span>4. Custom PHP Snippet (Theme / Code Snippets Plugin)</span>
                         <button class="btn-copy" onclick="copyCode('code-php')">Copy Code</button>
                     </div>
                     <pre id="code-php">&lt;?php echo aa_render_product_box( 'B08N5WRWNW' ); ?&gt;</pre>
-                </div>
-
-                <!-- Raw Data Snippet -->
-                <div class="code-block-wrapper">
-                    <div class="code-block-header">
-                        <span>4. Raw Data Array Fetch (PHP Developers)</span>
-                        <button class="btn-copy" onclick="copyCode('code-raw')">Copy Code</button>
-                    </div>
-                    <pre id="code-raw">&lt;?php
-$product = aa_get_product_data( 'B08N5WRWNW' );
-if ( $product ) {
-    echo esc_html( $product['title'] ) . ' - ' . esc_html( $product['price'] );
-}
-?&gt;</pre>
                 </div>
             </div>
         </section>
@@ -677,7 +791,7 @@ if ( $product ) {
                 <div class="step-card">
                     <div class="step-number">01</div>
                     <h4>Download Plugin</h4>
-                    <p>Download the compressed zip file <a href="amazon-associates-snippets.zip" style="color: var(--accent-amazon);" download>amazon-associates-snippets.zip</a>.</p>
+                    <p>Click <a href="#" class="trigger-download" style="color: var(--accent-amazon);">Download .ZIP</a> to get the compressed plugin file.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">02</div>
@@ -687,7 +801,7 @@ if ( $product ) {
                 <div class="step-card">
                     <div class="step-number">03</div>
                     <h4>Set Credentials</h4>
-                    <p>Navigate to <strong>Settings > Amazon Snippets</strong> and paste your Partner Tag, Access Key ID, and Secret Key.</p>
+                    <p>Navigate to <strong>Settings > Amazon Snippets</strong> and paste your Partner Tag, Access Key ID, or OAuth 2.0 Token.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">04</div>
@@ -696,6 +810,42 @@ if ( $product ) {
                 </div>
             </div>
         </section>
+
+        <!-- Lead Capture Download Modal -->
+        <div id="download-modal" class="modal-overlay">
+            <div class="modal-card">
+                <button type="button" class="modal-close" id="modal-close-btn">&times;</button>
+                <div class="modal-header">
+                    <h3>Download Plugin (.ZIP)</h3>
+                    <p>Enter your details below for instant access to <strong>Amazon Associates PHP Snippets v1.1.0</strong>.</p>
+                </div>
+
+                <form id="lead-download-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lead-first-name">First Name *</label>
+                            <input type="text" id="lead-first-name" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lead-last-name">Last Name *</label>
+                            <input type="text" id="lead-last-name" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lead-email">Email Address *</label>
+                        <input type="email" id="lead-email" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lead-city">City *</label>
+                        <input type="text" id="lead-city" placeholder="Miami" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit-lead">Submit & Download Plugin (.ZIP)</button>
+                </form>
+            </div>
+        </div>
 
         <!-- Footer -->
         <footer>
@@ -718,9 +868,93 @@ if ( $product ) {
 
             document.getElementById('code-box').innerText = '[amazon_box asin="' + asin + '"]';
             document.getElementById('code-btn').innerText = '[amazon_button asin="' + asin + '" text="Check Price on Amazon"]';
+            document.getElementById('code-comp').innerText = '[amazon_comparison products="' + asin + ',B09B2W5X1S"]';
             document.getElementById('code-php').innerText = "<?php echo aa_render_product_box( '" + asin + "' ); ?>";
-            document.getElementById('code-raw').innerText = "<?php\n$product = aa_get_product_data( '" + asin + "' );\nif ( $product ) {\n    echo esc_html( $product['title'] ) . ' - ' . esc_html( $product['price'] );\n}\n?>";
         });
+
+        // Modal Lead Capture Flow
+        const modal = document.getElementById('download-modal');
+        const triggerBtns = document.querySelectorAll('.trigger-download');
+        const closeBtn = document.getElementById('modal-close-btn');
+        const form = document.getElementById('lead-download-form');
+
+        triggerBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Check if user already submitted lead previously
+                const savedLead = localStorage.getItem('aa_plugin_lead');
+                if (savedLead) {
+                    triggerZipDownload();
+                } else {
+                    modal.classList.add('active');
+                }
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = form.querySelector('.btn-submit-lead');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving…';
+
+            const leadData = {
+                firstName: document.getElementById('lead-first-name').value.trim(),
+                lastName: document.getElementById('lead-last-name').value.trim(),
+                email: document.getElementById('lead-email').value.trim(),
+                city: document.getElementById('lead-city').value.trim(),
+                plugin: 'amazon-associates-snippets',
+                version: '1.1.0'
+            };
+
+            // POST lead to server (saved to PostgreSQL database)
+            try {
+                const res = await fetch('https://whoisdesirmediaagency.vercel.app/api/plugin-lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(leadData)
+                });
+
+                const result = await res.json();
+
+                if (!res.ok) {
+                    console.warn('Lead API error (non-fatal):', result.error);
+                } else {
+                    console.log('Lead saved to database:', result.id);
+                }
+            } catch (err) {
+                // Network error — still let user download, just log it
+                console.warn('Could not save lead to server (non-fatal):', err);
+            }
+
+            // Store locally as session reference
+            localStorage.setItem('aa_plugin_lead', JSON.stringify(leadData));
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit & Download Plugin (.ZIP)';
+
+            modal.classList.remove('active');
+            triggerZipDownload();
+        });
+
+        function triggerZipDownload() {
+            const link = document.createElement('a');
+            link.href = 'amazon-associates-snippets.zip';
+            link.download = 'amazon-associates-snippets.zip';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     </script>
 </body>
 </html>
