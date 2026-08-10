@@ -3,3 +3,7 @@ Thumbs.db
 .gemini/
 *.log
 .env
+vendor/
+node_modules/
+.phpunit.result.cache
+

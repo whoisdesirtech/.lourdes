@@ -3,8 +3,8 @@
  * Plugin Name:       Amazon Associates PHP Snippets
  * Plugin URI:        https://example.com/amazon-associates-snippets
  * Description:       Integrates Amazon Product Advertising API 5.0 (PA-API 5.0) into WordPress. Provides PHP snippet helpers, shortcodes, and product cards with transient caching and FTC compliance.
- * Version:           1.2.0
- * Release Date:      August 9, 2026
+ * Version:           1.3.0
+ * Release Date:      August 10, 2026
  * Author:            WhoIsDésir® Media Agency
  * Author URI:        mailto:digitalvurv@gmail.com
  * Text Domain:       amazon-associates-snippets

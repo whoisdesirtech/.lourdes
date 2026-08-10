@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Associates PHP Snippets — Social Media Carousel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark: #191919;
+      --sand: #F9F6F0;
+      --magenta: #E52C5E;
+      --terracotta: #D17B58;
+      --mid: #2e2e2e;
+      --muted: #888;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      color: var(--sand);
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 36px;
+    }
+
+    /* ─── Carousel Wrapper ─────────────────── */
+    .carousel-wrapper {
+      position: relative;
+      width: 540px;
+      max-width: 100%;
+    }
+
+    .slides-track {
+      overflow: hidden;
+      border-radius: 24px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
+
+    .slides-inner {
+      display: flex;
+      transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    /* ─── Individual Slide ─────────────────── */
+    .slide {
+      min-width: 540px;
+      max-width: 540px;
+      height: 540px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 44px 44px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Slide themes */
+    .slide-1 { background: var(--dark); }
+    .slide-2 { background: var(--dark); }
+    .slide-3 { background: #111111; }
+    .slide-4 { background: var(--dark); }
+    .slide-5 { background: #111111; }
+    .slide-6 { background: var(--magenta); }
+
+    /* Decorative blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(80px);
+      opacity: 0.25;
+    }
+    .blob-1  { width: 280px; height: 280px; background: var(--magenta); top: -80px; right: -80px; }
+    .blob-2  { width: 220px; height: 220px; background: var(--terracotta); bottom: -60px; left: -60px; }
+    .blob-3  { width: 260px; height: 260px; background: var(--terracotta); top: -60px; left: -60px; }
+    .blob-4  { width: 200px; height: 200px; background: var(--magenta); bottom: -50px; right: -50px; }
+    .blob-5  { width: 240px; height: 240px; background: var(--magenta); top: -70px; right: -70px; }
+    .blob-6a { width: 300px; height: 300px; background: rgba(0,0,0,0.2); top: -60px; left: -60px; opacity: 0.4; filter: blur(60px); }
+
+    /* ─── Slide Content Helpers ─────────────── */
+    .slide-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2;
+    }
+    .slide-logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .slide-logo-icon img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .slide-logo-text {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+    .tag-magenta  { background: rgba(229,44,94,0.18); color: var(--magenta); border: 1px solid rgba(229,44,94,0.3); }
+    .tag-terracotta { background: rgba(209,123,88,0.15); color: var(--terracotta); border: 1px solid rgba(209,123,88,0.3); }
+    .tag-light    { background: rgba(249,246,240,0.12); color: var(--sand); border: 1px solid rgba(249,246,240,0.2); }
+    .tag-dark     { background: rgba(0,0,0,0.3); color: var(--sand); border: 1px solid rgba(255,255,255,0.1); }
+
+    .slide-headline {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      line-height: 1.18;
+      color: var(--sand);
+    }
+    .slide-headline em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+    .slide-headline .hl-magenta { color: var(--magenta); }
+
+    .slide-sub {
+      font-size: 15px;
+      color: #aaa;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+
+    /* Feature list inside slides */
+    .feat-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .feat-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .feat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(229,44,94,0.15);
+      border: 1px solid rgba(229,44,94,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .feat-icon.tc {
+      background: rgba(209,123,88,0.15);
+      border-color: rgba(209,123,88,0.3);
+    }
+    .feat-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--sand);
+      margin-bottom: 2px;
+    }
+    .feat-text span {
+      font-size: 12.5px;
+      color: #888;
+      line-height: 1.4;
+    }
+
+    /* Code block inside slide */
+    .code-pill {
+      background: #0f0f0f;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--terracotta);
+      line-height: 1.7;
+    }
+    .code-comment { color: #555; }
+    .code-tag     { color: var(--magenta); }
+    .code-attr    { color: #82cfdd; }
+    .code-val     { color: #b8e0a0; }
+
+    /* Stat cards */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 18px 18px 14px;
+    }
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--terracotta);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-num.mg { color: var(--magenta); }
+    .stat-label {
+      font-size: 12px;
+      color: #777;
+      letter-spacing: 0.3px;
+    }
+
+    /* CTA final slide */
+    .cta-badge {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.5px;
+      width: fit-content;
+    }
+    .cta-headline {
+      font-family: var(--font-serif);
+      font-size: 40px;
+      line-height: 1.15;
+      color: #fff;
+    }
+    .cta-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.5;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--magenta);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      width: fit-content;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    }
+
+    /* Slide footer row */
+    .slide-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 2;
+      position: relative;
+    }
+    .slide-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: #555;
+      letter-spacing: 0.5px;
+    }
+    .slide-dot-row {
+      display: flex;
+      gap: 5px;
+    }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #333;
+      transition: background 0.3s;
+    }
+    .dot.active { background: var(--terracotta); }
+    .slide-6 .slide-number { color: rgba(255,255,255,0.4); }
+    .slide-6 .dot { background: rgba(255,255,255,0.25); }
+    .slide-6 .dot.active { background: #fff; }
+
+    /* ─── Navigation Controls ───────────────── */
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .nav-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid #333;
+      background: #1a1a1a;
+      color: var(--sand);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-size: 18px;
+    }
+    .nav-btn:hover {
+      background: var(--magenta);
+      border-color: var(--magenta);
+    }
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .nav-counter {
+      font-size: 13px;
+      color: #555;
+      min-width: 50px;
+      text-align: center;
+    }
+
+    /* ─── Caption Panel ─────────────────────── */
+    .caption-panel {
+      width: 540px;
+      max-width: 100%;
+      margin-top: 32px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .caption-tabs {
+      display: flex;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .cap-tab {
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: all 0.2s;
+    }
+    .cap-tab.active {
+      color: var(--sand);
+      border-bottom: 2px solid var(--magenta);
+    }
+    .caption-content {
+      padding: 24px;
+    }
+    .cap-post {
+      display: none;
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.75;
+      white-space: pre-wrap;
+    }
+    .cap-post.active { display: block; }
+    .hashtags {
+      margin-top: 10px;
+      color: var(--magenta);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .copy-btn {
+      margin-top: 16px;
+      background: rgba(229,44,94,0.12);
+      border: 1px solid rgba(229,44,94,0.3);
+      color: var(--magenta);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: var(--magenta); color: #fff; }
+  </style>
+</head>
+<body>
+
+  <h1>Amazon Associates PHP Snippets</h1>
+  <p class="subtitle">Instagram Carousel · Elementor × Anthropic · WhoIsDésir® Media Agency</p>
+
+  <div class="carousel-wrapper">
+    <div class="slides-track">
+      <div class="slides-inner" id="slidesInner">
+
+        <!-- ── SLIDE 1: Cover ─────────────────── -->
+        <div class="slide slide-1">
+          <div class="blob blob-1"></div>
+          <div class="blob blob-2"></div>
+          <div class="slide-logo" style="z-index:2;">
+            <div class="slide-logo-icon">
+              <img src="/Users/jeanfils/.gemini/antigravity/brain/e8d1a525-ad2c-428c-b3be-d05f22745af7/amazon_plugin_logo_1786331321686.jpg" alt="logo">
+            </div>
+            <span class="slide-logo-text">Amazon Associates PHP Snippets</span>
+          </div>
+
+          <div class="slide-body" style="gap:14px;">
+            <span class="tag tag-magenta">WordPress Plugin · v1.2.0</span>
+            <div class="slide-headline">
+              Your affiliate<br>content just got<br><em>a lot smarter.</em>
+            </div>
+            <p class="slide-sub">Live product cards. Shortcodes. AWS SigV4 security. Built for WordPress developers who want more than basic affiliate boxes.</p>
+          </div>
+
+          <div class="slide-footer">
+            <span class="slide-number">01 / 06</span>
+            <div class="slide-dot-row">
+              <div class="dot active" id="d0"></div>
+              <div class="dot" id="d1"></div>
+              <div class="dot" id="d2"></div>
+              <div class="dot" id="d3"></div>
+              <div class="dot" id="d4"></div>
+              <div class="dot" id="d5"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 2: The Problem ───────────── -->
+        <div class="slide slide-2">
+          <div class="blob blob-3"></div>
+          <div class="blob blob-4"></div>
+          <div class="slide-logo" style="z-index:2;">
+            <div class="slide-logo-icon">
+              <img src="/Users/jeanfils/.gemini/antigravity/brain/e8d1a525-ad2c-428c-b3be-d05f22745af7/amazon_plugin_logo_1786331321686.jpg" alt="logo">
+            </div>
+            <span class="slide-logo-text">Amazon Associates PHP Snippets</span>
+          </div>
+
+          <div class="slide-body">
+            <span class="tag tag-terracotta">The Problem</span>
+            <div class="slide-headline">
+              Most affiliate<br>plugins are <span class="hl-magenta">clunky</span><br>and slow.
+            </div>
+            <ul class="feat-list">
+              <li>
+                <div class="feat-icon">❌</div>
+                <div class="feat-text">
+                  <strong>Outdated API calls</strong>
+                  <span>Still using Amazon Creators API legacy endpoints with deprecated auth flows</span>
+                </div>
+              </li>
+              <li>
+                <div class="feat-icon">❌</div>
+                <div class="feat-text">
+                  <strong>No real caching</strong>
+                  <span>Hammers the API on every page load. Rate limits incoming.</span>
+                </div>
+              </li>
+              <li>
+                <div class="feat-icon">❌</div>
+                <div class="feat-text">
+                  <strong>Zero FTC compliance</strong>
+                  <span>No automatic disclosures. One audit away from trouble.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="slide-footer">
+            <span class="slide-number">02 / 06</span>
+            <div class="slide-dot-row">
+              <div class="dot" id="e0"></div><div class="dot" id="e1"></div>
+              <div class="dot" id="e2"></div><div class="dot" id="e3"></div>
+              <div class="dot" id="e4"></div><div class="dot" id="e5"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 3: The Solution ──────────── -->
+        <div class="slide slide-3">
+          <div class="blob blob-1"></div>
+          <div class="blob blob-2"></div>
+          <div class="slide-logo" style="z-index:2;">
+            <div class="slide-logo-icon">
+              <img src="/Users/jeanfils/.gemini/antigravity/brain/e8d1a525-ad2c-428c-b3be-d05f22745af7/amazon_plugin_logo_1786331321686.jpg" alt="logo">
+            </div>
+            <span class="slide-logo-text">Amazon Associates PHP Snippets</span>
+          </div>
+
+          <div class="slide-body">
+            <span class="tag tag-light">The Solution</span>
+            <div class="slide-headline">
+              Creators API.<br><em>Out of the box.</em>
+            </div>
+
+            <div class="code-pill">
+              <span class="code-comment">// One shortcode. Full product card.</span><br>
+              <span class="code-tag">[amazon_box</span> <span class="code-attr">asin=</span><span class="code-val">"B08N5WRWNW"</span><span class="code-tag">]</span><br><br>
+              <span class="code-comment">// Or call it directly in PHP:</span><br>
+              <span class="code-tag">&lt;?php</span> <span style="color:#bbb;">echo</span> <span style="color:#D17B58;">aa_render_product_box</span><span style="color:#bbb;">( $asin ); </span><span class="code-tag">?&gt;</span>
+            </div>
+
+            <p class="slide-sub" style="font-size:13px;">Works in Gutenberg, Classic Editor, Elementor widgets, and theme templates. Drop it anywhere.</p>
+          </div>
+
+          <div class="slide-footer">
+            <span class="slide-number">03 / 06</span>
+            <div class="slide-dot-row">
+              <div class="dot" id="f0"></div><div class="dot" id="f1"></div>
+              <div class="dot" id="f2"></div><div class="dot" id="f3"></div>
+              <div class="dot" id="f4"></div><div class="dot" id="f5"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 4: Key Features ─────────── -->
+        <div class="slide slide-4">
+          <div class="blob blob-3"></div>
+          <div class="blob blob-4"></div>
+          <div class="slide-logo" style="z-index:2;">
+            <div class="slide-logo-icon">
+              <img src="/Users/jeanfils/.gemini/antigravity/brain/e8d1a525-ad2c-428c-b3be-d05f22745af7/amazon_plugin_logo_1786331321686.jpg" alt="logo">
+            </div>
+            <span class="slide-logo-text">Amazon Associates PHP Snippets</span>
+          </div>
+
+          <div class="slide-body">
+            <span class="tag tag-magenta">Key Features</span>
+            <ul class="feat-list">
+              <li>
+                <div class="feat-icon">🔐</div>
+                <div class="feat-text">
+                  <strong>Dual Authentication</strong>
+                  <span>AWS SigV4 + OAuth 2.0 Bearer tokens with auto-refresh</span>
+                </div>
+              </li>
+              <li>
+                <div class="feat-icon tc">⚡</div>
+                <div class="feat-text">
+                  <strong>Transient Caching</strong>
+                  <span>24h WordPress cache. No rate limits. Lightning fast.</span>
+                </div>
+              </li>
+              <li>
+                <div class="feat-icon">🛡️</div>
+                <div class="feat-text">
+                  <strong>FTC + Amazon TOS</strong>
+                  <span>Auto-injected disclosures and Prime badges. Stay compliant.</span>
+                </div>
+              </li>
+              <li>
+                <div class="feat-icon tc">📊</div>
+                <div class="feat-text">
+                  <strong>Comparison & Grid Layouts</strong>
+                  <span>Side-by-side product grids with one shortcode</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="slide-footer">
+            <span class="slide-number">04 / 06</span>
+            <div class="slide-dot-row">
+              <div class="dot" id="g0"></div><div class="dot" id="g1"></div>
+              <div class="dot" id="g2"></div><div class="dot" id="g3"></div>
+              <div class="dot" id="g4"></div><div class="dot" id="g5"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 5: Stats ─────────────────── -->
+        <div class="slide slide-5">
+          <div class="blob blob-5"></div>
+          <div class="blob blob-2"></div>
+          <div class="slide-logo" style="z-index:2;">
+            <div class="slide-logo-icon">
+              <img src="/Users/jeanfils/.gemini/antigravity/brain/e8d1a525-ad2c-428c-b3be-d05f22745af7/amazon_plugin_logo_1786331321686.jpg" alt="logo">
+            </div>
+            <span class="slide-logo-text">Amazon Associates PHP Snippets</span>
+          </div>
+
+          <div class="slide-body">
+            <span class="tag tag-terracotta">By the Numbers</span>
+            <div class="slide-headline" style="font-size:28px;">
+              Built to perform<br>at <em>production scale.</em>
+            </div>
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">5</div>
+                <div class="stat-label">Shortcodes included<br>(box, button, link, grid, comparison)</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num mg">24h</div>
+                <div class="stat-label">Default transient cache lifespan</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">3</div>
+                <div class="stat-label">Global PHP helpers ready for theme dev</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num mg">0</div>
+                <div class="stat-label">API keys required to start (fallback mode)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-footer">
+            <span class="slide-number">05 / 06</span>
+            <div class="slide-dot-row">
+              <div class="dot" id="h0"></div><div class="dot" id="h1"></div>
+              <div class="dot" id="h2"></div><div class="dot" id="h3"></div>
+              <div class="dot" id="h4"></div><div class="dot" id="h5"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 6: CTA ───────────────────── -->
+        <div class="slide slide-6">
+          <div class="blob blob-6a"></div>
+          <div class="slide-logo" style="z-index:2;">
+            <div class="slide-logo-icon">
+              <img src="/Users/jeanfils/.gemini/antigravity/brain/e8d1a525-ad2c-428c-b3be-d05f22745af7/amazon_plugin_logo_1786331321686.jpg" alt="logo">
+            </div>
+            <span class="slide-logo-text" style="color:rgba(255,255,255,0.6);">WhoIsDésir® Media Agency</span>
+          </div>
+
+          <div class="slide-body">
+            <span class="cta-badge">Free Download · GPL 2.0</span>
+            <div class="cta-headline">
+              Download it.<br>Install it.<br>Start earning.
+            </div>
+            <p class="cta-sub">No API key required to start. Drop one shortcode and you are live.</p>
+            <a href="amazon-associates-snippets.zip" class="cta-btn" download>
+              ↓ Get the Plugin
+            </a>
+          </div>
+
+          <div class="slide-footer">
+            <span class="slide-number">06 / 06</span>
+            <div class="slide-dot-row">
+              <div class="dot" id="i0"></div><div class="dot" id="i1"></div>
+              <div class="dot" id="i2"></div><div class="dot" id="i3"></div>
+              <div class="dot" id="i4"></div><div class="dot" id="i5"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /slides-inner -->
+    </div><!-- /slides-track -->
+  </div><!-- /carousel-wrapper -->
+
+  <!-- Controls -->
+  <div class="nav-controls">
+    <button class="nav-btn" id="prevBtn" disabled>&#8592;</button>
+    <span class="nav-counter" id="navCounter">1 / 6</span>
+    <button class="nav-btn" id="nextBtn">&#8594;</button>
+  </div>
+
+  <!-- Caption Panel -->
+  <div class="caption-panel">
+    <div class="caption-tabs">
+      <button class="cap-tab active" data-tab="instagram" onclick="switchTab(this)">Instagram</button>
+      <button class="cap-tab" data-tab="linkedin" onclick="switchTab(this)">LinkedIn</button>
+      <button class="cap-tab" data-tab="threads" onclick="switchTab(this)">Threads</button>
+      <button class="cap-tab" data-tab="twitter" onclick="switchTab(this)">Twitter / X</button>
+    </div>
+    <div class="caption-content">
+
+      <!-- Instagram Caption -->
+      <div class="cap-post active" id="cap-instagram">Your Amazon affiliate content has been holding you back.
+
+Most plugins still run outdated API calls. No caching. No compliance. Just a basic box that converts like trash.
+
+I built something better.
+
+Amazon Associates PHP Snippets is a WordPress plugin that pulls live product data from the Amazon Creators API. Full product cards with images, pricing, Prime badges, and FTC disclosures. Automatically.
+
+One shortcode: [amazon_box asin="B08N5WRWNW"]
+
+That is it. Works in Gutenberg, Elementor, Classic Editor, even raw PHP in your theme templates.
+
+It caches everything for 24 hours so your site stays fast and you never hit a rate limit.
+
+Free. GPL licensed. No API key required to start.
+
+Link in bio.
+<div class="hashtags">#WordPress #AffiliateMarketing #AmazonAssociates #WordPressPlugin #PHPDevelopment #AffiliateIncome #WooCommerce #WebDev #ContentCreator #PassiveIncome</div>
+      </div>
+
+      <!-- LinkedIn Caption -->
+      <div class="cap-post" id="cap-linkedin">I spent too long watching affiliate plugins waste good traffic.
+
+Outdated API calls. Zero caching. No FTC disclosures. Just a bloated mess that costs your site speed and your readers trust.
+
+So I built a cleaner solution.
+
+Amazon Associates PHP Snippets is a lightweight WordPress plugin built on the Amazon Creators API. Here is what it actually does.
+
+Dual authentication. AWS SigV4 and OAuth 2.0 Bearer tokens with automated token refresh. No babysitting credentials.
+
+Transient caching with a 24-hour default. Your server calls the API once. Your readers get instant load times every visit after that.
+
+FTC and Amazon TOS compliance baked in. Auto-injected disclosures and Prime eligibility badges on every product card.
+
+Five shortcodes. Product showcase cards, buttons, text links, multi-product grids, and side-by-side comparison layouts.
+
+Zero API keys required to start. Drop your Partner Tag and you are live in fallback mode while you wait for key approval.
+
+Free download. GPL 2.0 licensed. Built by WhoIsDésir Media Agency.
+
+The people who build affiliate-heavy sites cannot afford to lose conversions to slow, outdated tools. This fixes that.
+
+<div class="hashtags">#WordPress #AffiliateMarketing #AmazonAssociates #PHPDevelopment #WordPressPlugin #PassiveIncome #WebDev #DigitalMarketing</div>
+      </div>
+
+      <!-- Threads Caption -->
+      <div class="cap-post" id="cap-threads">affiliate plugins in 2026 still running on deprecated Amazon API flows is genuinely wild
+
+built one on Creators API with real caching, FTC compliance baked in, and shortcodes that actually work in Elementor
+
+free. drop a link below if you want it
+      </div>
+
+      <!-- Twitter/X Caption -->
+      <div class="cap-post" id="cap-twitter">built a WP affiliate plugin: Creators API, transient caching, FTC disclosures automatic, 5 shortcodes. free GPL download. 🔗</div>
+
+      <button class="copy-btn" onclick="copyCaption()">Copy Caption</button>
+    </div>
+  </div>
+
+  <script>
+    const total = 6;
+    let current = 0;
+
+    const inner = document.getElementById('slidesInner');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counter = document.getElementById('navCounter');
+
+    // All dot sets per slide (IDs: d0-d5, e0-e5, f0-f5, g0-g5, h0-h5, i0-i5)
+    const dotPrefixes = ['d','e','f','g','h','i'];
+
+    function updateDots() {
+      dotPrefixes.forEach(prefix => {
+        for (let i = 0; i < total; i++) {
+          const dot = document.getElementById(prefix + i);
+          if (dot) dot.className = 'dot' + (i === current ? ' active' : '');
+        }
+      });
+    }
+
+    function goTo(idx) {
+      current = Math.max(0, Math.min(total - 1, idx));
+      inner.style.transform = `translateX(-${current * 540}px)`;
+      counter.textContent = `${current + 1} / ${total}`;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === total - 1;
+      updateDots();
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    // Swipe support
+    let startX = 0;
+    inner.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+    inner.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
+    });
+
+    goTo(0);
+
+    // Caption tabs
+    function switchTab(btn) {
+      document.querySelectorAll('.cap-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.cap-post').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('cap-' + btn.dataset.tab).classList.add('active');
+    }
+
+    function copyCaption() {
+      const active = document.querySelector('.cap-post.active');
+      navigator.clipboard.writeText(active.innerText).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy Caption', 1800);
+      });
+    }
+  </script>
+</body>
+</html>

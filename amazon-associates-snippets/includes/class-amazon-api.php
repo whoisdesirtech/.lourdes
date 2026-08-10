@@ -464,7 +464,7 @@ class AA_Amazon_API {
 			'asin'         => $asin,
 			'title'        => sprintf( __( 'Amazon Product (ASIN: %s)', 'amazon-associates-snippets' ), $asin ),
 			'url'          => $this->get_affiliate_url( $asin ),
-			'image'        => 'https://images-na.ssl-images-amazon.com/images/G/01/x-locale/common/pk-badge-prime._CB485934476_.png',
+			'image'        => AA_SNIPPETS_URL . 'assets/img/placeholder.png',
 			'price'        => '',
 			'saving_basis' => '',
 			'is_prime'     => false,

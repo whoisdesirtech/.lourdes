@@ -4,7 +4,7 @@ Donate link: mailto:digitalvurv@gmail.com
 Tags: amazon, amazon associates, affiliate, pa-api, php snippets, shortcode, amazon box
 Requires at least: 5.6
 Tested up to: 6.6
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Easily display Amazon Associates affiliate product cards, buttons, text links, a
   * `[amazon_comparison products="ASIN1,ASIN2"]` - Side-by-side product comparison grid layout.
   * `[amazon_grid asins="ASIN1,ASIN2,ASIN3"]` - Multi-product responsive grid layout.
 * **Transient Caching**: Automatic WordPress transient caching (configurable 24h default) to prevent Amazon API rate limits and deliver lightning-fast page loading.
-* **Graceful Fallback**: Works immediately even before API credentials are approved by automatically generating direct Amazon affiliate links with your Partner Tag.
+* **Graceful Fallback**: Works immediately even before API credentials are approved by automatically generating direct Amazon affiliate links with your Partner Tag, bundled fallback placeholder images, and a visual Fallback Mode badge notice.
 * **FTC & Amazon TOS Compliance**: Automatically includes required affiliate earnings disclosures and Prime badges.
 
 == Installation ==
@@ -39,12 +39,18 @@ Easily display Amazon Associates affiliate product cards, buttons, text links, a
 == Frequently Asked Questions ==
 
 = Do I need an Amazon PA-API Access Key to use this plugin? =
-No! If you haven't received API access yet, the plugin operates in Fallback Mode using your Partner Tag to generate tagged affiliate links. Once you add your PA-API keys, it automatically fetches live product titles, images, list prices, and Prime status.
+No! If you haven't received API access yet, the plugin operates in Fallback Mode using your Partner Tag to generate tagged affiliate links and displaying a fallback placeholder image with a Fallback Mode badge notice. Once you add your PA-API keys, it automatically fetches live product titles, images, list prices, and Prime status.
 
 = How do I use the PHP helper snippets? =
 Go to **Settings > Amazon Snippets > PHP Snippet Generator**. Enter an ASIN to instantly generate clean PHP code snippets that you can paste into your theme's `single.php` or inside plugins like Code Snippets.
 
 == Changelog ==
+
+= 1.3.0 - August 10, 2026 =
+* Fixed image generation issue when API calls fail or credentials are not yet configured.
+* Added bundled placeholder image fallback (`assets/img/placeholder.png`) to ensure visual cards and comparison grids always render images.
+* Added visual Fallback Mode badge notice on product cards when operating without active API credentials.
+* Integrated automated unit testing suite (PHPUnit + Composer + npm test).
 
 = 1.2.0 - August 9, 2026 =
 * Fixed OAuth 2.0 "Fetch Fresh Access Token" — corrected token endpoint scope from `amazon_associates:api` to `creatorsapi::default`.

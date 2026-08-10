@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazon Associates PHP Snippets - WordPress Plugin & Documentation</title>
-    <meta name="description" content="Supercharge your Amazon affiliate earnings with Amazon PA-API 5.0 integration, live product cards, instant shortcodes, and customizable PHP snippets for WordPress.">
+    <meta name="description" content="Supercharge your Amazon affiliate earnings with Amazon Creators API integration, live product cards, instant shortcodes, and customizable PHP snippets for WordPress.">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/favicon.jpg" type="image/x-icon">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --bg-card-hover: #334155;
-            --accent-amazon: #FF9900;
-            --accent-yellow: #FFD814;
-            --accent-yellow-hover: #F7CA00;
+            --bg-dark: #191919;          /* Anthropic Charcoal */
+            --bg-card: #222222;          /* Slate Dark Card */
+            --bg-card-hover: #2e2e2e;
+            --accent-amazon: #D17B58;    /* Anthropic Terracotta */
+            --accent-yellow: #E52C5E;    /* Elementor Magenta */
+            --accent-yellow-hover: #c91f4d;
             --accent-blue: #38bdf8;
             --accent-green: #22c55e;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #F9F6F0;        /* Anthropic Warm Sand */
+            --text-muted: #a0a0a0;
+            --border-color: rgba(255, 255, 255, 0.08);
             --radius-lg: 16px;
             --radius-md: 10px;
         }
@@ -33,11 +35,15 @@
         }
 
         body {
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .logo-brand span {
+            font-family: 'Playfair Display', Georgia, serif;
         }
 
         /* Ambient Glow Background */
@@ -50,8 +56,8 @@
             height: 100vh;
             pointer-events: none;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(255, 153, 0, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 60%, rgba(56, 189, 248, 0.12) 0%, transparent 40%);
+                radial-gradient(circle at 20% 20%, rgba(229, 44, 94, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(209, 123, 88, 0.1) 0%, transparent 40%);
             z-index: 0;
         }
 
@@ -85,15 +91,15 @@
         .logo-icon {
             width: 38px;
             height: 38px;
-            background: linear-gradient(135deg, var(--accent-amazon), var(--accent-yellow));
             border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-size: 20px;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(229, 44, 94, 0.3);
+            flex-shrink: 0;
+        }
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .nav-links {
@@ -114,19 +120,19 @@
         }
 
         .btn-header {
-            background: linear-gradient(180deg, var(--accent-yellow) 0%, var(--accent-yellow-hover) 100%);
-            color: #000;
+            background: var(--accent-yellow);
+            color: #ffffff;
             font-weight: 700;
             padding: 10px 20px;
             border-radius: var(--radius-md);
             text-decoration: none;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(255, 216, 20, 0.25);
+            box-shadow: 0 4px 14px rgba(229, 44, 94, 0.3);
         }
 
         .btn-header:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 216, 20, 0.4);
+            box-shadow: 0 6px 20px rgba(229, 44, 94, 0.5);
         }
 
         /* Hero Section */
@@ -149,9 +155,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 153, 0, 0.15);
-            border: 1px solid rgba(255, 153, 0, 0.3);
-            color: var(--accent-amazon);
+            background: rgba(229, 44, 94, 0.12);
+            border: 1px solid rgba(229, 44, 94, 0.3);
+            color: var(--accent-yellow);
             font-size: 13px;
             font-weight: 600;
             padding: 6px 14px;
@@ -161,10 +167,10 @@
 
         .hero h1 {
             font-size: 48px;
-            font-weight: 800;
+            font-weight: 700;
             line-height: 1.15;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            background: linear-gradient(135deg, #F9F6F0 0%, #D17B58 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -190,8 +196,8 @@
         }
 
         .btn-primary {
-            background: linear-gradient(180deg, var(--accent-yellow) 0%, var(--accent-yellow-hover) 100%);
-            color: #000;
+            background: var(--accent-yellow);
+            color: #ffffff;
             font-size: 16px;
             font-weight: 700;
             padding: 14px 28px;
@@ -201,12 +207,13 @@
             align-items: center;
             gap: 10px;
             transition: all 0.25s ease;
-            box-shadow: 0 4px 18px rgba(255, 216, 20, 0.3);
+            box-shadow: 0 4px 18px rgba(229, 44, 94, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 216, 20, 0.45);
+            box-shadow: 0 8px 24px rgba(229, 44, 94, 0.5);
+            background: var(--accent-yellow-hover);
         }
 
         .btn-secondary {
@@ -449,20 +456,20 @@
         }
 
         .btn-copy:hover {
-            background: var(--accent-blue);
-            color: #000;
+            background: var(--accent-yellow);
+            color: #ffffff;
             font-weight: 700;
         }
 
         pre {
-            background: #090d16;
+            background: #0f0f0f;
             border: 1px solid var(--border-color);
             border-radius: 0 0 8px 8px;
             padding: 16px;
             overflow-x: auto;
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
-            color: var(--accent-blue);
+            color: var(--accent-amazon);
         }
 
         /* Installation Steps */
@@ -522,7 +529,7 @@
         <!-- Navigation -->
         <nav>
             <a href="#" class="logo-brand">
-                <div class="logo-icon">a</div>
+                <div class="logo-icon"><img src="assets/logo.jpg" alt="Amazon Associates PHP Snippets Logo"></div>
                 <span>Amazon Associates PHP Snippets</span>
             </a>
             <div class="nav-links">
@@ -539,7 +546,7 @@
                 <div class="badge-version">
                     <span>⚡ Version 1.2.0 (Released Aug 9, 2026)</span>
                     <span>•</span>
-                    <span>PA-API 5.0 Powered</span>
+                    <span>Creators API Powered</span>
                 </div>
                 <h1>Monetize Your WordPress Site with Amazon Associates</h1>
                 <p>A lightweight, high-performance WordPress plugin & PHP snippet toolkit. Render beautiful product cards, CTA buttons, and shortcodes with AWS SigV4 security and automatic caching.</p>
@@ -699,7 +706,7 @@ if ( $product ) {
 
         <!-- Footer -->
         <footer>
-            <p>Amazon Associates PHP Snippets Plugin &bull; Developed by <strong>WhoIsDésir® Media Agency</strong> &bull; Developer Contact: <a href="mailto:digitalvurv@gmail.com" style="color: var(--accent-blue); text-decoration: none;">digitalvurv@gmail.com</a></p>
+            <p>Amazon Associates PHP Snippets Plugin &bull; Developed by <strong>WhoIsDésir® Media Agency</strong> &bull; Developer Contact: <a href="mailto:digitalvurv@gmail.com" style="color: var(--accent-amazon); text-decoration: none;">digitalvurv@gmail.com</a></p>
         </footer>
     </div>
 

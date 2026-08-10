@@ -52,6 +52,12 @@ function aa_render_product_box( $asin, $args = array() ) {
 	?>
 	<div class="aa-product-card<?php echo $extra_class; ?>" data-asin="<?php echo esc_attr( $product['asin'] ); ?>">
 
+		<?php if ( ! empty( $product['is_fallback'] ) ) : ?>
+			<div class="aa-fallback-badge" title="<?php echo esc_attr( ! empty( $product['error'] ) ? $product['error'] : __( 'Fallback Mode: Using placeholder image until Amazon API credentials are configured.', 'amazon-associates-snippets' ) ); ?>">
+				<span>Fallback Mode</span>
+			</div>
+		<?php endif; ?>
+
 		<?php if ( $product['is_prime'] ) : ?>
 			<div class="aa-prime-badge" title="Eligible for Amazon Prime">
 				<span>Prime</span>
