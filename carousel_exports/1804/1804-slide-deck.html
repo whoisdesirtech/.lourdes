@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1804 Haitian Pizza × WhoIsDésir Media — Slide Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-panel: #161616;
+      --vice-pink: #ff007f;
+      --vice-blue: #00f0ff;
+      --text-white: #ffffff;
+      --text-muted: #a0a0a0;
+      --font-heading: 'Oswald', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --border-glow: linear-gradient(135deg, var(--vice-pink), var(--vice-blue));
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+
+    /* Force background images & colors in print */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+
+    .presentation {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slides-wrapper {
+      display: flex;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-size: cover; background-position: center;
+    }
+
+    .slide-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.92) 100%);
+    }
+
+    .slide-content { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; width: 100%; }
+
+    /* Navigation */
+    .nav-arrows {
+      position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 16px; align-items: center; z-index: 100;
+    }
+    .nav-btn {
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.6); color: #fff; font-size: 1.2rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s; backdrop-filter: blur(8px);
+    }
+    .nav-btn:hover { background: var(--vice-pink); border-color: var(--vice-pink); }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .nav-btn:disabled:hover { background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); }
+
+    .slide-counter {
+      font-family: var(--font-heading); font-size: 0.9rem; color: var(--text-muted);
+      letter-spacing: 2px; min-width: 80px; text-align: center;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 100;
+      background: var(--border-glow); transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Slide 1 — Title */
+    .slide-title { text-align: center; }
+    .slide-title .badge {
+      display: inline-block; background: rgba(255,0,127,0.15); border: 1px solid var(--vice-pink);
+      padding: 8px 20px; border-radius: 20px; font-family: var(--font-heading);
+      text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 32px;
+    }
+    .slide-title h1 {
+      font-family: var(--font-heading); font-size: 5rem; text-transform: uppercase;
+      line-height: 1.1; margin-bottom: 16px;
+    }
+    .slide-title h1 span { background: var(--border-glow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .slide-title .sub {
+      font-size: 1.1rem; color: var(--vice-blue); font-family: var(--font-heading);
+      text-transform: uppercase; letter-spacing: 3px; margin-bottom: 24px;
+    }
+    .slide-title p { color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1.05rem; line-height: 1.6; }
+
+    /* Generic slide styles */
+    .slide-tag {
+      display: inline-block; background: rgba(0,240,255,0.1); border: 1px solid var(--vice-blue);
+      padding: 6px 16px; border-radius: 20px; font-family: var(--font-heading);
+      text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 16px; color: var(--vice-blue);
+    }
+    h2 {
+      font-family: var(--font-heading); font-size: 3.2rem; text-transform: uppercase;
+      line-height: 1.1; margin-bottom: 32px;
+    }
+    h2 span { background: var(--border-glow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+    .card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 24px;
+    }
+    .card-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .card h3 { font-family: var(--font-heading); text-transform: uppercase; font-size: 1rem; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
+
+    .license-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .license-item {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; padding: 16px; text-align: center; font-size: 0.85rem;
+    }
+    .license-item .check { color: var(--vice-blue); margin-right: 6px; }
+
+    .highlight-pink { color: var(--vice-pink); }
+
+    .carousel-row {
+      display: flex; gap: 24px; margin-top: 24px;
+    }
+    .carousel-preview {
+      flex: 1; aspect-ratio: 1; border-radius: 12px; overflow: hidden;
+      position: relative; background-size: cover; background-position: center;
+    }
+    .carousel-preview .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.85) 100%);
+      padding: 24px; display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .carousel-preview .tag {
+      position: absolute; top: 16px; left: 16px;
+      background: rgba(255,0,127,0.15); border: 1px solid var(--vice-pink);
+      padding: 3px 10px; border-radius: 20px; font-family: var(--font-heading);
+      text-transform: uppercase; font-size: 0.6rem; letter-spacing: 1px;
+    }
+    .carousel-preview .tag.blue { border-color: var(--vice-blue); background: rgba(0,240,255,0.15); }
+    .carousel-preview h4 { font-family: var(--font-heading); font-size: 1.1rem; text-transform: uppercase; }
+    .carousel-preview ul { list-style: none; margin-top: 8px; }
+    .carousel-preview ul li { font-size: 0.75rem; color: #ddd; padding-left: 16px; position: relative; margin-bottom: 4px; }
+    .carousel-preview ul li::before { content: '✦'; position: absolute; left: 0; color: var(--vice-pink); font-size: 0.6rem; }
+
+    .pricing-box {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px; padding: 40px; text-align: center; max-width: 420px; margin: 0 auto;
+    }
+    .pricing-box .original { color: var(--text-muted); text-decoration: line-through; font-size: 1.1rem; }
+    .pricing-box .price { font-family: var(--font-heading); font-size: 3.5rem; color: var(--vice-pink); margin: 8px 0; }
+    .pricing-box .save { background: rgba(255,0,127,0.15); border: 1px solid var(--vice-pink); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; display: inline-block; margin-bottom: 20px; }
+    .pricing-box ul { list-style: none; text-align: left; margin: 20px 0; }
+    .pricing-box ul li { padding-left: 24px; margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; position: relative; }
+    .pricing-box ul li::before { content: '✓'; position: absolute; left: 0; color: var(--vice-blue); }
+
+    .cta-text { font-family: var(--font-heading); font-size: 3.5rem; text-transform: uppercase; line-height: 1.2; text-align: center; margin-bottom: 16px; }
+    .cta-sub { color: var(--text-muted); text-align: center; font-size: 1.1rem; margin-bottom: 32px; }
+    .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 14px 40px; border-radius: 25px;
+      font-family: var(--font-heading); text-transform: uppercase; font-size: 0.95rem;
+      letter-spacing: 1px; text-decoration: none; transition: all 0.3s;
+    }
+    .btn-primary { background: var(--vice-pink); color: #fff; box-shadow: 0 4px 20px rgba(255,0,127,0.4); }
+    .btn-primary:hover { background: #fff; color: #000; }
+    .btn-outline { border: 1px solid var(--vice-blue); color: var(--vice-blue); background: transparent; }
+    .btn-outline:hover { background: var(--vice-blue); color: #000; }
+
+    /* Print */
+    @media print {
+      @page { size: landscape; margin: 0; }
+      html, body { overflow: visible; background: var(--bg-dark); }
+      .presentation { height: auto; overflow: visible; }
+      .slides-wrapper { display: block; height: auto; transform: none !important; }
+      .slide { width: 100vw; height: 100vh; page-break-after: always; break-inside: avoid; }
+      .slide-bg { display: block !important; }
+      .nav-arrows, .progress-bar { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .slide { padding: 40px 24px; }
+      .slide-title h1 { font-size: 2.8rem; }
+      h2 { font-size: 2rem; }
+      .grid-2, .grid-3, .grid-4, .license-grid { grid-template-columns: 1fr; }
+      .carousel-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div style="position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: #1a1a2e; border-bottom: 1px solid var(--vice-pink); padding: 8px 16px; text-align: center; font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: center; gap: 24px; align-items: center;">
+  <span>⬇️ <strong>Print to PDF:</strong> Chrome menu → Print → check <span style="color: var(--vice-pink);">"Print background colors and images"</span></span>
+  <span style="color: var(--vice-blue);">← → arrow keys to navigate</span>
+  <span onclick="this.parentElement.style.display='none'" style="cursor: pointer; color: var(--vice-pink); font-size: 1rem;">✕</span>
+</div>
+<div class="presentation">
+  <div class="progress-bar" id="progressBar"></div>
+
+  <div class="slides-wrapper" id="slidesWrapper">
+
+    <!-- SLIDE 1 — Title -->
+    <div class="slide slide-title" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a0a14 50%, #0a0a2e 100%);">
+      <div class="slide-content">
+        <div class="badge">Grand Opening × FIFA World Cup Showcase</div>
+        <div class="sub">July 18, 2026 • Pompano Beach, FL</div>
+        <h1>1804 <span>Haitian Pizza</span></h1>
+        <p>Premium visual storytelling that transforms your grand opening into lasting marketing assets — capturing the energy, community, and culture.</p>
+        <p style="margin-top: 40px; color: var(--vice-blue); font-family: var(--font-heading); letter-spacing: 2px; font-size: 0.85rem;">Presented by WhoIsDésir Media Agency</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 — Partnership Value -->
+    <div class="slide" style="background: var(--bg-panel);">
+      <div class="slide-content">
+        <div class="slide-tag">Why This Partnership</div>
+        <h2>More Than a Photographer.<br><span>Your Creative Partner.</span></h2>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon">🤝</div>
+            <h3>Minority Business Specialist</h3>
+            <p>We understand the unique story and vision of minority-owned businesses. Your narrative matters to us.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎬</div>
+            <h3>Visual Storytelling</h3>
+            <p>Every image is a reusable marketing asset — designed for social media, press, menus, and promotions.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔄</div>
+            <h3>Long-Term Partnership</h3>
+            <p>We want to grow with your brand. This grand opening is just the first chapter of our collaboration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 — Instagram Carousel Preview -->
+    <div class="slide" style="background: var(--bg-dark);">
+      <div class="slide-content">
+        <div class="slide-tag">Instagram Carousel</div>
+        <h2>Your Brand <span>In Motion</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">3-slide carousel ready to post on launch day.</p>
+        <div class="carousel-row">
+          <div class="carousel-preview" style="background-image: url('photos/event-concert.jpg');">
+            <div class="tag">Creator Collab × Grand Opening</div>
+            <div class="overlay">
+              <h4>1804 Haitian Pizza</h4>
+              <p style="color: var(--vice-blue); font-family: var(--font-heading); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px;">Pompano Beach — July 18</p>
+              <ul>
+                <li>Grand Opening + FIFA World Cup viewing</li>
+                <li>WhoIsDésir Media capturing every moment</li>
+                <li>Griot Pizza. Community. Culture. Energy.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="carousel-preview" style="background-image: url('photos/pizza.jpg');">
+            <div class="tag blue">What's Happening</div>
+            <div class="overlay">
+              <h4>Eat. Watch. Celebrate.</h4>
+              <ul>
+                <li>Signature Griot Pizza — styled for your feed</li>
+                <li>World Cup goals — high-energy vibes</li>
+                <li>Two photographers covering it all</li>
+              </ul>
+            </div>
+          </div>
+          <div class="carousel-preview" style="background-image: url('photos/community.jpg');">
+            <div class="tag">Join the Movement</div>
+            <div class="overlay">
+              <h4 style="background: var(--border-glow); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Be In The Building</h4>
+              <ul>
+                <li>Follow @1804HaitianPizza</li>
+                <li>Share with your Pompano people</li>
+                <li>Haitian-owned. Community-built.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 — What We'll Capture -->
+    <div class="slide" style="background: var(--bg-panel);">
+      <div class="slide-content">
+        <div class="slide-tag">Production Scope</div>
+        <h2>What We'll <span>Capture</span></h2>
+        <div class="grid-3">
+          <div class="card"><div class="card-icon">🎊</div><h3>Grand Opening</h3><p>Ribbon cutting, first customers, celebration energy, and milestone moments.</p></div>
+          <div class="card"><div class="card-icon">🍕</div><h3>Signature Menu</h3><p>Mouthwatering photography of <span class="highlight-pink">Griot Pizza</span> and signature dishes, styled for impact.</p></div>
+          <div class="card"><div class="card-icon">⚽</div><h3>World Cup Energy</h3><p>Fans, reactions, screens — the fusion of sports and Haitian cuisine.</p></div>
+          <div class="card"><div class="card-icon">👋</div><h3>Customer Moments</h3><p>Genuine interactions of guests experiencing 1804 for the first time.</p></div>
+          <div class="card"><div class="card-icon">👨‍🍳</div><h3>Team in Action</h3><p>Your staff — the faces and passion behind the brand.</p></div>
+          <div class="card"><div class="card-icon">🏪</div><h3>Venue & Atmosphere</h3><p>Interior, exterior, and ambiance for Google, Yelp, and marketing.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 — Two-Photographer Team -->
+    <div class="slide" style="background: var(--bg-dark);">
+      <div class="slide-bg" style="background-image: url('photos/event-planning.jpg');">
+        <div class="slide-bg" style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.6) 100%);"></div>
+      </div>
+      <div class="slide-content">
+        <div class="slide-tag">Production Crew</div>
+        <h2>Two-<span>Photographer</span> Team</h2>
+        <div style="max-width: 700px;">
+          <p style="color: #ddd; font-size: 1.1rem; line-height: 1.7; margin-bottom: 32px;">
+            Lead Photographer + Assistant / Second Camera dedicated to social media content. We don't just show up — we produce.
+          </p>
+          <div class="grid-3">
+            <div class="card"><div class="card-icon">📸</div><h3>Lead Shooter</h3><p>Hero imagery, editorial food shots, venue establishing frames.</p></div>
+            <div class="card"><div class="card-icon">🎥</div><h3>Second Camera</h3><p>B-roll, Reels, behind-the-scenes, candid crowd moments.</p></div>
+            <div class="card"><div class="card-icon">⚡</div><h3>Real-Time Delivery</h3><p>Select images delivered same-night for social posting.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 — Commercial License -->
+    <div class="slide" style="background: var(--bg-panel);">
+      <div class="slide-content">
+        <div class="slide-tag">Full Commercial License</div>
+        <h2>Use Your Photos <span>Everywhere</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 32px;">All images come with a commercial usage license — no restrictions, no extra fees.</p>
+        <div class="license-grid">
+          <div class="license-item"><span class="check">✓</span> Instagram posts, stories, Reels</div>
+          <div class="license-item"><span class="check">✓</span> Facebook page and advertising</div>
+          <div class="license-item"><span class="check">✓</span> TikTok content</div>
+          <div class="license-item"><span class="check">✓</span> Website and landing pages</div>
+          <div class="license-item"><span class="check">✓</span> Google Business Profile</div>
+          <div class="license-item"><span class="check">✓</span> Press releases and media kits</div>
+          <div class="license-item"><span class="check">✓</span> Printed marketing materials</div>
+          <div class="license-item"><span class="check">✓</span> Promotional banners and signage</div>
+        </div>
+        <p style="color: var(--vice-blue); margin-top: 32px; font-family: var(--font-heading); letter-spacing: 1px; font-size: 0.85rem;">Community visibility tagging across Miami-Dade & Broward included</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 — Investment -->
+    <div class="slide" style="background: var(--bg-dark);">
+      <div class="slide-content" style="text-align: center;">
+        <div class="slide-tag">Introductory Partnership</div>
+        <h2>The <span>Investment</span></h2>
+        <div class="pricing-box">
+          <div class="original">$375</div>
+          <div class="price">$150</div>
+          <div class="save">You save $225 — 60% off</div>
+          <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.9rem;">Introductory partnership rate</p>
+          <ul>
+            <li>Two-photographer production team</li>
+            <li>Full commercial usage license</li>
+            <li>Curated high-resolution gallery (3-day delivery)</li>
+            <li>B-roll clips for social media</li>
+            <li>Community visibility tagging (Miami-Dade & Broward)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 — CTA -->
+    <div class="slide" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a0a14 50%, #0a0a2e 100%);">
+      <div class="slide-content" style="text-align: center;">
+        <div class="cta-text">Ready to <span style="background: var(--border-glow); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Capture</span> Your Grand Opening?</div>
+        <p class="cta-sub">Secure your date with a $75 deposit. Let's create something extraordinary together.</p>
+        <div class="btn-group">
+          <a href="https://cash.app/$DesirDigital" class="btn btn-primary" target="_blank">Pay $75 Deposit</a>
+          <a href="mailto:digitalvurv@gmail.com" class="btn btn-outline">Contact Us</a>
+        </div>
+        <p style="margin-top: 40px; color: var(--text-muted); font-size: 0.8rem;">📅 July 18, 2026 • 📍 Pompano Beach, FL • 📸 6:00 – 8:00 PM</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-arrows">
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">◀</button>
+    <span class="slide-counter" id="slideCounter">1 / 8</span>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">▶</button>
+  </div>
+</div>
+
+<script>
+  let current = 0;
+  const total = 8;
+  const wrapper = document.getElementById('slidesWrapper');
+  const counter = document.getElementById('slideCounter');
+  const progress = document.getElementById('progressBar');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function navigate(dir) {
+    const next = current + dir;
+    if (next < 0 || next >= total) return;
+    current = next;
+    update();
+  }
+
+  function update() {
+    wrapper.style.transform = `translateX(-${current * 100}vw)`;
+    counter.textContent = `${current + 1} / ${total}`;
+    progress.style.width = `${((current + 1) / total) * 100}%`;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); navigate(1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.nav-arrows') || e.target.closest('.btn') || e.target.closest('a')) return;
+    navigate(1);
+  });
+
+  update();
+</script>
+
+</body>
+</html>

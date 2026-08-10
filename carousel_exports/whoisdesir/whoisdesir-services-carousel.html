@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhoIsDésir Media — Event Photography Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-panel: #161616;
+      --vice-pink: #ff007f;
+      --vice-blue: #00f0ff;
+      --text-white: #ffffff;
+      --text-muted: #a0a0a0;
+      --font-heading: 'Oswald', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --border-glow: linear-gradient(135deg, var(--vice-pink), var(--vice-blue));
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+      overflow-x: hidden;
+    }
+
+    h1.page-title {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      text-align: center;
+      background: var(--border-glow);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.page-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-size: 1rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .instagram-mockup {
+      width: 100%;
+      max-width: 550px;
+      background-color: var(--bg-panel);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+
+    .mock-header {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .profile-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--border-glow);
+      padding: 2px;
+    }
+
+    .profile-pic-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #000;
+      background-image: url('photos/profile-abstract.jpg');
+      background-size: cover;
+    }
+
+    .mock-username {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .mock-username span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .slider-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: #000;
+      overflow: hidden;
+    }
+
+    .slides-container {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide {
+      width: 33.33333%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .slide-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.9) 100%);
+      z-index: 1;
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .slide-badge {
+      align-self: flex-start;
+      background: rgba(255, 0, 127, 0.15);
+      border: 1px solid var(--vice-pink);
+      color: #fff;
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      padding: 6px 16px;
+      border-radius: 20px;
+    }
+
+    .slide-badge.collab {
+      border-color: var(--vice-blue);
+      background: rgba(0, 240, 255, 0.15);
+    }
+
+    .slide h2 {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .slide-1 h2 {
+      font-size: 2.8rem;
+      text-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+    }
+
+    .slide-1 h2 span {
+      background: var(--border-glow);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide p.slide-desc {
+      font-size: 1rem;
+      color: #ddd;
+      line-height: 1.5;
+    }
+
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+    }
+
+    .slide-footer-text {
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: var(--vice-blue);
+    }
+
+    .slide-number {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    .slide-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .slide-list li {
+      position: relative;
+      padding-left: 25px;
+      font-size: 0.95rem;
+      color: #eaeaea;
+    }
+
+    .slide-list li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--vice-pink);
+      text-shadow: 0 0 5px var(--vice-pink);
+    }
+
+    .slide-blue .slide-list li::before {
+      color: var(--vice-blue);
+      text-shadow: 0 0 5px var(--vice-blue);
+    }
+
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: var(--transition);
+    }
+
+    .slider-btn:hover {
+      background: rgba(255, 0, 127, 0.8);
+      border-color: var(--vice-pink);
+    }
+
+    .prev-btn { left: 15px; }
+    .next-btn { right: 15px; }
+
+    .mock-actions {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-icons {
+      display: flex;
+      gap: 15px;
+      font-size: 1.4rem;
+    }
+
+    .action-icons span {
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .action-icons span:hover {
+      color: var(--vice-pink);
+    }
+
+    .pagination-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .dot.active {
+      background-color: var(--vice-pink);
+      transform: scale(1.3);
+    }
+
+    .caption-box {
+      padding: 0 20px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background-color: rgba(255, 255, 255, 0.01);
+    }
+
+    .caption-title {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      color: var(--vice-blue);
+      padding: 15px 0 8px;
+    }
+
+    .caption-text {
+      font-size: 0.9rem;
+      color: #ddd;
+      line-height: 1.6;
+      white-space: pre-line;
+      margin-bottom: 15px;
+    }
+
+    .btn-copy {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 12px;
+      background: transparent;
+      border: 1px dashed var(--vice-pink);
+      color: var(--vice-pink);
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-copy:hover {
+      background: var(--vice-pink);
+      color: #000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">WhoIsDésir Media</h1>
+  <p class="page-subtitle">Event Photography for Brands • South Florida</p>
+
+  <div class="instagram-mockup">
+    <div class="mock-header">
+      <div class="profile-pic">
+        <div class="profile-pic-inner"></div>
+      </div>
+      <div class="mock-username">
+        whoisdesir.media
+        <span>Visual Storytelling Studio</span>
+      </div>
+    </div>
+
+    <div class="slider-viewport">
+      <button class="slider-btn prev-btn" onclick="moveSlide(-1)">◀</button>
+      <button class="slider-btn next-btn" onclick="moveSlide(1)">▶</button>
+      
+      <div class="slides-container" id="slidesContainer">
+        
+        <!-- Slide 1 — Hook: What We Do -->
+        <div class="slide slide-1" style="background-image: url('photos/event-concert.jpg');">
+          <div class="slide-overlay"></div>
+          <div class="slide-content">
+            <span class="slide-badge collab">Brand Photography</span>
+            <div>
+              <h2>Your Next Event<br><span>Deserves More</span></h2>
+              <p class="slide-desc" style="color: var(--vice-blue); text-transform: uppercase; font-family: var(--font-heading); letter-spacing: 1px;">Than Just Snapshots</p>
+              <ul class="slide-list" style="margin-top: 15px;">
+                <li>Two-photographer production team</li>
+                <li>Reusable marketing assets, not just photos</li>
+                <li>Commercial license for all platforms</li>
+              </ul>
+            </div>
+            <div class="slide-footer">
+              <span class="slide-footer-text">Swipe to see how →</span>
+              <span class="slide-number">1/3</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 — What We Deliver -->
+        <div class="slide slide-blue" style="background-image: url('photos/event-planning.jpg');">
+          <div class="slide-overlay"></div>
+          <div class="slide-content">
+            <span class="slide-badge" style="border-color: var(--vice-blue); background: rgba(0, 240, 255, 0.15);">Full Coverage</span>
+            <div>
+              <h2>Captured &<br><span style="color: var(--vice-pink);">Delivered</span></h2>
+              <ul class="slide-list" style="margin-top: 15px;">
+                <li>Grand openings, events, menus, and venue tours</li>
+                <li>Food styling & editorial-grade photography</li>
+                <li>B-roll clips for TikTok, Reels & ads</li>
+              </ul>
+              <p class="slide-desc" style="margin-top: 20px; color: var(--vice-blue);">All images edited and optimized for Instagram, Facebook, TikTok, Google Business & print.</p>
+            </div>
+            <div class="slide-footer">
+              <span class="slide-footer-text" style="color: var(--vice-pink);">Visual Storytelling</span>
+              <span class="slide-number">2/3</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 — CTA -->
+        <div class="slide" style="background-image: url('photos/community.jpg');">
+          <div class="slide-overlay"></div>
+          <div class="slide-content">
+            <span class="slide-badge">Let's Work</span>
+            <div>
+              <h2>Book Your<br><span style="background: var(--border-glow); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Event Date</span></h2>
+              <ul class="slide-list" style="margin-top: 15px;">
+                <li>Minority-owned business specialist</li>
+                <li>Community visibility across Miami-Dade & Broward</li>
+                <li>Long-term creative partnership — not a one-off shoot</li>
+              </ul>
+              <p class="slide-desc" style="margin-top: 25px; font-size: 1.5rem; font-family: var(--font-heading); text-transform: uppercase; text-align: center; color: var(--vice-pink); text-shadow: 0 0 20px var(--vice-pink);">DM to Book Your Shoot 📸</p>
+            </div>
+            <div class="slide-footer">
+              <span class="slide-footer-text">#WhoIsDesir</span>
+              <span class="slide-number">3/3</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mock-actions">
+      <div class="action-icons">
+        <span>❤️</span>
+        <span>💬</span>
+        <span>✈️</span>
+      </div>
+      <div class="pagination-dots" id="dotsContainer">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>
+        <span>🔖</span>
+      </div>
+    </div>
+
+    <div class="caption-box">
+      <div class="caption-title">Instagram Caption</div>
+      <div class="caption-text" id="captionText">Your brand's next event deserves more than a few photos. It deserves a strategy. 📸
+
+We're WhoIsDésir Media — a Miami-based creative team specializing in visual storytelling for minority-owned businesses.
+
+Whether it's a grand opening, a menu launch, or a community event, we deliver:
+→ Two-photographer production crew
+→ Editorial food & event photography
+→ Commercial license for IG, TikTok, Google & print
+→ B-roll clips for Reels and ads
+→ Community visibility tagging across Miami-Dade & Broward
+
+This isn't a one-time shoot. We build long-term creative partnerships with the brands we believe in.
+
+DM us to book your event date. Let's create something that lasts.
+
+#WhoIsDesir #MiamiPhotographer #EventPhotography #BrandVisuals #SouthFloridaBrands #MinorityOwnedBusiness #MiamiViceAesthetic #VisualStorytelling #FoodPhotography #BrandMarketing</div>
+      <button class="btn-copy" onclick="copyCaption()">Copy Caption</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 3;
+    const slidesContainer = document.getElementById('slidesContainer');
+    const dots = document.querySelectorAll('.dot');
+
+    function moveSlide(direction) {
+      currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+      slidesContainer.style.transform = `translateX(-${currentSlide * 33.33333}%)`;
+      
+      dots.forEach((dot, index) => {
+        if (index === currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    function copyCaption() {
+      const text = document.getElementById('captionText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.btn-copy');
+        btn.innerText = 'Caption Copied!';
+        btn.style.borderColor = '#00f0ff';
+        btn.style.color = '#00f0ff';
+        setTimeout(() => {
+          btn.innerText = 'Copy Caption';
+          btn.style.borderColor = '#ff007f';
+          btn.style.color = '#ff007f';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

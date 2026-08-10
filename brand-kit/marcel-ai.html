@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcel AI — Brand Kit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:   #00d4aa;
+      --surface:  #0a0a0f;
+      --card:     #1a1a25;
+      --border:   #2a2a3a;
+      --text:     #e8e8f0;
+      --muted:    #8888a0;
+      --deep:     #0d0d14;
+      --warning:  #F59E0B;
+      --danger:   #DC2626;
+      --radius:   12px;
+      --shadow:   0 1px 3px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--surface);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    .brand-header {
+      background: var(--deep);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-header::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 360px; height: 360px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+    .brand-header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 30%;
+      width: 240px; height: 240px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+    .header-inner { position: relative; z-index: 1; max-width: 900px; }
+
+    .brand-logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px; height: 52px;
+      background: var(--accent);
+      border-radius: 14px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #0a0a0f;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+    .brand-header h1 {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+    }
+    .brand-header .tagline {
+      font-size: 16px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .header-meta {
+      margin-top: 28px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .meta-badge {
+      background: rgba(0,212,170,0.08);
+      border: 1px solid rgba(0,212,170,0.2);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 48px 24px; }
+    .section { margin-bottom: 56px; }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    /* ── Identity ── */
+    .identity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .identity-item label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .identity-item p { font-size: 14px; color: var(--text); }
+    .identity-item.full { grid-column: 1 / -1; }
+
+    .value-tag {
+      display: inline-flex;
+      background: rgba(0,212,170,0.08);
+      border: 1px solid rgba(0,212,170,0.2);
+      color: var(--accent);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      margin: 4px 4px 0 0;
+    }
+
+    /* ── Colors ── */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 14px; }
+    .color-swatch {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .swatch-block { height: 72px; position: relative; }
+    .swatch-info { padding: 10px 12px; background: var(--card); }
+    .swatch-name { font-size: 12px; font-weight: 600; color: var(--text); display: block; }
+    .swatch-hex { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; display: block; margin-top: 2px; }
+
+    /* ── Typography ── */
+    .type-showcase { display: grid; gap: 0; }
+    .type-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-meta { min-width: 160px; }
+    .type-meta .role { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+    .type-meta .font-name { font-size: 12px; color: var(--muted); margin-top: 3px; }
+    .type-sample { flex: 1; }
+    .sample-heading { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+    .sample-body { font-size: 15px; color: var(--text); }
+    .sample-mono { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--accent); background: rgba(0,212,170,0.08); padding: 4px 10px; border-radius: 5px; border: 1px solid rgba(0,212,170,0.15); display: inline-block; margin-right: 6px; }
+
+    /* ── Voice ── */
+    .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .voice-card { border-radius: 10px; padding: 20px; }
+    .voice-card.do { background: rgba(0,212,170,0.05); border: 1px solid rgba(0,212,170,0.2); }
+    .voice-card.dont { background: rgba(220,38,38,0.05); border: 1px solid rgba(220,38,38,0.2); }
+    .voice-card h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+    .voice-card.do h4 { color: var(--accent); }
+    .voice-card.dont h4 { color: #f87171; }
+    .voice-example {
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .voice-card.do .voice-example { background: rgba(0,212,170,0.06); }
+    .voice-card.dont .voice-example { background: rgba(220,38,38,0.06); }
+    .voice-example:last-child { margin-bottom: 0; }
+
+    /* ── Signals ── */
+    .signals { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .signal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .signal-buy  { background: rgba(74,222,128,0.12); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+    .signal-hold { background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+    .signal-sell { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+    .signal-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .signal-buy .signal-dot  { background: #4ade80; }
+    .signal-hold .signal-dot { background: #fbbf24; }
+    .signal-sell .signal-dot { background: #f87171; }
+
+    /* ── Pillars ── */
+    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+    .pillar-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      border-top: 2px solid var(--accent);
+    }
+    .pillar-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .pillar-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── UI Preview ── */
+    .demo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+    }
+    .demo-ticker { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 15px; color: var(--text); }
+    .demo-company { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .demo-score { text-align: right; }
+    .demo-score .score-num { font-size: 20px; font-weight: 700; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    .demo-score .score-label { font-size: 11px; color: var(--muted); }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #0a0a0f;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    /* ── Checklist ── */
+    .checklist { display: flex; flex-direction: column; gap: 12px; }
+    .check-item { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+    .check-icon {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    .check-icon.done { background: rgba(0,212,170,0.15); color: var(--accent); }
+    .check-icon.todo { background: transparent; color: var(--muted); border: 1.5px dashed var(--border); }
+    .check-item.done-text { color: var(--text); }
+    .check-item.todo-text { color: var(--muted); }
+
+    /* ── Footer ── */
+    .kit-footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    @media (max-width: 640px) {
+      .brand-header { padding: 40px 24px; }
+      .brand-header h1 { font-size: 30px; }
+      .identity-grid { grid-template-columns: 1fr; }
+      .voice-grid { grid-template-columns: 1fr; }
+      .type-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="brand-header">
+    <div class="header-inner">
+      <div class="brand-logo-mark">M</div>
+      <h1>Marcel AI</h1>
+      <p class="tagline">AI-Powered Investment Research for Retail Investors</p>
+      <div class="header-meta">
+        <span class="meta-badge">v1.0</span>
+        <span class="meta-badge">2026-08-04</span>
+        <span class="meta-badge">Brand Kit</span>
+        <span class="meta-badge">Lourdes AIOS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Identity -->
+    <div class="section">
+      <div class="section-title">Brand Identity</div>
+      <div class="card">
+        <div class="identity-grid">
+          <div class="identity-item">
+            <label>Mission</label>
+            <p>Help retail investors make smarter investment decisions through transparent, explainable AI analysis.</p>
+          </div>
+          <div class="identity-item">
+            <label>Vision</label>
+            <p>Become the most trusted AI investment research platform for everyday investors.</p>
+          </div>
+          <div class="identity-item full">
+            <label>Core Values</label>
+            <div style="margin-top:8px;">
+              <span class="value-tag">Transparency</span>
+              <span class="value-tag">Evidence over Opinion</span>
+              <span class="value-tag">Education First</span>
+              <span class="value-tag">Simplicity</span>
+              <span class="value-tag">Trust</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colors -->
+    <div class="section">
+      <div class="section-title">Color Palette</div>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#00d4aa;"></div>
+          <div class="swatch-info"><span class="swatch-name">Teal Accent</span><span class="swatch-hex">#00d4aa</span></div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#0a0a0f;"></div>
+          <div class="swatch-info"><span class="swatch-name">Abyss</span><span class="swatch-hex">#0a0a0f</span></div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#1a1a25;"></div>
+          <div class="swatch-info"><span class="swatch-name">Card</span><span class="swatch-hex">#1a1a25</span></div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#2a2a3a;"></div>
+          <div class="swatch-info"><span class="swatch-name">Border</span><span class="swatch-hex">#2a2a3a</span></div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#e8e8f0;"></div>
+          <div class="swatch-info"><span class="swatch-name">Off-White</span><span class="swatch-hex">#e8e8f0</span></div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#8888a0;"></div>
+          <div class="swatch-info"><span class="swatch-name">Cool Grey</span><span class="swatch-hex">#8888a0</span></div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#0d0d14;"></div>
+          <div class="swatch-info"><span class="swatch-name">Void</span><span class="swatch-hex">#0d0d14</span></div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#F59E0B;"></div>
+          <div class="swatch-info"><span class="swatch-name">Amber</span><span class="swatch-hex">#F59E0B</span></div>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch-block" style="background:#DC2626;"></div>
+          <div class="swatch-info"><span class="swatch-name">Alert Red</span><span class="swatch-hex">#DC2626</span></div>
+        </div>
+      </div>
+
+      <!-- Signal States -->
+      <div style="margin-top:24px;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);">
+        <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px;">Signal States</p>
+        <div class="signals">
+          <div class="signal-badge signal-buy"><div class="signal-dot"></div>BUY</div>
+          <div class="signal-badge signal-hold"><div class="signal-dot"></div>HOLD</div>
+          <div class="signal-badge signal-sell"><div class="signal-dot"></div>SELL</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="section">
+      <div class="section-title">Typography</div>
+      <div class="card">
+        <div class="type-showcase">
+          <div class="type-row">
+            <div class="type-meta">
+              <div class="role">Heading</div>
+              <div class="font-name">Inter Bold 700</div>
+            </div>
+            <div class="type-sample">
+              <div class="sample-heading">Market Intelligence, Explained</div>
+            </div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">
+              <div class="role">Body</div>
+              <div class="font-name">Inter Regular 400</div>
+            </div>
+            <div class="type-sample">
+              <div class="sample-body">Marcel synthesizes financial data, valuation, governance, news, and risk into transparent recommendations with investor-friendly explanations.</div>
+            </div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">
+              <div class="role">Code / Data</div>
+              <div class="font-name">JetBrains Mono 400</div>
+            </div>
+            <div class="type-sample">
+              <span class="sample-mono">AAPL</span>
+              <span class="sample-mono">TSLA</span>
+              <span class="sample-mono">confidence: 74%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice & Tone -->
+    <div class="section">
+      <div class="section-title">Brand Voice & Tone</div>
+      <div class="voice-grid">
+        <div class="voice-card do">
+          <h4>✅ Marcel Sounds Like</h4>
+          <div class="voice-example">"Marcel found 3 key risks in this company's balance sheet. Here's what they mean for long-term investors."</div>
+          <div class="voice-example">"Our confidence score is 74% — here's exactly what's driving that number."</div>
+          <div class="voice-example">"Not sure what P/E ratio means? Marcel breaks it down in plain English."</div>
+        </div>
+        <div class="voice-card dont">
+          <h4>❌ Marcel Never Says</h4>
+          <div class="voice-example">"🚀 This stock is about to MOON — don't miss out!"</div>
+          <div class="voice-example">"Guaranteed returns — our AI NEVER gets it wrong."</div>
+          <div class="voice-example">"URGENT: Buy before the market opens tomorrow!"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Pillars -->
+    <div class="section">
+      <div class="section-title">Message Pillars</div>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-name">Transparency</div>
+          <div class="pillar-desc">We show our work. Every recommendation is explained.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-name">Evidence</div>
+          <div class="pillar-desc">Data-backed always. Every conclusion supported by data.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-name">Education</div>
+          <div class="pillar-desc">Teach investors while analyzing. Learn as you invest.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-name">Accessibility</div>
+          <div class="pillar-desc">Built for retail investors. No finance degree required.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-name">Trust</div>
+          <div class="pillar-desc">No hype. No FOMO. Marcel finds facts, not winners.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UI Preview -->
+    <div class="section">
+      <div class="section-title">UI Component Preview</div>
+      <div class="demo-card">
+        <div>
+          <div class="demo-ticker">AAPL</div>
+          <div class="demo-company">Apple Inc. · NASDAQ</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="signal-badge signal-buy"><div class="signal-dot"></div>BUY</div>
+          <div class="demo-score">
+            <div class="score-num">74%</div>
+            <div class="score-label">Confidence</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div>
+          <div class="demo-ticker">GME</div>
+          <div class="demo-company">GameStop Corp. · NYSE</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="signal-badge signal-hold"><div class="signal-dot"></div>HOLD</div>
+          <div class="demo-score">
+            <div class="score-num">51%</div>
+            <div class="score-label">Confidence</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary">Analyze a Stock →</button>
+    </div>
+
+    <!-- Completion Checklist -->
+    <div class="section">
+      <div class="section-title">Completion Checklist</div>
+      <div class="card">
+        <div class="checklist">
+          <div class="check-item done-text"><div class="check-icon done">✓</div>Brand name, tagline, mission & vision</div>
+          <div class="check-item done-text"><div class="check-icon done">✓</div>Core values</div>
+          <div class="check-item done-text"><div class="check-icon done">✓</div>Color palette — synced from app (Hex, RGB, HSL)</div>
+          <div class="check-item done-text"><div class="check-icon done">✓</div>Typography stack</div>
+          <div class="check-item done-text"><div class="check-icon done">✓</div>Brand voice & tone</div>
+          <div class="check-item done-text"><div class="check-icon done">✓</div>Message pillars</div>
+          <div class="check-item done-text"><div class="check-icon done">✓</div>UI style guide</div>
+          <div class="check-item done-text"><div class="check-icon done">✓</div>Canonical product description</div>
+          <div class="check-item todo-text"><div class="check-icon todo">○</div>Logo files (SVG, PNG light/dark)</div>
+          <div class="check-item todo-text"><div class="check-icon todo">○</div>CMYK & Pantone color values (for print)</div>
+          <div class="check-item todo-text"><div class="check-icon todo">○</div>Brand photography direction</div>
+          <div class="check-item todo-text"><div class="check-icon todo">○</div>Email signature template</div>
+          <div class="check-item todo-text"><div class="check-icon todo">○</div>Social media templates</div>
+          <div class="check-item todo-text"><div class="check-icon todo">○</div>Presentation template (.pptx)</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="kit-footer">
+    Marcel AI Brand Kit v1.0 · Colors synced from .marcel app · Lourdes AIOS · 2026-08-04
+  </div>
+
+</body>
+</html>

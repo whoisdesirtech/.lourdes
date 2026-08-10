@@ -3,912 +3,1444 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple CRM</title>
-  <style>
-/* Reset and Base Styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f9fafb;
-  color: #111827;
-  line-height: 1.5;
-}
-
-/* Utilities */
-.hidden {
-  display: none !important;
-}
-
-.text-btn {
-  background: none;
-  border: none;
-  color: #2563EB;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0.5rem;
-}
-.text-btn:hover {
-  text-decoration: underline;
-}
-
-.error-text {
-  color: #DC2626;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-  min-height: 1.25rem;
-}
-
-.success-text {
-  color: #059669;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-  min-height: 1.25rem;
-}
-
-/* Buttons */
-.btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  border: none;
-  font-weight: 500;
-  cursor: pointer;
-  min-height: 44px; /* Mobile tap target */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.95rem;
-  transition: background-color 0.2s;
-}
-
-.btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background-color: #2563EB;
-  color: #ffffff;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background-color: #1D4ED8;
-}
-
-.btn-secondary {
-  background-color: #E5E7EB;
-  color: #374151;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background-color: #D1D5DB;
-}
-
-.btn-danger {
-  background-color: #FEE2E2;
-  color: #DC2626;
-}
-
-.btn-danger:hover:not(:disabled) {
-  background-color: #FECACA;
-}
-
-/* Toast */
-#error-toast {
-  position: fixed;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #EF4444;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.375rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-/* Auth View */
-.auth-container {
-  max-width: 400px;
-  margin: 4rem auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-}
-
-.auth-container h1 {
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  text-align: center;
-  color: #111827;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.25rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
-.form-group input, .form-group select, .form-group textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #D1D5DB;
-  border-radius: 0.375rem;
-  min-height: 44px; /* Mobile tap target */
-  font-size: 1rem;
-  font-family: inherit;
-}
-
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-  outline: none;
-  border-color: #2563EB;
-  box-shadow: 0 0 0 1px #2563EB;
-}
-
-.auth-container button[type="submit"] {
-  width: 100%;
-  margin-top: 1rem;
-}
-
-.auth-links {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-/* Main App View */
-.navbar {
-  background-color: #ffffff;
-  border-bottom: 1px solid #E5E7EB;
-  padding: 0 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 60px;
-}
-
-.nav-links {
-  display: flex;
-  height: 100%;
-}
-
-.nav-tab {
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  padding: 0 1rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #4B5563;
-  cursor: pointer;
-  min-height: 44px;
-}
-
-.nav-tab.active {
-  color: #2563EB;
-  border-bottom-color: #2563EB;
-}
-
-.content-container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.section-header h2 {
-  font-size: 1.5rem;
-  color: #111827;
-}
-
-.loading-state, .empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: #6B7280;
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  border: 1px dashed #D1D5DB;
-}
-
-/* Lists and Tables */
-.item-list {
-  list-style: none;
-}
-
-.item-row {
-  background-color: #ffffff;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  border-radius: 0.5rem;
-  border: 1px solid #E5E7EB;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.item-info h3 {
-  font-size: 1.125rem;
-  margin-bottom: 0.25rem;
-}
-
-.item-info p {
-  color: #4B5563;
-  font-size: 0.875rem;
-}
-
-.item-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.table-responsive {
-  overflow-x: auto;
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  border: 1px solid #E5E7EB;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.data-table th, .data-table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #E5E7EB;
-}
-
-.data-table th {
-  background-color: #F9FAFB;
-  font-weight: 500;
-  color: #374151;
-}
-
-.data-table tr:last-child td {
-  border-bottom: none;
-}
-
-/* Modals */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  padding: 1rem;
-}
-
-.modal-content {
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 500px;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.modal-content h3 {
-  margin-bottom: 1.5rem;
-  font-size: 1.25rem;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-/* Mobile Adjustments */
-@media (max-width: 600px) {
-  .item-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  <title>Toussaint | AI-Powered Concierge & Experience Monetization</title>
   
-  .item-actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
-}
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Modern Clean CSS Stylesheet -->
+  <style>
+    :root {
+      /* Brand Palette: Clean Light Luxury */
+      --bg-body: #fafaf9;          /* Stone 50 (Warm Off-White) */
+      --bg-card: #ffffff;          /* Pure White */
+      --border-color: #e7e5e4;     /* Stone 200 (Soft Border) */
+      
+      --color-gold: #d97706;       /* Amber 600 (Luxury Gold) */
+      --color-gold-hover: #b45309; /* Amber 700 */
+      --color-gold-light: #fef3c7; /* Amber 100 */
+      
+      --color-text-primary: #1c1917;   /* Stone 900 (Main Text) */
+      --color-text-secondary: #57534e; /* Stone 600 (Muted Text) */
+      --color-text-light: #78716c;     /* Stone 500 */
+      
+      --color-success: #10b981;    /* Emerald 500 */
+      --color-error: #ef4444;      /* Red 500 */
+      
+      /* Typography */
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      
+      /* Utilities */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-body);
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Typography Utilities */
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Layout Containers */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 72px;
+      background-color: rgba(250, 250, 249, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      transition: var(--transition-smooth);
+    }
+
+    .navbar .container {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .brand-subtext {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      color: var(--color-gold);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-info {
+      display: none;
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      margin-right: 0.5rem;
+    }
+
+    .user-info strong {
+      color: var(--color-text-primary);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.625rem 1.25rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      min-height: 44px;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-primary {
+      background-color: var(--color-text-primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-gold);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border-color: var(--border-color);
+      color: var(--color-text-primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--border-color);
+    }
+
+    .btn-gold {
+      background-color: var(--color-gold);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(217, 119, 6, 0.25);
+    }
+
+    .btn-gold:hover {
+      background-color: var(--color-gold-hover);
+      box-shadow: 0 6px 14px rgba(217, 119, 6, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding-top: 140px;
+      padding-bottom: 60px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    .hero-tagline {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background-color: var(--color-gold-light);
+      color: var(--color-gold);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      color: var(--color-text-primary);
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--color-text-primary) 30%, var(--color-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @media (max-width: 600px) {
+      .hero-title {
+        font-size: 2.75rem;
+      }
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 2rem;
+      max-width: 640px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    /* Target Audiences Grid */
+    .audience-panel {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .audience-title {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-light);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .audience-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .audience-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .audience-icon {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-gold);
+      margin-top: 0.5rem;
+    }
+
+    .audience-text {
+      font-size: 0.925rem;
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+    }
+
+    .audience-text strong {
+      color: var(--color-text-primary);
+    }
+
+    /* Chat Section */
+    .chat-section {
+      padding: 60px 0 100px 0;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--color-text-secondary);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Chat UI Card Interface */
+    .chat-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      height: 550px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffffff;
+      z-index: 5;
+    }
+
+    .chat-header-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background-color: #fafafa;
+    }
+
+    .chat-message {
+      max-width: 75%;
+      padding: 0.85rem 1.15rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      position: relative;
+      animation: fadeIn 0.2s ease-out;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* User Bubble: Right-aligned, Gold/Amber */
+    .chat-message.user {
+      align-self: flex-end;
+      background-color: var(--color-gold);
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.15);
+    }
+
+    /* Bot Bubble: Left-aligned, White */
+    .chat-message.bot {
+      align-self: flex-start;
+      background-color: #ffffff;
+      color: var(--color-text-primary);
+      border: 1px solid var(--border-color);
+      border-bottom-left-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .chat-message.bot.loading {
+      color: var(--color-text-light);
+      font-style: italic;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-input-bar {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.75rem;
+      background-color: #ffffff;
+      z-index: 5;
+    }
+
+    .chat-input-bar input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: var(--transition-smooth);
+      min-height: 44px;
+    }
+
+    .chat-input-bar input:focus {
+      outline: none;
+      border-color: var(--color-gold);
+      box-shadow: 0 0 0 3px var(--color-gold-light);
+    }
+
+    .chat-input-bar input:disabled {
+      background-color: #f3f4f6;
+      cursor: not-allowed;
+    }
+
+    /* Blocker Overlay for Unauthenticated State */
+    .chat-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(250, 250, 249, 0.9);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      text-align: center;
+      padding: 2rem;
+      transition: var(--transition-smooth);
+    }
+
+    .chat-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .chat-overlay-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .chat-overlay-title {
+      font-size: 1.35rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .chat-overlay-desc {
+      color: var(--color-text-secondary);
+      max-width: 440px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* Status Badge */
+    .chat-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.75rem;
+      background-color: #f3f4f6;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      border: 1px solid var(--border-color);
+    }
+
+    .chat-status-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #9ca3af;
+    }
+
+    .chat-status-badge.authenticated {
+      background-color: #ecfdf5;
+      color: #047857;
+      border-color: #a7f3d0;
+    }
+
+    .chat-status-badge.authenticated .dot {
+      background-color: var(--color-success);
+      box-shadow: 0 0 8px var(--color-success);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Auth Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(28, 25, 23, 0.4);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      width: 100%;
+      max-width: 440px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 1.5rem 1.5rem 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--color-text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      transition: var(--transition-smooth);
+    }
+
+    .modal-close:hover {
+      background-color: var(--border-color);
+      color: var(--color-text-primary);
+    }
+
+    .modal-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 1.5rem;
+    }
+
+    .modal-tab {
+      background: none;
+      border: none;
+      padding: 1rem 0;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      cursor: pointer;
+      margin-right: 1.5rem;
+      position: relative;
+    }
+
+    .modal-tab.active {
+      color: var(--color-text-primary);
+    }
+
+    .modal-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--color-gold);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.375rem;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: var(--transition-smooth);
+      min-height: 44px;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--color-gold);
+      box-shadow: 0 0 0 3px var(--color-gold-light);
+    }
+
+    .auth-error-msg {
+      color: var(--color-error);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      display: none;
+      padding: 0.5rem 0.75rem;
+      background-color: #fef2f2;
+      border-radius: var(--radius-sm);
+      border: 1px solid #fee2e2;
+    }
+
+    .auth-success-msg {
+      color: #047857;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      display: none;
+      padding: 0.5rem 0.75rem;
+      background-color: #ecfdf5;
+      border-radius: var(--radius-sm);
+      border: 1px solid #d1fae5;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .forgot-link-container {
+      text-align: right;
+      margin-top: -0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .text-link {
+      font-size: 0.8rem;
+      color: var(--color-gold);
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .text-link:hover {
+      text-decoration: underline;
+      color: var(--color-gold-hover);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border-color);
+      padding: 2.5rem 0;
+      background-color: #ffffff;
+      color: var(--color-text-light);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .footer p {
+      margin-bottom: 0.5rem;
+    }
   </style>
 </head>
 <body>
-  <div id="error-toast" class="hidden">Something went wrong, please try again later.</div>
 
-  <!-- Authentication View -->
-  <main id="auth-view" class="view">
-    <div class="auth-container">
-      <h1 id="auth-title">Sign In</h1>
-      <form id="auth-form">
-        <div class="form-group">
-          <label for="auth-email">Email</label>
-          <input type="email" id="auth-email" required>
-        </div>
-        <div class="form-group">
-          <label for="auth-password">Password</label>
-          <input type="password" id="auth-password" required>
-        </div>
-        <div id="auth-error" class="error-text"></div>
-        <div id="auth-message" class="success-text"></div>
-        <button type="submit" id="auth-submit-btn" class="btn btn-primary">Sign In</button>
-      </form>
-      <div class="auth-links">
-        <button type="button" id="toggle-auth-mode-btn" class="text-btn">Create an account</button>
-        <button type="button" id="forgot-password-btn" class="text-btn">Forgot Password?</button>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="brand-logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <span class="brand-name">Toussaint</span>
+        <span class="brand-subtext">by WhoIsDésir Concierge AI</span>
+      </div>
+      
+      <div class="nav-actions">
+        <span id="user-info" class="user-info">Hello, <strong id="user-email-display">Guest</strong></span>
+        <button id="auth-nav-btn" class="btn btn-primary">Sign In</button>
+        <button id="logout-btn" class="btn btn-secondary" style="display: none;">Sign Out</button>
       </div>
     </div>
-  </main>
+  </nav>
 
-  <!-- Main App View -->
-  <main id="app-view" class="view hidden">
-    <nav class="navbar">
-      <div class="nav-links">
-        <button id="tab-contacts" class="nav-tab active">Contacts</button>
-        <button id="tab-deals" class="nav-tab">Deals</button>
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="hero-tagline">AI Concierge Assistant</span>
+        <h1 class="hero-title">Elevate Your <span>Local Discoveries</span></h1>
+        <p class="hero-desc">
+          Toussaint is an AI-powered concierge assistant that helps users discover, plan, book, and monetize local experiences, events, dining, and tourism activities through trusted recommendations.
+        </p>
+        <div class="hero-ctas">
+          <button id="hero-primary-cta" class="btn btn-gold btn-large">Start Experiencing</button>
+          <a href="#chat" class="btn btn-secondary">Open AI Chatbot</a>
+        </div>
       </div>
-      <button id="logout-btn" class="btn btn-secondary">Logout</button>
-    </nav>
-
-    <div class="content-container">
-      <!-- Loading State -->
-      <div id="loading-indicator" class="loading-state hidden">Loading data...</div>
-
-      <!-- Contacts Section -->
-      <section id="section-contacts" class="app-section">
-        <div class="section-header">
-          <h2>Contacts</h2>
-          <button id="add-contact-btn" class="btn btn-primary">Add Contact</button>
+      
+      <div class="audience-panel">
+        <h3 class="audience-title">Who is Toussaint For?</h3>
+        <div class="audience-list">
+          <div class="audience-item">
+            <span class="audience-icon"></span>
+            <span class="audience-text"><strong>Travelers & Tourists</strong> searching for personalized local experiences and dining.</span>
+          </div>
+          <div class="audience-item">
+            <span class="audience-icon"></span>
+            <span class="audience-text"><strong>Hotel Guests</strong> demanding 24/7 premium concierge access.</span>
+          </div>
+          <div class="audience-item">
+            <span class="audience-icon"></span>
+            <span class="audience-text"><strong>Independent Concierges & Promoters</strong> looking to scale recommendations.</span>
+          </div>
+          <div class="audience-item">
+            <span class="audience-icon"></span>
+            <span class="audience-text"><strong>Hospitality Professionals & Local Businesses</strong> aiming to boost bookings.</span>
+          </div>
+          <div class="audience-item">
+            <span class="audience-icon"></span>
+            <span class="audience-text"><strong>Referral Earners</strong> seeking opportunities to earn commissions on local bookings.</span>
+          </div>
         </div>
-        <div class="list-container">
-          <div id="contacts-empty" class="empty-state">No contacts yet.</div>
-          <ul id="contacts-list" class="item-list"></ul>
-        </div>
-      </section>
-
-      <!-- Deals Section -->
-      <section id="section-deals" class="app-section hidden">
-        <div class="section-header">
-          <h2>Deals</h2>
-          <button id="add-deal-btn" class="btn btn-primary">Add Deal</button>
-        </div>
-        <div class="list-container">
-          <div id="deals-empty" class="empty-state">No deals yet.</div>
-          <table id="deals-table" class="data-table hidden">
-            <thead>
-              <tr>
-                <th>Deal Name</th>
-                <th>Value</th>
-                <th>Stage</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="deals-tbody"></tbody>
-          </table>
-        </div>
-      </section>
+      </div>
     </div>
-  </main>
+  </header>
 
-  <!-- Contact Modal -->
-  <div id="contact-modal" class="modal hidden">
-    <div class="modal-content">
-      <h3 id="contact-modal-title">Add Contact</h3>
-      <form id="contact-form">
-        <input type="hidden" id="contact-id">
-        <div class="form-group">
-          <label for="contact-name">Name *</label>
-          <input type="text" id="contact-name" required>
+  <!-- AI Chatbot Section -->
+  <section id="chat" class="chat-section">
+    <div class="container">
+      <h2 class="section-title">Conversational Concierge</h2>
+      <p class="section-subtitle">A direct channel to personal recommendation logs and booking channels</p>
+      
+      <!-- Chat Interface -->
+      <div class="chat-container">
+        <!-- Blocker overlay when not logged in -->
+        <div id="chat-blocker" class="chat-overlay">
+          <span class="chat-overlay-icon">🔒</span>
+          <h3 class="chat-overlay-title">Secure Portal Access</h3>
+          <p class="chat-overlay-desc">
+            To preserve conversation history logs in Firestore and interface with the Toussaint Concierge, please sign in or create an account.
+          </p>
+          <button id="chat-overlay-auth-btn" class="btn btn-gold">Sign In / Register</button>
         </div>
-        <div class="form-group">
-          <label for="contact-email">Email</label>
-          <input type="email" id="contact-email">
+        
+        <div class="chat-header">
+          <div class="chat-header-title">
+            <span>💬</span> Toussaint AI Concierge
+          </div>
+          <div id="chat-status" class="chat-status-badge">
+            <span class="dot"></span>
+            <span id="chat-status-text">Disconnected</span>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="contact-company">Company</label>
-          <input type="text" id="contact-company">
+        
+        <div id="chat-messages" class="chat-messages">
+          <!-- Messages will load dynamically -->
         </div>
-        <div class="form-group">
-          <label for="contact-notes">Notes</label>
-          <textarea id="contact-notes"></textarea>
+        
+        <div class="chat-input-bar">
+          <input type="text" id="chat-input" placeholder="Ask Toussaint anything..." disabled>
+          <button type="button" id="chat-send-btn" class="btn btn-primary" disabled>Send</button>
         </div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Toussaint by WhoIsDésir. All rights reserved.</p>
+      <p style="font-size: 0.75rem; opacity: 0.7;">Powered by Google Gemini & Firebase Firestore Secure Rules</p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal Overlay -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 style="font-size: 1.25rem;">Account Access</h2>
+        <button id="modal-close-btn" class="modal-close">&times;</button>
+      </div>
+      
+      <div class="modal-tabs">
+        <button id="tab-login" class="modal-tab active">Sign In</button>
+        <button id="tab-signup" class="modal-tab">Register</button>
+      </div>
+      
+      <div class="modal-body">
+        <div id="auth-error" class="auth-error-msg"></div>
+        <div id="auth-success" class="auth-success-msg"></div>
+        
+        <form id="auth-form">
+          <div class="form-group">
+            <label for="auth-email">Email Address</label>
+            <input type="email" id="auth-email" placeholder="name@example.com" required>
+          </div>
+          
+          <div class="form-group" id="password-group">
+            <label for="auth-password">Password</label>
+            <input type="password" id="auth-password" placeholder="Min. 6 characters" required>
+          </div>
+          
+          <div class="forgot-link-container" id="forgot-link-container">
+            <button type="button" id="forgot-password-btn" class="text-link">Forgot Password?</button>
+          </div>
+          
+          <div class="modal-actions">
+            <button type="submit" id="auth-submit-btn" class="btn btn-gold" style="width: 100%;">Sign In</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
-  <!-- Deal Modal -->
-  <div id="deal-modal" class="modal hidden">
-    <div class="modal-content">
-      <h3 id="deal-modal-title">Add Deal</h3>
-      <form id="deal-form">
-        <input type="hidden" id="deal-id">
-        <div class="form-group">
-          <label for="deal-name">Deal Name *</label>
-          <input type="text" id="deal-name" required>
-        </div>
-        <div class="form-group">
-          <label for="deal-value">Value ($) *</label>
-          <input type="number" id="deal-value" min="0" step="0.01" required>
-        </div>
-        <div class="form-group">
-          <label for="deal-stage">Stage *</label>
-          <select id="deal-stage" required>
-            <option value="Lead">Lead</option>
-            <option value="Contacted">Contacted</option>
-            <option value="Proposal">Proposal</option>
-            <option value="Won">Won</option>
-            <option value="Lost">Lost</option>
-          </select>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
+  <!-- Firebase v10 Integration Module -->
   <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  sendPasswordResetEmail, 
-  onAuthStateChanged, 
-  signOut 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  doc, 
-  onSnapshot, 
-  serverTimestamp, 
-  query, 
-  orderBy 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      createUserWithEmailAndPassword, 
+      sendPasswordResetEmail, 
+      onAuthStateChanged, 
+      signOut 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      setDoc, 
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      orderBy,
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBfiNN2RiJYnxYcJp6qcVQNbMNaFB3nFMw",
-  authDomain: "lourdes-crm.firebaseapp.com",
-  projectId: "lourdes-crm",
-  storageBucket: "lourdes-crm.firebasestorage.app",
-  messagingSenderId: "479582108535",
-  appId: "1:479582108535:web:2a42c6387043ad7dde3f72"
-};
+    // Firebase Configurations for project: concieregwidai
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0lI9YEkJzJW75B_5ymQHl_X6Y_JguCkk",
+      authDomain: "concieregwidai.firebaseapp.com",
+      projectId: "concieregwidai",
+      storageBucket: "concieregwidai.firebasestorage.app",
+      messagingSenderId: "296849241759",
+      appId: "1:296849241759:web:89a6f3b6e6482f6a3014aa",
+      measurementId: "G-ZHWWK0NB3S"
+    };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    // Initialize Firebase Services
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-// State
-let currentUser = null;
-let currentAuthMode = 'login'; // 'login' or 'register'
-let unsubContacts = null;
-let unsubDeals = null;
+    // KNOWLEDGE_BASE configuration constant
+    const KNOWLEDGE_BASE = [
+      {
+        topic: "What is Toussaint?",
+        answer: "Toussaint is an AI-powered concierge assistant that helps users discover, plan, book, and monetize local experiences, events, dining, and tourism activities through trusted recommendations."
+      },
+      {
+        topic: "How does the referral commission work?",
+        answer: "The Concierge Skill is a commission-enabled recommendation system. Businesses set their own commission structures. Referrals are tracked, and commissions are paid after bookings are verified and meet payout requirements."
+      },
+      {
+        topic: "Who can use the Concierge Skill?",
+        answer: "Hotel concierges, independent concierges, event promoters, restaurants, hotels, venues, tourism operators, influencers, creators, rideshare drivers, hospitality professionals, local ambassadors, and anyone who recommends experiences."
+      },
+      {
+        topic: "What types of experiences are supported?",
+        answer: "Toussaint supports restaurants, concerts, sporting events, festivals, museums, tours, nightlife, attractions, hotels, transportation, boat charters, luxury experiences, wellness services, and other tourism activities."
+      }
+    ];
 
-// DOM Elements - Auth
-const authView = document.getElementById('auth-view');
-const appView = document.getElementById('app-view');
-const authTitle = document.getElementById('auth-title');
-const authForm = document.getElementById('auth-form');
-const authEmail = document.getElementById('auth-email');
-const authPassword = document.getElementById('auth-password');
-const authError = document.getElementById('auth-error');
-const authMessage = document.getElementById('auth-message');
-const authSubmitBtn = document.getElementById('auth-submit-btn');
-const toggleAuthModeBtn = document.getElementById('toggle-auth-mode-btn');
-const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+    // Chatbot Prompt - Activity 01
+    const SYSTEM_PROMPT = `You are Concierge by WhoIsDésir, an AI concierge agent embedded on the WhoIsDésir website (https://whoisdesir.com) and potentially on partner hospitality platforms. You help travelers discover experiences and help businesses and concierges understand how to earn through the Concierge Skill commission-based recommendation platform.
 
-// DOM Elements - App Nav
-const tabContacts = document.getElementById('tab-contacts');
-const tabDeals = document.getElementById('tab-deals');
-const sectionContacts = document.getElementById('section-contacts');
-const sectionDeals = document.getElementById('section-deals');
-const logoutBtn = document.getElementById('logout-btn');
-const loadingIndicator = document.getElementById('loading-indicator');
-const errorToast = document.getElementById('error-toast');
+Role & Persona:
+You are an experienced luxury concierge who also serves as a knowledgeable hospitality consultant. Your personality is friendly, confident, resourceful, and solution-oriented. You speak in clear, conversational language — explain concepts simply before adding depth. You are educational, never salesy.
 
-// DOM Elements - Contacts
-const contactsEmpty = document.getElementById('contacts-empty');
-const contactsList = document.getElementById('contacts-list');
-const addContactBtn = document.getElementById('add-contact-btn');
-const contactModal = document.getElementById('contact-modal');
-const contactModalTitle = document.getElementById('contact-modal-title');
-const contactForm = document.getElementById('contact-form');
-const contactIdInput = document.getElementById('contact-id');
+Adapt your tone to context:
+— Nightlife, casual dining, general tourism: relaxed, warm, approachable.
+— VIP experiences, executive transportation, business partnerships: polished, refined, precise.
 
-// DOM Elements - Deals
-const dealsEmpty = document.getElementById('deals-empty');
-const dealsTable = document.getElementById('deals-table');
-const dealsTbody = document.getElementById('deals-tbody');
-const addDealBtn = document.getElementById('add-deal-btn');
-const dealModal = document.getElementById('deal-modal');
-const dealModalTitle = document.getElementById('deal-modal-title');
-const dealForm = document.getElementById('deal-form');
-const dealIdInput = document.getElementById('deal-id');
+Reference the WhoIsDésir brand naturally — when introducing yourself, explaining the Concierge Skill, or directing users to the website — but do not force the brand name into every response.
 
-// Utility to show global error
-function showErrorToast() {
-  errorToast.classList.remove('hidden');
-  setTimeout(() => {
-    errorToast.classList.add('hidden');
-  }, 4000);
-}
+When a user writes in a language other than English, respond in that language if you can do so accurately. If you cannot, politely note the limitation and continue in English.
 
-function escapeHTML(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
+Intent & Primary Use Case:
+You serve two distinct user types. Identify which type you are speaking with within the first one or two exchanges:
+1. Consumers (travelers, tourists, hotel guests, event attendees): Enter Discovery Mode. Help them find restaurants, events, concerts, nightlife, tourism activities, transportation, VIP experiences, and other local entertainment. Always ask qualifying questions before recommending:
+   — What city are you in?
+   — What is your budget?
+   — Are you traveling alone or with others?
+   — What kind of experience are you looking for?
+   — Is this for today, tonight, or another date?
+2. Business users (independent concierges, promoters, hospitality professionals, restaurants, venues, hotels, tourism organizations): Enter Partnership & Earning Mode. Explain how the Concierge Skill works, how commissions are structured, and how businesses can participate. Share general best practices for concierge entrepreneurship freely. For in-depth strategy or personalized consulting, direct them to WhoIsDésir's consulting services.
 
-// --- Auth Logic ---
+Geographic Scope & Data Sources:
+Handle any location a user asks about. You do not currently have access to live data feeds, event APIs, or real-time booking availability. When you lack verified local data:
+— Clearly distinguish between verified information and general suggestions.
+— State plainly that you cannot confirm specific details like hours, pricing, or availability.
+— Point users to the most helpful alternative: the official venue website, a ticketing partner, a local tourism board, or https://whoisdesir.com.
+— Never invent events, venues, hours, prices, or reservations.
 
-toggleAuthModeBtn.addEventListener('click', () => {
-  currentAuthMode = currentAuthMode === 'login' ? 'register' : 'login';
-  authTitle.textContent = currentAuthMode === 'login' ? 'Sign In' : 'Create Account';
-  authSubmitBtn.textContent = currentAuthMode === 'login' ? 'Sign In' : 'Sign Up';
-  toggleAuthModeBtn.textContent = currentAuthMode === 'login' ? 'Create an account' : 'Already have an account? Sign in';
-  authError.textContent = '';
-  authMessage.textContent = '';
-});
+Recommendation Behavior & Concierge Skill Integration:
+When recommending experiences:
+— Provide a curated short list of 2–3 options with brief descriptions. Let the user ask for more detail on any option or request additional suggestions.
+— Proactively suggest related experiences when relevant: "Need transportation to get there?" or "Want a dinner reservation nearby?" Build a full concierge experience, not isolated recommendations.
+— Promote local businesses fairly. Do not favor commission partners over non-partners. When a recommendation does include a commission opportunity for concierges or referrers, you may mention that naturally.
+— When connected to the Concierge Skill platform, include tracked referral links if available. Otherwise, explain how the referral system works and direct users to the platform to generate their own links.
+— For transparency, note when a recommendation comes from a partner that offers commissions. Keep this brief and non-legalistic.
 
-forgotPasswordBtn.addEventListener('click', async () => {
-  const email = authEmail.value;
-  if (!email) {
-    authError.textContent = 'Please enter your email to reset password.';
-    return;
-  }
-  try {
-    authSubmitBtn.disabled = true;
-    await sendPasswordResetEmail(auth, email);
-    authMessage.textContent = 'Password reset email sent!';
-    authError.textContent = '';
-  } catch (err) {
-    authError.textContent = err.message;
-  } finally {
-    authSubmitBtn.disabled = false;
-  }
-});
+When explaining the Concierge Skill:
+— Provide a clear high-level explanation and answer common questions.
+— Key facts: The Concierge Skill is a commission-enabled recommendation system. Businesses set their own commission structures. Referrals are tracked. Commissions are paid after bookings are verified and meet payout requirements. It works alongside booking platforms like an embedded referral layer — it does not replace them.
+— Supported experiences: restaurants, concerts, sporting events, festivals, museums, tours, nightlife, attractions, hotels, transportation, boat charters, luxury experiences, wellness services, and other tourism activities.
+— Who can use it: hotel concierges, independent concierges, event promoters, restaurants, hotels, venues, tourism operators, influencers, creators, rideshare drivers, hospitality professionals, local ambassadors, and anyone who recommends experiences.
+— For detailed onboarding or signup steps, direct users to the WhoIsDésir website.
 
-authForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = authEmail.value;
-  const password = authPassword.value;
-  authError.textContent = '';
-  authMessage.textContent = '';
-  authSubmitBtn.disabled = true;
+Business & Partnership Conversations:
+When a business asks about licensing, API integration, white-label solutions, or SaaS subscriptions:
+— Explain options at a high level: revenue may come from licensing, SaaS subscriptions, API integrations, enterprise partnerships, referral commissions, white-label solutions, and premium concierge services.
+— Never quote specific pricing, commission rates, or subscription costs. Direct interested parties to contact the WhoIsDésir team for customized details.
+— Collect the business's name and contact information so the team can follow up directly.
 
-  try {
-    if (currentAuthMode === 'login') {
-      await signInWithEmailAndPassword(auth, email, password);
-    } else {
-      await createUserWithEmailAndPassword(auth, email, password);
+Tone Calibration & Brand Voice:
+Core values to reflect in every interaction: trust, transparency, hospitality, partnership, and exceptional service. Every recommendation should create value for the customer, the business, and the person making the recommendation.
+About WhoIsDésir: A lifestyle concierge and strategic advisory brand offering event concierge services, executive transportation, hospitality guidance, and business consulting for individuals, entrepreneurs, and organizations.
+Mission: Help people experience more, help businesses fill more seats and reservations, and help trusted recommenders earn income by connecting people with memorable experiences.
+
+Edge Cases & Boundary Handling:
+*Off-limits topics:* Medical advice, legal advice, financial or investment advice, political opinions, religious debates, adult content, illegal activities, hacking or cybersecurity exploits, gambling recommendations, dangerous activities. If asked about any of these, politely explain this falls outside your expertise and redirect toward hospitality, concierge services, or tourism.
+*Boundary-blurring requests* (e.g., "best bars for gambling" or "nightlife with adult entertainment"): Address the permissible part — nightlife and bar recommendations — while steering away from gambling or adult content specifics. Acknowledge the interest without judgment and redirect toward legitimate entertainment options.
+*No partner data in a city:* Offer general experience suggestions based on the activity type. State clearly you have no verified partner data in that city. Suggest local tourism resources or https://whoisdesir.com for updates.
+*Competitor questions* (Viator, GetYourGuide, Klook, OpenTable, Ticketmaster): Stay professional. Do not disparage competitors. Briefly acknowledge other platforms exist, then explain what makes the Concierge Skill different — the embedded referral and commission layer that rewards the people who influence bookings. Do not make direct feature-by-feature comparisons.
+*Complaints about a venue or commission disputes:* Empathize, acknowledge the concern, and direct the user to contact the WhoIsDésir support team. Never promise refunds, resolve disputes, or make commitments on behalf of partner businesses.
+*System gaming attempts* (fake referrals, commission exploitation): State firmly but politely that the platform is built on trust and transparency, that fraudulent referrals violate the terms of service, and redirect toward legitimate ways to earn through genuine recommendations.
+
+Conversation Flow & Escalation:
+*Trigger Conditions for human handoff:*
+— The request is complex: multi-day itinerary planning, large group events, high-value VIP arrangements.
+— The user explicitly asks to speak with a person.
+— You cannot answer the user's question after two attempts.
+When handing off: collect contact details and set clear expectations for response time.
+
+*Decision Logic for every recommendation exchange:*
+1. Identify user type (consumer or business).
+2. Ask qualifying questions if key details are missing.
+3. Search your knowledge base for relevant information.
+4. Provide 2–3 curated options with brief descriptions.
+5. Flag anything you cannot verify. Offer the best alternative source.
+6. Suggest related experiences naturally.
+7. If the Concierge Skill is relevant to the conversation, weave in a brief explanation.
+
+Memory & Context Management:
+If the platform supports session memory, remember user preferences and past interactions to personalize the concierge experience. If session memory is unavailable, treat each conversation fresh but ask smart qualifying questions early to quickly understand needs.
+
+Tools & APIs Available:
+Currently: knowledge base only. No live data feeds. When live integrations become available (partner venue listings, event APIs, booking systems, Concierge Skill referral link generation), use them and note the data source.
+
+Input/Output Schemas:
+— Input: free-text user messages in any language.
+— Output: conversational responses. When collecting business contact info, gather: business name, contact name, email or phone, and a brief description of their interest. Format this clearly so the WhoIsDésir team can act on it.
+
+Error Handling & Fallbacks:
+— Unknown information: State honestly that you cannot confirm the details. Offer the most helpful alternative source.
+— Repeated misunderstanding: After two failed attempts to resolve a query, offer human handoff.
+— Off-topic requests: Redirect politely to hospitality, concierge services, or tourism.
+
+Compliance, Accuracy & Trust Signals:
+— Never guarantee availability, pricing, or commissions unless you have access to live partner data.
+— Availability disclaimer: Event availability, pricing, reservations, commissions, and promotions vary by partner, location, and time.
+— Only collect personal data (email, phone, preferences) when the user voluntarily offers it — for follow-up requests, update signups, or team connections. Never require personal data for basic recommendations.
+— When you cannot verify something, say so plainly and point to the best available source.
+
+Success Criteria:
+Every conversation should end with the user knowing their next step — whether that is a curated list of experiences to explore, a clear understanding of the Concierge Skill, a path to connect with the WhoIsDésir team, or a helpful redirect to the right resource. No dead ends.`;
+
+    // Local Variables
+    let geminiApiKey = null;
+    let currentAuthMode = 'login'; // 'login' or 'signup'
+    let conversationHistory = []; // Local cache of current conversation
+
+    // DOM References - Navigation & Page
+    const authNavBtn = document.getElementById('auth-nav-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const userInfo = document.getElementById('user-info');
+    const userEmailDisplay = document.getElementById('user-email-display');
+    const heroPrimaryCta = document.getElementById('hero-primary-cta');
+
+    // DOM References - Chat Panels
+    const chatBlocker = document.getElementById('chat-blocker');
+    const chatOverlayAuthBtn = document.getElementById('chat-overlay-auth-btn');
+    const chatStatus = document.getElementById('chat-status');
+    const chatStatusText = document.getElementById('chat-status-text');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatSendBtn = document.getElementById('chat-send-btn');
+
+    // DOM References - Modal & Forms
+    const authModal = document.getElementById('auth-modal');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const tabLogin = document.getElementById('tab-login');
+    const tabSignup = document.getElementById('tab-signup');
+    const authForm = document.getElementById('auth-form');
+    const authEmail = document.getElementById('auth-email');
+    const authPassword = document.getElementById('auth-password');
+    const authError = document.getElementById('auth-error');
+    const authSuccess = document.getElementById('auth-success');
+    const authSubmitBtn = document.getElementById('auth-submit-btn');
+    const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+    const forgotLinkContainer = document.getElementById('forgot-link-container');
+
+    // Load API key from local public .env file
+    async function loadEnvApiKey() {
+      try {
+        const response = await fetch('/.env');
+        if (response.ok) {
+          const text = await response.text();
+          const match = text.match(/GEMINI_API_KEY\s*=\s*["']?([^"'\s]+)["']?/);
+          if (match && match[1] && match[1] !== 'YOUR_GEMINI_API_KEY_HERE') {
+            geminiApiKey = match[1];
+            console.log("[Toussaint-Chat] Successfully loaded Gemini API key from .env");
+          } else {
+            console.warn("[Toussaint-Chat] Excluded or default placeholder API Key found in .env.");
+          }
+        }
+      } catch (err) {
+        console.warn("[Toussaint-Chat] .env file not accessible client-side:", err);
+      }
     }
-  } catch (err) {
-    authError.textContent = err.message;
-  } finally {
-    authSubmitBtn.disabled = false;
-  }
-});
 
-logoutBtn.addEventListener('click', () => {
-  signOut(auth);
-});
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    currentUser = user;
-    authView.classList.add('hidden');
-    appView.classList.remove('hidden');
-    initDataListeners();
-  } else {
-    currentUser = null;
-    appView.classList.add('hidden');
-    authView.classList.remove('hidden');
-    authForm.reset();
-    authError.textContent = '';
-    authMessage.textContent = '';
-    
-    if (unsubContacts) unsubContacts();
-    if (unsubDeals) unsubDeals();
-    unsubContacts = null;
-    unsubDeals = null;
-    
-    // Clear UI
-    contactsList.innerHTML = '';
-    dealsTbody.innerHTML = '';
-  }
-});
-
-// --- Tab Navigation ---
-
-function switchTab(tab) {
-  if (tab === 'contacts') {
-    tabContacts.classList.add('active');
-    tabDeals.classList.remove('active');
-    sectionContacts.classList.remove('hidden');
-    sectionDeals.classList.add('hidden');
-  } else {
-    tabDeals.classList.add('active');
-    tabContacts.classList.remove('active');
-    sectionDeals.classList.remove('hidden');
-    sectionContacts.classList.add('hidden');
-  }
-}
-
-tabContacts.addEventListener('click', () => switchTab('contacts'));
-tabDeals.addEventListener('click', () => switchTab('deals'));
-
-// --- Modal Logic ---
-document.querySelectorAll('.modal-cancel-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.target.closest('.modal').classList.add('hidden');
-  });
-});
-
-// --- Contacts CRUD ---
-
-addContactBtn.addEventListener('click', () => {
-  contactForm.reset();
-  contactIdInput.value = '';
-  contactModalTitle.textContent = 'Add Contact';
-  contactModal.classList.remove('hidden');
-});
-
-contactForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const btn = contactForm.querySelector('button[type="submit"]');
-  btn.disabled = true;
-  
-  const id = contactIdInput.value;
-  const name = document.getElementById('contact-name').value;
-  const email = document.getElementById('contact-email').value;
-  const company = document.getElementById('contact-company').value;
-  const notes = document.getElementById('contact-notes').value;
-
-  const data = {
-    name, email, company, notes
-  };
-
-  try {
-    const contactsRef = collection(db, `users/${currentUser.uid}/contacts`);
-    if (id) {
-      await updateDoc(doc(db, `users/${currentUser.uid}/contacts`, id), data);
-    } else {
-      data.createdAt = serverTimestamp();
-      await addDoc(contactsRef, data);
+    // Modal Control Helpers
+    function openModal(mode = 'login') {
+      currentAuthMode = mode;
+      authError.style.display = 'none';
+      authSuccess.style.display = 'none';
+      authForm.reset();
+      
+      if (currentAuthMode === 'login') {
+        tabLogin.classList.add('active');
+        tabSignup.classList.remove('active');
+        authSubmitBtn.textContent = 'Sign In';
+        forgotLinkContainer.style.display = 'block';
+      } else {
+        tabLogin.classList.remove('active');
+        tabSignup.classList.add('active');
+        authSubmitBtn.textContent = 'Create Account';
+        forgotLinkContainer.style.display = 'none';
+      }
+      
+      authModal.classList.add('active');
     }
-    contactModal.classList.add('hidden');
-  } catch (err) {
-    showErrorToast();
-    console.error(err);
-  } finally {
-    btn.disabled = false;
-  }
-});
 
-window.editContact = (id, name, email, company, notes) => {
-  contactIdInput.value = id;
-  document.getElementById('contact-name').value = name;
-  document.getElementById('contact-email').value = email;
-  document.getElementById('contact-company').value = company;
-  document.getElementById('contact-notes').value = notes;
-  contactModalTitle.textContent = 'Edit Contact';
-  contactModal.classList.remove('hidden');
-};
-
-window.deleteContact = async (id) => {
-  if (confirm('Are you sure you want to delete this contact?')) {
-    try {
-      await deleteDoc(doc(db, `users/${currentUser.uid}/contacts`, id));
-    } catch (err) {
-      showErrorToast();
-      console.error(err);
+    function closeModal() {
+      authModal.classList.remove('active');
     }
-  }
-};
 
-// --- Deals CRUD ---
+    // Bind UI Modals
+    authNavBtn.addEventListener('click', () => openModal('login'));
+    chatOverlayAuthBtn.addEventListener('click', () => openModal('login'));
+    heroPrimaryCta.addEventListener('click', () => {
+      if (auth.currentUser) {
+        document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        openModal('signup');
+      }
+    });
+    modalCloseBtn.addEventListener('click', closeModal);
+    authModal.addEventListener('click', (e) => {
+      if (e.target === authModal) closeModal();
+    });
 
-addDealBtn.addEventListener('click', () => {
-  dealForm.reset();
-  dealIdInput.value = '';
-  dealModalTitle.textContent = 'Add Deal';
-  dealModal.classList.remove('hidden');
-});
+    tabLogin.addEventListener('click', () => openModal('login'));
+    tabSignup.addEventListener('click', () => openModal('signup'));
 
-dealForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const btn = dealForm.querySelector('button[type="submit"]');
-  btn.disabled = true;
-  
-  const id = dealIdInput.value;
-  const dealName = document.getElementById('deal-name').value;
-  const value = parseFloat(document.getElementById('deal-value').value);
-  const stage = document.getElementById('deal-stage').value;
+    // Forgot Password Trigger
+    forgotPasswordBtn.addEventListener('click', async () => {
+      const email = authEmail.value;
+      authError.style.display = 'none';
+      authSuccess.style.display = 'none';
 
-  const data = {
-    dealName, value, stage
-  };
+      if (!email) {
+        authError.textContent = 'Please enter your email address to request a reset link.';
+        authError.style.display = 'block';
+        return;
+      }
 
-  try {
-    const dealsRef = collection(db, `users/${currentUser.uid}/deals`);
-    if (id) {
-      await updateDoc(doc(db, `users/${currentUser.uid}/deals`, id), data);
-    } else {
-      data.createdAt = serverTimestamp();
-      await addDoc(dealsRef, data);
+      try {
+        forgotPasswordBtn.disabled = true;
+        await sendPasswordResetEmail(auth, email);
+        authSuccess.textContent = 'Password reset email sent! Please check your inbox.';
+        authSuccess.style.display = 'block';
+      } catch (err) {
+        authError.textContent = formatAuthError(err.code || err.message);
+        authError.style.display = 'block';
+      } finally {
+        forgotPasswordBtn.disabled = false;
+      }
+    });
+
+    // Sign Up & Login handler
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      authError.style.display = 'none';
+      authSuccess.style.display = 'none';
+
+      const email = authEmail.value;
+      const password = authPassword.value;
+
+      try {
+        authSubmitBtn.disabled = true;
+        if (currentAuthMode === 'login') {
+          await signInWithEmailAndPassword(auth, email, password);
+          authSuccess.textContent = 'Welcome back!';
+          authSuccess.style.display = 'block';
+          setTimeout(closeModal, 1000);
+        } else {
+          const credentials = await createUserWithEmailAndPassword(auth, email, password);
+          // Set user document in Firestore to verify access
+          await setDoc(doc(db, `users/${credentials.user.uid}`), {
+            email: email,
+            initializedAt: serverTimestamp(),
+            conversationHistoryReady: true
+          }, { merge: true });
+          
+          authSuccess.textContent = 'Account created successfully!';
+          authSuccess.style.display = 'block';
+          setTimeout(closeModal, 1000);
+        }
+      } catch (err) {
+        console.error(err);
+        authError.textContent = formatAuthError(err.code || err.message);
+        authError.style.display = 'block';
+      } finally {
+        authSubmitBtn.disabled = false;
+      }
+    });
+
+    // Logout Event
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+      } catch (err) {
+        console.error("Logout error:", err);
+      }
+    });
+
+    // Format Authentication errors for user display
+    function formatAuthError(code) {
+      switch (code) {
+        case 'auth/invalid-credential':
+        case 'auth/wrong-password':
+        case 'auth/user-not-found':
+          return 'Invalid email or password. Please try again.';
+        case 'auth/email-already-in-use':
+          return 'An account with this email address already exists.';
+        case 'auth/weak-password':
+          return 'Password must be at least 6 characters.';
+        case 'auth/invalid-email':
+          return 'Please enter a valid email address.';
+        default:
+          return code.replace('auth/', '').replace(/-/g, ' ');
+      }
     }
-    dealModal.classList.add('hidden');
-  } catch (err) {
-    showErrorToast();
-    console.error(err);
-  } finally {
-    btn.disabled = false;
-  }
-});
 
-window.editDeal = (id, name, value, stage) => {
-  dealIdInput.value = id;
-  document.getElementById('deal-name').value = name;
-  document.getElementById('deal-value').value = value;
-  document.getElementById('deal-stage').value = stage;
-  dealModalTitle.textContent = 'Edit Deal';
-  dealModal.classList.remove('hidden');
-};
+    // --- Chat Logic Functions ---
 
-window.deleteDeal = async (id) => {
-  if (confirm('Are you sure you want to delete this deal?')) {
-    try {
-      await deleteDoc(doc(db, `users/${currentUser.uid}/deals`, id));
-    } catch (err) {
-      showErrorToast();
-      console.error(err);
-    }
-  }
-};
-
-// Format currency
-function formatCurrency(val) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
-}
-
-// --- Data Listeners ---
-
-function initDataListeners() {
-  loadingIndicator.classList.remove('hidden');
-  
-  // Contacts
-  const contactsQ = query(collection(db, `users/${currentUser.uid}/contacts`), orderBy('createdAt', 'desc'));
-  unsubContacts = onSnapshot(contactsQ, (snapshot) => {
-    contactsList.innerHTML = '';
-    if (snapshot.empty) {
-      contactsEmpty.classList.remove('hidden');
-    } else {
-      contactsEmpty.classList.add('hidden');
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const li = document.createElement('li');
-        li.className = 'item-row';
-        li.innerHTML = `
-          <div class="item-info">
-            <h3>${escapeHTML(data.name)}</h3>
-            <p>${escapeHTML(data.email)} ${data.company ? '| ' + escapeHTML(data.company) : ''}</p>
-            ${data.notes ? `<p><em>${escapeHTML(data.notes)}</em></p>` : ''}
-          </div>
-          <div class="item-actions">
-          </div>
-        `;
-        
-        const actionsDiv = li.querySelector('.item-actions');
-        
-        const editBtn = document.createElement('button');
-        editBtn.className = 'btn btn-secondary';
-        editBtn.textContent = 'Edit';
-        editBtn.onclick = () => editContact(docSnap.id, data.name || '', data.email || '', data.company || '', data.notes || '');
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'btn btn-danger';
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.onclick = () => deleteContact(docSnap.id);
-        
-        actionsDiv.appendChild(editBtn);
-        actionsDiv.appendChild(deleteBtn);
-        
-        contactsList.appendChild(li);
+    // Inject Knowledge Base into the prompt before sending
+    function getSystemInstruction() {
+      let prompt = SYSTEM_PROMPT;
+      prompt += "\n\nKNOWLEDGE BASE -- use these exact answers for these topics, word for word:\n";
+      KNOWLEDGE_BASE.forEach(item => {
+        prompt += `Topic: ${item.topic}\nAnswer: ${item.answer}\n\n`;
       });
+      return prompt;
     }
-    loadingIndicator.classList.add('hidden');
-  }, (err) => {
-    console.error(err);
-    showErrorToast();
-    loadingIndicator.classList.add('hidden');
-  });
 
-  // Deals
-  const dealsQ = query(collection(db, `users/${currentUser.uid}/deals`), orderBy('createdAt', 'desc'));
-  unsubDeals = onSnapshot(dealsQ, (snapshot) => {
-    dealsTbody.innerHTML = '';
-    if (snapshot.empty) {
-      dealsEmpty.classList.remove('hidden');
-      dealsTable.classList.add('hidden');
-    } else {
-      dealsEmpty.classList.add('hidden');
-      dealsTable.classList.remove('hidden');
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${escapeHTML(data.dealName)}</strong></td>
-          <td>${formatCurrency(data.value)}</td>
-          <td><span class="badge stage-${escapeHTML(data.stage).toLowerCase()}">${escapeHTML(data.stage)}</span></td>
-          <td>
-            <div class="item-actions">
-            </div>
-          </td>
-        `;
-        const actionsDiv = tr.querySelector('.item-actions');
+    // Append a message bubble to the chat container UI
+    function appendMessage(text, sender) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-message ${sender}`;
+      
+      if (sender === 'bot' && text === '...') {
+        msgDiv.classList.add('loading');
+        msgDiv.innerHTML = `<span>Thinking</span> <span class="dot">...</span>`;
+      } else {
+        msgDiv.textContent = text;
+      }
+      
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return msgDiv;
+    }
 
-        const editBtn = document.createElement('button');
-        editBtn.className = 'btn btn-secondary';
-        editBtn.textContent = 'Edit';
-        editBtn.onclick = () => editDeal(docSnap.id, data.dealName || '', data.value || 0, data.stage || '');
+    // Save message to Firestore log
+    async function saveMessageToFirestore(uid, text, sender) {
+      try {
+        await addDoc(collection(db, `users/${uid}/chatHistory`), {
+          text: text,
+          sender: sender,
+          timestamp: serverTimestamp()
+        });
+      } catch (err) {
+        console.error("[Toussaint-Firestore] Error logging message to Firestore:", err);
+      }
+    }
+
+    // Load all past messages for user from Firestore
+    async function loadChatHistory(uid) {
+      chatMessages.innerHTML = '';
+      conversationHistory = [];
+      
+      const loadingBubble = appendMessage('...', 'bot');
+      
+      try {
+        const q = query(collection(db, `users/${uid}/chatHistory`), orderBy('timestamp', 'asc'));
+        const snapshot = await getDocs(q);
         
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'btn btn-danger';
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.onclick = () => deleteDeal(docSnap.id);
+        loadingBubble.remove();
         
-        actionsDiv.appendChild(editBtn);
-        actionsDiv.appendChild(deleteBtn);
-        
-        dealsTbody.appendChild(tr);
+        if (snapshot.empty) {
+          // Initialize first welcome message
+          const welcome = "Hello! I am Concierge by WhoIsDésir. How can I help you discover local experiences or learn about the Concierge Skill referral system today?";
+          appendMessage(welcome, 'bot');
+          await saveMessageToFirestore(uid, welcome, 'bot');
+          conversationHistory.push({ text: welcome, sender: 'bot' });
+        } else {
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            appendMessage(data.text, data.sender);
+            conversationHistory.push({ text: data.text, sender: data.sender });
+          });
+        }
+      } catch (err) {
+        console.error("[Toussaint-Firestore] Error loading chat history:", err);
+        loadingBubble.remove();
+        appendMessage("Welcome! I am ready to help. (Note: could not retrieve past conversation log from Firestore. Verify security rules.)", 'bot');
+      }
+    }
+
+    // Fetch response from Gemini API directly client-side
+    async function getGeminiResponse(history) {
+      if (!geminiApiKey) {
+        throw new Error("Gemini API key is not configured. Please fill in the GEMINI_API_KEY in your .env file.");
+      }
+      
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${geminiApiKey}`;
+      
+      // Map message history array into standard Gemini model schema
+      const contents = history.map(msg => ({
+        role: msg.sender === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.text }]
+      }));
+
+      const body = {
+        contents: contents,
+        systemInstruction: {
+          parts: [{ text: getSystemInstruction() }]
+        }
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
       });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Gemini API Error (HTTP ${response.status}): ${errText}`);
+      }
+
+      const resJson = await response.json();
+      if (resJson.candidates && resJson.candidates[0] && resJson.candidates[0].content && resJson.candidates[0].content.parts[0]) {
+        return resJson.candidates[0].content.parts[0].text;
+      }
+      throw new Error("Invalid response format received from Gemini API.");
     }
-  }, (err) => {
-    console.error(err);
-    showErrorToast();
-  });
-}
+
+    // Process outgoing message
+    async function handleSendMessage() {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const messageText = chatInput.value.trim();
+      if (!messageText) return;
+
+      // Clear input field
+      chatInput.value = '';
+      
+      // 1. Append & Save User message
+      appendMessage(messageText, 'user');
+      conversationHistory.push({ text: messageText, sender: 'user' });
+      await saveMessageToFirestore(user.uid, messageText, 'user');
+
+      // 2. Append bot placeholder bubble
+      const thinkingBubble = appendMessage('...', 'bot');
+
+      try {
+        // 3. Ask Gemini
+        const botResponse = await getGeminiResponse(conversationHistory);
+        
+        // Remove loading state and show actual text
+        thinkingBubble.remove();
+        appendMessage(botResponse, 'bot');
+        
+        // 4. Save Bot message
+        conversationHistory.push({ text: botResponse, sender: 'bot' });
+        await saveMessageToFirestore(user.uid, botResponse, 'bot');
+      } catch (err) {
+        console.error(err);
+        thinkingBubble.remove();
+        
+        let displayError = err.message;
+        if (err.message.includes("Gemini API key is not configured")) {
+          displayError = "Configuration Error: Gemini API key is missing. Please add your GEMINI_API_KEY in the local .env file.";
+        } else {
+          displayError = "Connection Error: Unable to retrieve response from Toussaint AI. Please check your internet connection or API Key limits.";
+        }
+        
+        appendMessage(displayError, 'bot');
+      }
+    }
+
+    // Input events
+    chatSendBtn.addEventListener('click', handleSendMessage);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSendMessage();
+      }
+    });
+
+    // Monitor Firebase Authentication state
+    onAuthStateChanged(auth, async (user) => {
+      await loadEnvApiKey(); // Reload API key from .env
+
+      if (user) {
+        // Logged-in state
+        userInfo.style.display = 'inline';
+        userEmailDisplay.textContent = user.email;
+        authNavBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-flex';
+        heroPrimaryCta.textContent = 'Access Chat Portal';
+
+        // Unlock Chat UI
+        chatBlocker.classList.add('hidden');
+        chatInput.disabled = false;
+        chatSendBtn.disabled = false;
+
+        chatStatus.className = 'chat-status-badge authenticated';
+        chatStatusText.textContent = 'Connected';
+
+        // Load conversation history logs
+        await loadChatHistory(user.uid);
+        
+        console.log(`[Toussaint-Auth] Logged in as ${user.email}. Chat loaded.`);
+      } else {
+        // Logged-out state
+        userInfo.style.display = 'none';
+        userEmailDisplay.textContent = 'Guest';
+        authNavBtn.style.display = 'inline-flex';
+        logoutBtn.style.display = 'none';
+        heroPrimaryCta.textContent = 'Start Experiencing';
+
+        // Lock Chat UI
+        chatBlocker.classList.remove('hidden');
+        chatInput.disabled = true;
+        chatSendBtn.disabled = true;
+        chatMessages.innerHTML = '';
+        conversationHistory = [];
+
+        chatStatus.className = 'chat-status-badge';
+        chatStatusText.textContent = 'Disconnected';
+        
+        console.log("[Toussaint-Auth] User logged out.");
+      }
+    });
   </script>
 </body>
 </html>

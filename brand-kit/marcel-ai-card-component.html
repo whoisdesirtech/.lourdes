@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marcel AI — Research Card Component</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent:  #00d4aa;
+      --surface: #0a0a0f;
+      --card:    #1a1a25;
+      --border:  #2a2a3a;
+      --text:    #e8e8f0;
+      --muted:   #8888a0;
+      --deep:    #0d0d14;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--surface);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 48px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; width: 100%; max-width: 960px; }
+
+    /* ── Card ── */
+    .rec-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .rec-card:hover {
+      border-color: rgba(0,212,170,0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,170,0.1);
+    }
+
+    /* ── Header row ── */
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+    .card-identity { display: flex; align-items: center; gap: 12px; }
+    .company-logo {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: var(--muted);
+      flex-shrink: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    .company-name { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .company-meta { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Rating badges ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .badge-buy  { background: rgba(74,222,128,0.12); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+    .badge-buy .badge-dot  { background: #4ade80; }
+    .badge-hold { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+    .badge-hold .badge-dot { background: #fbbf24; }
+    .badge-sell { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+    .badge-sell .badge-dot { background: #f87171; }
+
+    /* ── Industry tag ── */
+    .industry-tag { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+
+    /* ── Price + Confidence ── */
+    .card-metrics { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .price { font-size: 20px; font-weight: 700; color: var(--text); font-family: 'JetBrains Mono', monospace; }
+    .confidence-block { text-align: right; }
+    .confidence-label { font-size: 11px; color: var(--muted); display: block; margin-bottom: 2px; }
+    .confidence-value { font-size: 14px; font-weight: 700; }
+    .conf-buy  { color: #4ade80; }
+    .conf-hold { color: #fbbf24; }
+    .conf-sell { color: #f87171; }
+
+    /* ── Confidence bar ── */
+    .conf-bar-track {
+      height: 4px; background: var(--border);
+      border-radius: 4px; margin-bottom: 14px; overflow: hidden;
+    }
+    .conf-bar-fill {
+      height: 100%; border-radius: 4px;
+      transition: width 600ms ease;
+    }
+    .fill-buy  { background: #4ade80; }
+    .fill-hold { background: #fbbf24; }
+    .fill-sell { background: #f87171; }
+
+    /* ── Grade pills ── */
+    .grades { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+    .grade-pill {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 4px;
+      text-align: center;
+    }
+    .grade-letter { font-size: 16px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .grade-name   { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .grade-a { color: #4ade80; }
+    .grade-b { color: #86efac; }
+    .grade-c { color: #fbbf24; }
+    .grade-d { color: #fb923c; }
+    .grade-f { color: #f87171; }
+
+    /* ── Summary ── */
+    .card-summary {
+      font-size: 13px; color: var(--muted);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    /* ── Footer ── */
+    .card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .updated-label { font-size: 11px; color: var(--muted); }
+    .view-link {
+      font-size: 12px; color: var(--accent);
+      font-weight: 500; text-decoration: none;
+      display: flex; align-items: center; gap: 4px;
+      transition: gap 150ms ease;
+    }
+    .view-link:hover { gap: 8px; }
+
+    /* ── Evidence badge ── */
+    .evidence-strip {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--muted);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 12px;
+    }
+    .evidence-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0.7; }
+  </style>
+</head>
+<body>
+
+  <div style="text-align:center; max-width:600px;">
+    <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Component Library</p>
+    <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.5px;">Research Card</h1>
+    <p style="font-size:14px;color:var(--muted);margin-top:8px;">Marcel AI · Synced from brand kit · All three signal states</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- BUY Card -->
+    <div class="rec-card">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="company-logo">A</div>
+          <div>
+            <div class="company-name">Apple Inc.</div>
+            <div class="company-meta">AAPL · NASDAQ</div>
+          </div>
+        </div>
+        <div class="badge badge-buy"><div class="badge-dot"></div>BUY</div>
+      </div>
+      <div class="industry-tag">Consumer Electronics · Technology</div>
+      <div class="card-metrics">
+        <div class="price">$212.40</div>
+        <div class="confidence-block">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-value conf-buy">82%</span>
+        </div>
+      </div>
+      <div class="conf-bar-track"><div class="conf-bar-fill fill-buy" style="width:82%"></div></div>
+      <div class="grades">
+        <div class="grade-pill"><div class="grade-letter grade-a">A</div><div class="grade-name">Revenue</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-b">B</div><div class="grade-name">Margins</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-a">A</div><div class="grade-name">Cash Flow</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-b">B</div><div class="grade-name">Debt</div></div>
+      </div>
+      <div class="card-summary">Strong revenue growth and services segment expansion. Balance sheet remains one of the best in the sector. SEC filings show no material weaknesses.</div>
+      <div class="card-footer">
+        <span class="updated-label">Updated Aug 4, 2026</span>
+        <a class="view-link" href="#">View Details →</a>
+      </div>
+      <div class="evidence-strip"><div class="evidence-dot"></div>Every grade links to evidence in the actual filings</div>
+    </div>
+
+    <!-- HOLD Card -->
+    <div class="rec-card">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="company-logo">T</div>
+          <div>
+            <div class="company-name">Tesla, Inc.</div>
+            <div class="company-meta">TSLA · NASDAQ</div>
+          </div>
+        </div>
+        <div class="badge badge-hold"><div class="badge-dot"></div>HOLD</div>
+      </div>
+      <div class="industry-tag">Electric Vehicles · Automotive</div>
+      <div class="card-metrics">
+        <div class="price">$248.15</div>
+        <div class="confidence-block">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-value conf-hold">61%</span>
+        </div>
+      </div>
+      <div class="conf-bar-track"><div class="conf-bar-fill fill-hold" style="width:61%"></div></div>
+      <div class="grades">
+        <div class="grade-pill"><div class="grade-letter grade-b">B</div><div class="grade-name">Revenue</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-d">D</div><div class="grade-name">Margins</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-c">C</div><div class="grade-name">Cash Flow</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-a">A</div><div class="grade-name">Debt</div></div>
+      </div>
+      <div class="card-summary">Margin compression continues quarter over quarter. Energy business growing but not enough to offset automotive headwinds. Watch Q3 delivery numbers.</div>
+      <div class="card-footer">
+        <span class="updated-label">Updated Aug 4, 2026</span>
+        <a class="view-link" href="#">View Details →</a>
+      </div>
+      <div class="evidence-strip"><div class="evidence-dot"></div>Every grade links to evidence in the actual filings</div>
+    </div>
+
+    <!-- SELL Card -->
+    <div class="rec-card">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="company-logo">G</div>
+          <div>
+            <div class="company-name">GameStop Corp.</div>
+            <div class="company-meta">GME · NYSE</div>
+          </div>
+        </div>
+        <div class="badge badge-sell"><div class="badge-dot"></div>SELL</div>
+      </div>
+      <div class="industry-tag">Specialty Retail · Gaming</div>
+      <div class="card-metrics">
+        <div class="price">$28.70</div>
+        <div class="confidence-block">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-value conf-sell">77%</span>
+        </div>
+      </div>
+      <div class="conf-bar-track"><div class="conf-bar-fill fill-sell" style="width:77%"></div></div>
+      <div class="grades">
+        <div class="grade-pill"><div class="grade-letter grade-f">F</div><div class="grade-name">Revenue</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-d">D</div><div class="grade-name">Margins</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-c">C</div><div class="grade-name">Cash Flow</div></div>
+        <div class="grade-pill"><div class="grade-letter grade-b">B</div><div class="grade-name">Debt</div></div>
+      </div>
+      <div class="card-summary">Revenue declining six consecutive quarters. No credible pivot strategy evident in 10-K filings. Insider selling accelerated in Q2. Going concern language present.</div>
+      <div class="card-footer">
+        <span class="updated-label">Updated Aug 4, 2026</span>
+        <a class="view-link" href="#">View Details →</a>
+      </div>
+      <div class="evidence-strip"><div class="evidence-dot"></div>Every grade links to evidence in the actual filings</div>
+    </div>
+
+  </div>
+
+  <p style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-align:center;">
+    Marcel AI · Component: RecommendationCard · Brand Kit v1.0
+  </p>
+
+</body>
+</html>

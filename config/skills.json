@@ -120,22 +120,6 @@
       "file": "skills/hindsight_memory.md"
     },
     {
-      "name": "luxcare_concierge",
-      "description": "White-glove luxury concierge response agent for WhoIsDésir® Concierge. Processes all inbound client requests using the LUXCARE framework — assessing urgency, categorizing requests, surfacing missing information, drafting polished client-facing replies signed by Bri, and generating structured internal action items and Google Sheets MCP log recommendations.",
-      "accepted_input_types": ["text", "client_message", "voice_transcript"],
-      "trigger_phrases": [
-        "/luxcare",
-        "run luxcare",
-        "process client request",
-        "concierge response",
-        "handle client message",
-        "luxury concierge intake",
-        "new client request",
-        "client message intake"
-      ],
-      "file": "skills/luxcare_concierge.md"
-    },
-    {
       "name": "gws_workspace_cli",
       "description": "Enables Lourdes to interact with Google Workspace (Drive, Gmail, Calendar, Sheets, Chat, and 40+ APIs) using the gws CLI. Handles auth setup, file operations, email management, calendar events, spreadsheet creation, and any Workspace API call via structured JSON output.",
       "accepted_input_types": ["text", "workspace_command", "file_path", "email_request", "calendar_request"],
@@ -243,6 +227,305 @@
         "autonomous skill refinement"
       ],
       "file": "skills/skill_creator.md"
+    },
+    {
+      "name": "scope-agent",
+      "description": "Reads a structured prospect profile and produces a one-page recommended project scope. Maps prospect needs to the service catalog, selects a primary deliverable, builds timeline ranges, and flags assumptions. Feeds downstream proposal generator.",
+      "accepted_input_types": ["text", "prospect_profile", "json"],
+      "trigger_phrases": [
+        "scope this prospect",
+        "run scope agent",
+        "generate project scope",
+        "define scope for this lead",
+        "create scope from profile",
+        "scope this project",
+        "build scope document",
+        "prepare scope for proposal"
+      ],
+      "file": ".agent/scope-agent/AGENTS.md",
+      "input_schema": {
+        "prospect_goals": "string (optional)",
+        "pain_points": "string (optional)",
+        "industry": "string (optional)",
+        "company_size": "string (optional)",
+        "budget": "string (optional)",
+        "timeline": "string (optional)"
+      },
+      "output_schema": {
+        "sections": ["Primary Deliverable", "What It Includes", "Timeline", "Out of Scope", "Optional Secondary Services", "Alternatives Note", "Assumptions"],
+        "format": "structured_text"
+      }
+    },
+    {
+      "name": "algorithmic-art",
+      "description": "Creates algorithmic/generative art using p5.js with seeded randomness, flow fields, and particle systems. Use when users request code-generated art, generative art, or algorithmic visual experiences.",
+      "accepted_input_types": ["text", "art_prompt", "parameters"],
+      "trigger_phrases": [
+        "create algorithmic art",
+        "generative art",
+        "make art with code",
+        "flow field",
+        "particle system",
+        "p5.js art",
+        "algorithmic art"
+      ],
+      "file": "skills/algorithmic-art.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "brand-guidelines",
+      "description": "Applies Anthropic's official brand colors and typography to any artifact. Use when brand colors, style guidelines, visual formatting, or company design standards apply.",
+      "accepted_input_types": ["text", "artifact", "design_request"],
+      "trigger_phrases": [
+        "apply brand colors",
+        "anthropic brand",
+        "use brand guidelines",
+        "apply brand style",
+        "brand-guidelines skill"
+      ],
+      "file": "skills/brand-guidelines.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "canvas-design",
+      "description": "Creates beautiful visual art in .png and .pdf documents. Use when the user asks to create a poster, piece of art, design, or other static visual piece.",
+      "accepted_input_types": ["text", "design_brief", "style_reference"],
+      "trigger_phrases": [
+        "create a poster",
+        "design artwork",
+        "canvas design",
+        "visual design",
+        "make a graphic",
+        "create a png",
+        "design a flyer"
+      ],
+      "file": "skills/canvas-design.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "claude-api",
+      "description": "Provides guidance and code patterns for integrating the Claude API into applications. Use when building Claude-powered features, handling API calls, streaming, tool use, or prompt engineering patterns.",
+      "accepted_input_types": ["text", "code", "api_spec"],
+      "trigger_phrases": [
+        "claude api",
+        "integrate claude",
+        "use anthropic api",
+        "claude api skill",
+        "build with claude api",
+        "claude sdk"
+      ],
+      "file": "skills/claude-api.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "doc-coauthoring",
+      "description": "Guides users through a structured workflow for co-authoring documentation. Use when writing documentation, proposals, technical specs, decision docs, or similar structured content.",
+      "accepted_input_types": ["text", "draft", "outline"],
+      "trigger_phrases": [
+        "co-author a document",
+        "write documentation",
+        "create a proposal",
+        "draft a spec",
+        "doc coauthoring",
+        "documentation workflow",
+        "help me write a doc"
+      ],
+      "file": "skills/doc-coauthoring.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "docx",
+      "description": "Creates, reads, edits, or manipulates Word documents (.docx) and templates (.dotx). Use for reports, memos, letters, templates, or any Word document output.",
+      "accepted_input_types": ["text", "docx_file", "document_spec"],
+      "trigger_phrases": [
+        "create a word doc",
+        "generate a docx",
+        "word document",
+        ".docx",
+        "make a word file",
+        "create a report as word",
+        "write a memo",
+        "word template"
+      ],
+      "file": "skills/docx.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "frontend-design",
+      "description": "Provides guidance for distinctive, intentional visual design when building or reshaping UI. Helps with aesthetic direction, typography, and avoiding templated defaults.",
+      "accepted_input_types": ["text", "screenshot", "url", "design_brief"],
+      "trigger_phrases": [
+        "frontend design guidance",
+        "ui design help",
+        "design direction",
+        "design this ui",
+        "visual design feedback",
+        "frontend-design skill"
+      ],
+      "file": "skills/frontend-design.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "internal-comms",
+      "description": "Helps write internal communications including status reports, leadership updates, company newsletters, FAQs, incident reports, and project updates.",
+      "accepted_input_types": ["text", "context", "audience_notes"],
+      "trigger_phrases": [
+        "write an internal update",
+        "status report",
+        "leadership update",
+        "company newsletter",
+        "incident report",
+        "internal communication",
+        "write a team update",
+        "project update email"
+      ],
+      "file": "skills/internal-comms.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "mcp-builder",
+      "description": "Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services. Use for building MCP servers in Python (FastMCP) or Node/TypeScript.",
+      "accepted_input_types": ["text", "api_spec", "service_description"],
+      "trigger_phrases": [
+        "build an mcp server",
+        "create mcp",
+        "mcp builder",
+        "model context protocol",
+        "mcp tool",
+        "fastmcp",
+        "mcp server"
+      ],
+      "file": "skills/mcp-builder.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "pdf",
+      "description": "Handles all PDF operations: reading, extracting text/tables, merging, splitting, rotating, watermarking, creating, form-filling, encrypting, image extraction, and OCR.",
+      "accepted_input_types": ["text", "pdf_file", "pdf_spec"],
+      "trigger_phrases": [
+        "create a pdf",
+        "pdf file",
+        ".pdf",
+        "merge pdfs",
+        "split a pdf",
+        "extract from pdf",
+        "pdf watermark",
+        "ocr pdf",
+        "pdf form"
+      ],
+      "file": "skills/pdf.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "pptx",
+      "description": "Creates, reads, edits, and manipulates PowerPoint files (.pptx, .potx). Use for slide decks, pitch decks, presentations, speaker notes, or any PowerPoint output.",
+      "accepted_input_types": ["text", "pptx_file", "slide_spec"],
+      "trigger_phrases": [
+        "create a presentation",
+        "powerpoint",
+        ".pptx",
+        "slide deck",
+        "make slides",
+        "pitch deck",
+        "presentation file",
+        "pptx skill"
+      ],
+      "file": "skills/pptx.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "anthropic-skill-creator",
+      "description": "Creates new skills, modifies and improves existing skills, and measures skill performance. Use to build skills from scratch, run evals, or optimize descriptions for better triggering accuracy.",
+      "accepted_input_types": ["text", "skill_spec", "existing_skill"],
+      "trigger_phrases": [
+        "/anthropic-skill-creator",
+        "create skill from anthropic template",
+        "build anthropic skill",
+        "run skill evals",
+        "benchmark skill performance"
+      ],
+      "file": "skills/skill-creator.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "slack-gif-creator",
+      "description": "Creates animated GIFs optimized for Slack. Provides constraints, validation tools, and animation concepts for Slack-ready GIF output.",
+      "accepted_input_types": ["text", "animation_prompt", "image_assets"],
+      "trigger_phrases": [
+        "make a gif for slack",
+        "slack gif",
+        "animated gif",
+        "create a gif",
+        "slack animation",
+        "gif creator"
+      ],
+      "file": "skills/slack-gif-creator.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "theme-factory",
+      "description": "Applies themes (colors/fonts) to any artifact — slides, docs, reports, HTML pages. Includes 10 pre-set themes and can generate custom themes on-the-fly.",
+      "accepted_input_types": ["text", "artifact", "theme_spec"],
+      "trigger_phrases": [
+        "apply a theme",
+        "theme factory",
+        "style this artifact",
+        "change the theme",
+        "pick a color theme",
+        "theme this document",
+        "generate a theme"
+      ],
+      "file": "skills/theme-factory.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "web-artifacts-builder",
+      "description": "Creates elaborate, multi-component HTML artifacts using React, Tailwind CSS, and shadcn/ui. Use for complex artifacts requiring state management, routing, or component libraries.",
+      "accepted_input_types": ["text", "component_spec", "design_brief"],
+      "trigger_phrases": [
+        "build a web artifact",
+        "create a react component",
+        "shadcn ui",
+        "multi-component artifact",
+        "web artifacts builder",
+        "complex html artifact",
+        "tailwind artifact"
+      ],
+      "file": "skills/web-artifacts-builder.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "webapp-testing",
+      "description": "Toolkit for testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing screenshots, and viewing browser logs.",
+      "accepted_input_types": ["text", "url", "test_spec"],
+      "trigger_phrases": [
+        "test my web app",
+        "playwright test",
+        "webapp testing",
+        "browser test",
+        "test the frontend",
+        "screenshot my app",
+        "debug ui behavior"
+      ],
+      "file": "skills/webapp-testing.md",
+      "source": "anthropics/skills"
+    },
+    {
+      "name": "xlsx",
+      "description": "Handles all Excel/spreadsheet operations: opening, reading, editing, creating, or converting .xlsx, .xlsm, .xltx, .csv, and .tsv files. Use when a spreadsheet file is the primary input or output.",
+      "accepted_input_types": ["text", "xlsx_file", "spreadsheet_spec"],
+      "trigger_phrases": [
+        "create an excel file",
+        "spreadsheet",
+        ".xlsx",
+        "excel document",
+        "make a csv",
+        "edit the spreadsheet",
+        "xlsx skill",
+        "excel file"
+      ],
+      "file": "skills/xlsx.md",
+      "source": "anthropics/skills"
     }
   ]
 }

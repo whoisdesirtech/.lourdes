@@ -1,0 +1,37 @@
+{
+  "name": "scope-agent",
+  "description": "Reads a structured prospect profile and produces a one-page recommended project scope. Maps prospect needs to the service catalog, selects a primary deliverable, builds timeline ranges, and flags assumptions. Feeds downstream proposal generator.",
+  "accepted_input_types": ["text", "prospect_profile", "json"],
+  "trigger_phrases": [
+    "scope this prospect",
+    "run scope agent",
+    "generate project scope",
+    "define scope for this lead",
+    "create scope from profile",
+    "scope this project",
+    "build scope document",
+    "prepare scope for proposal"
+  ],
+  "file": "AGENTS.md",
+  "input_schema": {
+    "prospect_goals": "string (optional)",
+    "pain_points": "string (optional)",
+    "industry": "string (optional)",
+    "company_size": "string (optional)",
+    "budget": "string (optional)",
+    "timeline": "string (optional)"
+  },
+  "output_schema": {
+    "sections": [
+      "Primary Deliverable",
+      "What It Includes",
+      "Timeline",
+      "Out of Scope",
+      "Optional Secondary Services",
+      "Alternatives Note",
+      "Assumptions"
+    ],
+    "format": "structured_text"
+  },
+  "config_path": "config/service-catalog.json"
+}

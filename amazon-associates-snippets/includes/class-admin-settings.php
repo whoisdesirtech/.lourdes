@@ -48,6 +48,10 @@ class AA_Admin_Settings {
 			<p class="description">
 				<?php esc_html_e( 'Configure your Amazon PA-API 5.0 keys and generate custom PHP code snippets and shortcodes for your WordPress site.', 'amazon-associates-snippets' ); ?>
 			</p>
+			<p style="margin-top: 6px; font-size: 13px; color: #475569;">
+				<strong>Developed by:</strong> WhoIsDésir® Media Agency &bull; 
+				<strong>Developer Contact:</strong> <a href="mailto:digitalvurv@gmail.com" style="color: #0284c7; text-decoration: none;">digitalvurv@gmail.com</a>
+			</p>
 
 			<h2 class="nav-tab-wrapper">
 				<a href="?page=amazon-snippets&tab=credentials" class="nav-tab <?php echo 'credentials' === $active_tab ? 'nav-tab-active' : ''; ?>">

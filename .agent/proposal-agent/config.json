@@ -1,0 +1,24 @@
+{
+  "name": "proposal-agent",
+  "description": "Drafts personalized proposal emails from prospect profiles and project scopes. Uses stored rate card and voice references to match owner's tone. Outputs draft email body plus internal review note.",
+  "accepted_input_types": ["text", "prospect_profile", "project_scope"],
+  "trigger_phrases": [
+    "draft proposal",
+    "write proposal",
+    "create proposal email",
+    "draft this proposal",
+    "send proposal",
+    "proposal for this lead",
+    "write follow-up email",
+    "draft follow-up"
+  ],
+  "file": "AGENTS.md",
+  "input_schema": {
+    "prospect_profile": "structured text (required)",
+    "project_scope": "structured text (required)"
+  },
+  "output_schema": {
+    "sections": ["Email Body", "Internal Review Note"],
+    "format": "plain-text"
+  }
+}

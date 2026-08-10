@@ -1,0 +1,25 @@
+{
+  "name": "intake-agent",
+  "description": "Processes raw web-form submissions and produces clean prospect profiles for sales reps. Extracts and structures name, email, message into a four-section profile (Who, Problem, Context, Unknowns).",
+  "accepted_input_types": ["text", "form_submission", "json"],
+  "trigger_phrases": [
+    "process this lead",
+    "run intake agent",
+    "new form submission",
+    "process this prospect",
+    "intake this lead",
+    "new web form lead",
+    "process web form",
+    "run prospect intake"
+  ],
+  "file": "AGENTS.md",
+  "input_schema": {
+    "name": "string (optional)",
+    "email": "string (optional)",
+    "message": "string (optional)"
+  },
+  "output_schema": {
+    "sections": ["Who", "Problem", "Context", "Unknowns"],
+    "format": "plain-text"
+  }
+}

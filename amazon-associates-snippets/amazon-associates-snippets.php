@@ -4,7 +4,8 @@
  * Plugin URI:        https://example.com/amazon-associates-snippets
  * Description:       Integrates Amazon Product Advertising API 5.0 (PA-API 5.0) into WordPress. Provides PHP snippet helpers, shortcodes, and product cards with transient caching and FTC compliance.
  * Version:           1.0.0
- * Author:            Antigravity AI
+ * Author:            WhoIsDésir® Media Agency
+ * Author URI:        mailto:digitalvurv@gmail.com
  * Text Domain:       amazon-associates-snippets
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt

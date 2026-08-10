@@ -1,0 +1,59 @@
+{
+  "config_version": "1.0",
+  "rate_card": {
+    "note": "Map service IDs from service-catalog.json to price ranges. Add project-size tiers for complex work.",
+    "services": {
+      "brand-kit": {
+        "small": "$X,XXX – $X,XXX",
+        "medium": "$X,XXX – $X,XXX",
+        "large": "$X,XXX – $X,XXX"
+      },
+      "website-design": {
+        "small": "$X,XXX – $X,XXX",
+        "medium": "$X,XXX – $X,XXX",
+        "large": "$X,XXX – $X,XXX"
+      },
+      "instagram-carousel": {
+        "single": "$XXX – $X,XXX",
+        "series": "$X,XXX – $X,XXX"
+      },
+      "tax-client-intake": {
+        "standard": "$X,XXX – $X,XXX",
+        "complex": "$X,XXX – $X,XXX"
+      },
+      "google-workspace-automation": {
+        "standard": "$X,XXX – $X,XXX",
+        "complex": "$X,XXX – $X,XXX"
+      }
+    },
+    "payment_terms": {
+      "deposit": "50% upfront, 50% on delivery (or adjust)",
+      "net": "Net 15"
+    }
+  },
+  "voice_references": {
+    "note": "Paste 2-3 past proposal emails here. These are tone references only — never copy content between prospects.",
+    "proposals": [
+      {
+        "label": "Voice Reference 1",
+        "body": "PASTE PAST PROPOSAL EMAIL HERE"
+      },
+      {
+        "label": "Voice Reference 2",
+        "body": "PASTE PAST PROPOSAL EMAIL HERE"
+      },
+      {
+        "label": "Voice Reference 3",
+        "body": "PASTE PAST PROPOSAL EMAIL HERE"
+      }
+    ]
+  },
+  "scheduling_link": {
+    "url": "https://YOUR-SCHEDULING-LINK.com",
+    "note": "Used for discovery-call CTA path"
+  },
+  "availability": {
+    "note": "Optional: note any blocked dates or preferred windows",
+    "windows": []
+  }
+}

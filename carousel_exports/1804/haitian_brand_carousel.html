@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1804 Haitian Pizza × WhoIsDésir — Grand Opening Carousel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-panel: #161616;
+      --vice-pink: #ff007f;
+      --vice-blue: #00f0ff;
+      --text-white: #ffffff;
+      --text-muted: #a0a0a0;
+      --font-heading: 'Oswald', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --border-glow: linear-gradient(135deg, var(--vice-pink), var(--vice-blue));
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+      overflow-x: hidden;
+    }
+
+    h1.page-title {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      text-align: center;
+      background: var(--border-glow);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.page-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-size: 1rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* Mockup Container (Instagram Look) */
+    .instagram-mockup {
+      width: 100%;
+      max-width: 550px;
+      background-color: var(--bg-panel);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+
+    /* Header of Instagram Post */
+    .mock-header {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .profile-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--border-glow);
+      padding: 2px;
+    }
+
+    .profile-pic-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #000;
+      background-image: url('photos/profile-abstract.jpg');
+      background-size: cover;
+    }
+
+    .mock-username {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .mock-username span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Slide Container */
+    .slider-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1; /* Square post */
+      background-color: #000;
+      overflow: hidden;
+    }
+
+    .slides-container {
+      display: flex;
+      width: 300%; /* 3 slides */
+      height: 100%;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Individual Slide Styles */
+    .slide {
+      width: 33.33333%; /* 1/3rd */
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .slide-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.9) 100%);
+      z-index: 1;
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .slide-badge {
+      align-self: flex-start;
+      background: rgba(255, 0, 127, 0.15);
+      border: 1px solid var(--vice-pink);
+      color: #fff;
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      padding: 6px 16px;
+      border-radius: 20px;
+    }
+
+    .slide-badge.collab {
+      border-color: var(--vice-blue);
+      background: rgba(0, 240, 255, 0.15);
+    }
+
+    .slide h2 {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .slide-1 h2 {
+      font-size: 3rem;
+      text-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+    }
+
+    .slide-1 h2 span {
+      background: var(--border-glow);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide p.slide-desc {
+      font-size: 1rem;
+      color: #ddd;
+      line-height: 1.5;
+    }
+
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+    }
+
+    .slide-footer-text {
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: var(--vice-blue);
+    }
+
+    .slide-number {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    /* List items in slides */
+    .slide-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .slide-list li {
+      position: relative;
+      padding-left: 25px;
+      font-size: 0.95rem;
+      color: #eaeaea;
+    }
+
+    .slide-list li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--vice-pink);
+      text-shadow: 0 0 5px var(--vice-pink);
+    }
+
+    /* Bullet modifications for blue slide */
+    .slide-blue .slide-list li::before {
+      color: var(--vice-blue);
+      text-shadow: 0 0 5px var(--vice-blue);
+    }
+
+    /* Slider controls */
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: var(--transition);
+    }
+
+    .slider-btn:hover {
+      background: rgba(255, 0, 127, 0.8);
+      border-color: var(--vice-pink);
+    }
+
+    .prev-btn {
+      left: 15px;
+    }
+
+    .next-btn {
+      right: 15px;
+    }
+
+    /* Post Actions & Dots */
+    .mock-actions {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-icons {
+      display: flex;
+      gap: 15px;
+      font-size: 1.4rem;
+    }
+
+    .action-icons span {
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .action-icons span:hover {
+      color: var(--vice-pink);
+    }
+
+    .pagination-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .dot.active {
+      background-color: var(--vice-pink);
+      transform: scale(1.3);
+    }
+
+    /* Instagram Caption Box */
+    .caption-box {
+      padding: 0 20px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background-color: rgba(255, 255, 255, 0.01);
+    }
+
+    .caption-title {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      color: var(--vice-blue);
+      padding: 15px 0 8px;
+    }
+
+    .caption-text {
+      font-size: 0.9rem;
+      color: #ddd;
+      line-height: 1.6;
+      white-space: pre-line;
+      margin-bottom: 15px;
+    }
+
+    .btn-copy {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 12px;
+      background: transparent;
+      border: 1px dashed var(--vice-pink);
+      color: var(--vice-pink);
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-copy:hover {
+      background: var(--vice-pink);
+      color: #000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">1804 Haitian Pizza × WhoIsDésir</h1>
+  <p class="page-subtitle">Grand Opening & Creator Collab • July 18</p>
+
+  <div class="instagram-mockup">
+    <!-- IG Header -->
+    <div class="mock-header">
+      <div class="profile-pic">
+        <div class="profile-pic-inner"></div>
+      </div>
+      <div class="mock-username">
+        whoisdesir.media
+        <span>Sponsored • South Florida</span>
+      </div>
+    </div>
+
+    <!-- Slide Viewport -->
+    <div class="slider-viewport">
+      <button class="slider-btn prev-btn" onclick="moveSlide(-1)">◀</button>
+      <button class="slider-btn next-btn" onclick="moveSlide(1)">▶</button>
+      
+      <div class="slides-container" id="slidesContainer">
+        
+        <!-- Slide 1 — Hook: Grand Opening × Creator Collab -->
+        <div class="slide slide-1" style="background-image: url('photos/event-concert.jpg');">
+          <div class="slide-overlay"></div>
+          <div class="slide-content">
+            <span class="slide-badge collab">Creator Collab × Grand Opening</span>
+            <div>
+              <h2>1804<br><span>Haitian Pizza</span></h2>
+              <p class="slide-desc" style="color: var(--vice-blue); text-transform: uppercase; font-family: var(--font-heading); letter-spacing: 1px;">Pompano Beach — July 18</p>
+              <ul class="slide-list" style="margin-top: 15px;">
+                <li>Grand Opening + FIFA World Cup viewing — same night</li>
+                <li>WhoIsDésir Media capturing every moment</li>
+                <li>Griot Pizza. Community. Culture. Energy.</li>
+              </ul>
+            </div>
+            <div class="slide-footer">
+              <span class="slide-footer-text">Swipe for more →</span>
+              <span class="slide-number">1/3</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 — The Experience -->
+        <div class="slide slide-blue" style="background-image: url('photos/pizza.jpg');">
+          <div class="slide-overlay"></div>
+          <div class="slide-content">
+            <span class="slide-badge" style="border-color: var(--vice-blue); background: rgba(0, 240, 255, 0.15);">What's Happening</span>
+            <div>
+              <h2>Eat. Watch. <span style="color: var(--vice-pink);">Celebrate.</span></h2>
+              <ul class="slide-list" style="margin-top: 15px;">
+                <li>Signature Griot Pizza — styled & captured for your feed</li>
+                <li>World Cup goals on every screen — high-energy vibes</li>
+                <li>Two photographers covering food, crowd & venue</li>
+              </ul>
+              <p class="slide-desc" style="margin-top: 20px; color: var(--vice-blue);">Every photo becomes a reusable marketing asset for Instagram, TikTok, Google & more.</p>
+            </div>
+            <div class="slide-footer">
+              <span class="slide-footer-text" style="color: var(--vice-pink);">Visual Storytelling</span>
+              <span class="slide-number">2/3</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 — CTA: Join the Community -->
+        <div class="slide" style="background-image: url('photos/community.jpg');">
+          <div class="slide-overlay"></div>
+          <div class="slide-content">
+            <span class="slide-badge">Join the Movement</span>
+            <div>
+              <h2>Be In <span style="background: var(--border-glow); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">The Building</span></h2>
+              <ul class="slide-list" style="margin-top: 15px;">
+                <li>Follow @1804HaitianPizza — don't miss the drop</li>
+                <li>Share this post with your Pompano people</li>
+                <li>Haitian-owned. Community-built. South Florida proud.</li>
+              </ul>
+              <p class="slide-desc" style="margin-top: 25px; font-size: 1.6rem; font-family: var(--font-heading); text-transform: uppercase; text-align: center; color: var(--vice-pink); text-shadow: 0 0 20px var(--vice-pink);">July 18. Be There. 🔥🇭🇹</p>
+            </div>
+            <div class="slide-footer">
+              <span class="slide-footer-text">#PompanoBeach</span>
+              <span class="slide-number">3/3</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- IG Actions -->
+    <div class="mock-actions">
+      <div class="action-icons">
+        <span>❤️</span>
+        <span>💬</span>
+        <span>✈️</span>
+      </div>
+      <div class="pagination-dots" id="dotsContainer">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>
+        <span>🔖</span>
+      </div>
+    </div>
+
+    <!-- IG Caption -->
+    <div class="caption-box">
+      <div class="caption-title">Instagram Caption</div>
+      <div class="caption-text" id="captionText">Pompano Beach just got a new flavor. 🇭🇹🔥
+
+1804 Haitian Pizza is throwing their Grand Opening & FIFA World Cup Showcase on July 18 — and we're teaming up with WhoIsDésir Media to capture it all.
+
+Griot Pizza. World Cup energy. Community vibes. Two photographers on-site turning every moment into content you can use on Instagram, TikTok, Google, and beyond.
+
+Follow @1804HaitianPizza. Share this with someone who needs to be there. July 18 in Pompano — be in the building.
+
+#1804HaitianPizza #PompanoBeach #HaitianFood #GriotPizza #SouthFloridaEats #MiamiFoodies #HaitianOwned #WorldCup2026 #PompanoBeachFL #BrowardEats</div>
+      <button class="btn-copy" onclick="copyCaption()">Copy Caption</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 3;
+    const slidesContainer = document.getElementById('slidesContainer');
+    const dots = document.querySelectorAll('.dot');
+
+    function moveSlide(direction) {
+      currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+      slidesContainer.style.transform = `translateX(-${currentSlide * 33.33333}%)`;
+      
+      // Update dots
+      dots.forEach((dot, index) => {
+        if (index === currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    function copyCaption() {
+      const text = document.getElementById('captionText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.btn-copy');
+        btn.innerText = 'Caption Copied!';
+        btn.style.borderColor = '#00f0ff';
+        btn.style.color = '#00f0ff';
+        setTimeout(() => {
+          btn.innerText = 'Copy Caption';
+          btn.style.borderColor = '#ff007f';
+          btn.style.color = '#ff007f';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

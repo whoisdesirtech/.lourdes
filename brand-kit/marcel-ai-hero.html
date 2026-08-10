@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marcel AI — Landing Page Hero</title>
+  <meta name="description" content="Marcel AI deploys specialist AI agents to analyze stocks — financial health, fraud detection, SEC filings, and insider surveillance — synthesized into one evidence-backed rating." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent:  #00d4aa;
+      --surface: #0a0a0f;
+      --card:    #1a1a25;
+      --border:  #2a2a3a;
+      --text:    #e8e8f0;
+      --muted:   #8888a0;
+      --deep:    #0d0d14;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--surface);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(10,10,15,0.80);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card);
+    }
+    .nav-inner {
+      max-width: 1120px; margin: 0 auto;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-size: 20px; font-weight: 800; color: var(--text); text-decoration: none; letter-spacing: -0.5px; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color 150ms; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-ctas { display: flex; align-items: center; gap: 12px; }
+    .btn-ghost { font-size: 14px; color: var(--muted); background: none; border: none; cursor: pointer; transition: color 150ms; }
+    .btn-ghost:hover { color: var(--text); }
+    .btn-primary {
+      background: var(--accent); color: #0a0a0f;
+      border: none; border-radius: 8px;
+      padding: 9px 20px; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: filter 150ms;
+    }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-outline {
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 9px 20px; font-size: 14px; font-weight: 500;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: border-color 150ms, color 150ms;
+    }
+    .btn-outline:hover { border-color: rgba(0,212,170,0.5); color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 80px 24px 64px;
+    }
+    .hero-glow {
+      position: absolute;
+      top: -200px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse, rgba(0,212,170,0.13) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1120px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+
+    /* Left copy */
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,212,170,0.08);
+      border: 1px solid rgba(0,212,170,0.2);
+      color: var(--accent); border-radius: 100px;
+      padding: 6px 14px; font-size: 12px; font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .hero-h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero-h1 .accent { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 17px; color: var(--muted);
+      line-height: 1.7; max-width: 480px;
+      margin-bottom: 36px;
+    }
+
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 20px; }
+    .btn-hero-primary {
+      background: var(--accent); color: #0a0a0f;
+      border: none; border-radius: 10px;
+      padding: 14px 28px; font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: filter 150ms, transform 150ms;
+    }
+    .btn-hero-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-hero-outline {
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 28px; font-size: 15px; font-weight: 500;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: border-color 150ms, color 150ms;
+    }
+    .btn-hero-outline:hover { border-color: rgba(0,212,170,0.4); color: var(--text); }
+    .hero-fine { font-size: 12px; color: var(--muted); }
+    .hero-fine span { color: rgba(0,212,170,0.7); }
+
+    /* Trust pills */
+    .trust-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+    .trust-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 5px 12px;
+      font-size: 12px; color: var(--muted);
+    }
+    .trust-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: 0.6; }
+
+    /* Right: mock report card */
+    .hero-visual { position: relative; }
+    .visual-glow {
+      position: absolute; inset: -32px;
+      background: rgba(0,212,170,0.07);
+      border-radius: 50%; filter: blur(40px);
+      pointer-events: none;
+    }
+    .report-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,170,0.06);
+    }
+    .rc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .rc-company { font-size: 18px; font-weight: 700; }
+    .rc-sub { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+    .rc-rating { font-size: 18px; font-weight: 700; color: #4ade80; }
+
+    .rc-conf-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+    .rc-conf-label { color: var(--muted); }
+    .rc-conf-pct { font-weight: 700; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    .rc-bar { height: 6px; background: var(--border); border-radius: 4px; margin-bottom: 18px; overflow: hidden; }
+    .rc-bar-fill { height: 100%; width: 78%; background: var(--accent); border-radius: 4px; }
+
+    .rc-grades { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
+    .rc-grade {
+      background: var(--deep); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 4px; text-align: center;
+    }
+    .rc-grade-letter { font-size: 18px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .rc-grade-name { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .grade-a { color: #4ade80; }
+    .grade-b { color: #86efac; }
+    .grade-c { color: #fbbf24; }
+    .grade-d { color: #fb923c; }
+
+    .rc-footer { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+    .rc-check { color: var(--accent); }
+
+    /* Floating agent badges */
+    .agent-badge {
+      position: absolute;
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 11px; font-weight: 500;
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .agent-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .badge-1 { top: -16px; right: -24px; animation: float1 4s ease-in-out infinite; }
+    .badge-2 { bottom: 24px; left: -32px; animation: float2 5s ease-in-out infinite; }
+    .badge-3 { top: 50%; right: -40px; transform: translateY(-50%); animation: float1 6s ease-in-out infinite reverse; }
+    @keyframes float1 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes float2 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+    /* ── Trust strip ── */
+    .trust-strip {
+      border-top: 1px solid var(--card);
+      border-bottom: 1px solid var(--card);
+      background: var(--deep);
+      padding: 20px 24px;
+    }
+    .trust-strip-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; justify-content: center;
+      align-items: center; gap: 10px 40px;
+      font-size: 13px; color: var(--muted);
+    }
+    .strip-item { display: flex; align-items: center; gap: 8px; }
+    .strip-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,212,170,0.5); }
+
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { display: none; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Marcel<span>AI</span></a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="nav-ctas">
+        <button class="btn-ghost">Sign in</button>
+        <button class="btn-primary">Get Started — Free</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+
+      <!-- Copy -->
+      <div>
+        <div class="hero-eyebrow">
+          <div class="eyebrow-dot"></div>
+          AI-Powered Investment Research
+        </div>
+
+        <h1 class="hero-h1">
+          Don't gamble<br/>on hype.<br/>
+          Invest with <span class="accent">evidence.</span>
+        </h1>
+
+        <p class="hero-sub">
+          Marcel deploys specialist AI agents — financial health, fraud detection, SEC filing analysis, and insider surveillance — then synthesizes everything into one page with one rating. Transparent. Traceable. Done in under a minute.
+        </p>
+
+        <div class="hero-ctas">
+          <button class="btn-hero-primary">
+            Get Started — Free
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button class="btn-hero-outline">See how it works</button>
+        </div>
+
+        <p class="hero-fine"><span>✓</span> Free forever plan &nbsp;·&nbsp; <span>✓</span> No credit card required</p>
+
+        <div class="trust-pills">
+          <div class="trust-pill"><div class="trust-pill-dot"></div>Financial Health Analysis</div>
+          <div class="trust-pill"><div class="trust-pill-dot"></div>Fraud Detection</div>
+          <div class="trust-pill"><div class="trust-pill-dot"></div>SEC Filings</div>
+          <div class="trust-pill"><div class="trust-pill-dot"></div>Insider Surveillance</div>
+          <div class="trust-pill"><div class="trust-pill-dot"></div>Investment Committee</div>
+        </div>
+      </div>
+
+      <!-- Report card visual -->
+      <div class="hero-visual">
+        <div class="visual-glow"></div>
+        <div class="report-card">
+
+          <!-- Floating agent badges -->
+          <div class="agent-badge badge-1">
+            <div class="agent-badge-dot"></div>
+            SEC Analysis complete
+          </div>
+          <div class="agent-badge badge-2">
+            <div class="agent-badge-dot"></div>
+            No fraud flags detected
+          </div>
+          <div class="agent-badge badge-3">
+            <div class="agent-badge-dot"></div>
+            Insider buying ↑
+          </div>
+
+          <div class="rc-header">
+            <div>
+              <div class="rc-company">Tesla</div>
+              <div class="rc-sub">TSLA · SEC filings analyzed</div>
+            </div>
+            <div class="rc-rating">Buy</div>
+          </div>
+
+          <div class="rc-conf-row">
+            <span class="rc-conf-label">Confidence</span>
+            <span class="rc-conf-pct">78%</span>
+          </div>
+          <div class="rc-bar"><div class="rc-bar-fill"></div></div>
+
+          <div class="rc-grades">
+            <div class="rc-grade">
+              <div class="rc-grade-letter grade-a">A</div>
+              <div class="rc-grade-name">Revenue</div>
+            </div>
+            <div class="rc-grade">
+              <div class="rc-grade-letter grade-d">D</div>
+              <div class="rc-grade-name">Margins</div>
+            </div>
+            <div class="rc-grade">
+              <div class="rc-grade-letter grade-c">C</div>
+              <div class="rc-grade-name">Cash Flow</div>
+            </div>
+            <div class="rc-grade">
+              <div class="rc-grade-letter grade-a">A</div>
+              <div class="rc-grade-name">Debt</div>
+            </div>
+          </div>
+
+          <div class="rc-footer">
+            <span class="rc-check">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </span>
+            Every grade links to evidence in the actual filings
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Trust strip -->
+  <div class="trust-strip">
+    <div class="trust-strip-inner">
+      <div class="strip-item"><div class="strip-dot"></div>Financial Health</div>
+      <div class="strip-item"><div class="strip-dot"></div>Fraud Detection</div>
+      <div class="strip-item"><div class="strip-dot"></div>SEC Filings</div>
+      <div class="strip-item"><div class="strip-dot"></div>Insider Activity</div>
+      <div class="strip-item"><div class="strip-dot"></div>Investment Committee</div>
+    </div>
+  </div>
+
+  <!-- Notes for dev -->
+  <div style="max-width:1120px;margin:48px auto;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:12px;font-size:13px;color:var(--muted);">
+    <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:12px;">Dev Notes</p>
+    <ul style="display:flex;flex-direction:column;gap:6px;padding-left:16px;">
+      <li>Hero uses <code style="font-family:'JetBrains Mono',monospace;color:var(--accent);">radial-gradient</code> teal glow — same technique as existing Landing.tsx line 89</li>
+      <li>All colors are exact tokens from <code style="font-family:'JetBrains Mono',monospace;color:var(--accent);">tailwind.config.js</code>: accent #00d4aa, card #1a1a25, surface #0a0a0f, border #2a2a3a</li>
+      <li>Floating agent badges use subtle float animation — can be disabled with <code style="font-family:'JetBrains Mono',monospace;color:var(--accent);">prefers-reduced-motion</code></li>
+      <li>Trust pills at bottom of CTA replace the logo strip — drop in data from existing <code style="font-family:'JetBrains Mono',monospace;color:var(--accent);">logos[]</code> array</li>
+      <li>Fully responsive — hero visual collapses on mobile, copy stacks</li>
+    </ul>
+  </div>
+
+</body>
+</html>

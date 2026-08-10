@@ -1,0 +1,159 @@
+{
+  "catalog_version": "1.0",
+  "services": [
+    {
+      "id": "brand-kit",
+      "name": "Brand Kit Generation",
+      "description": "Full brand identity extraction and deliverable package from a website, brand name, or existing assets. Includes color palette, typography, logo usage rules, and style guide.",
+      "typical_inclusions": [
+        "Primary and secondary color palette with hex/RGB values",
+        "Typography stack (heading, body, accent fonts)",
+        "Logo usage guidelines and spacing rules",
+        "Tone of voice and messaging guidelines",
+        "Delivery in Markdown, HTML, and YAML formats",
+        "Competitive comparison (optional, via BRANDEX framework)"
+      ],
+      "duration_range": {
+        "min_days": 3,
+        "max_days": 7
+      },
+      "exclusions": [
+        "Custom logo design or illustration",
+        "Social media asset templates",
+        "Brand photography or art direction",
+        "Ongoing brand management or audits",
+        "Print-ready files (business cards, letterhead)"
+      ],
+      "optional_add_ons": [
+        "Competitive brand audit (BRANDEX framework)",
+        "Social media style guide extension",
+        "Brand presentation deck"
+      ]
+    },
+    {
+      "id": "website-design",
+      "name": "Website Design & Development",
+      "description": "Design and build of a responsive website or landing page using taste-driven frontend principles. Anti-slop design with premium visual quality.",
+      "typical_inclusions": [
+        "Design brief intake and aesthetic alignment",
+        "Responsive layout (mobile, tablet, desktop)",
+        "Up to 5 pages or sections",
+        "Premium typography and color implementation",
+        "Interactive elements and micro-animations",
+        "Performance-optimized HTML/CSS/JS delivery",
+        "One round of design revisions"
+      ],
+      "duration_range": {
+        "min_days": 14,
+        "max_days": 30
+      },
+      "exclusions": [
+        "Backend development or CMS integration",
+        "E-commerce functionality",
+        "Custom form handling or database logic",
+        "SEO optimization beyond basics",
+        "Ongoing hosting or maintenance",
+        "Content writing or copywriting",
+        "Stock photography procurement"
+      ],
+      "optional_add_ons": [
+        "Additional pages beyond 5",
+        "CMS integration (Headless or WordPress)",
+        "E-commerce storefront setup",
+        "SEO audit and implementation",
+        "Analytics dashboard setup"
+      ]
+    },
+    {
+      "id": "instagram-carousel",
+      "name": "Instagram Carousel Content",
+      "description": "Generation of a complete Instagram carousel post with hook slide, content slides, CTA slide, caption options, and hashtag sets.",
+      "typical_inclusions": [
+        "Hook slide (scroll-stopping opener)",
+        "3-7 content slides with structured information flow",
+        "CTA slide with clear next step",
+        "3 caption options (short, medium, long)",
+        "Hashtag set tailored to topic and audience",
+        "Markdown-formatted carousel ready for design tool import"
+      ],
+      "duration_range": {
+        "min_days": 1,
+        "max_days": 3
+      },
+      "exclusions": [
+        "Graphic design or visual mockups",
+        "Photography or image sourcing",
+        "Social media scheduling or posting",
+        "Account management or engagement",
+        "Multi-platform content adaptation"
+      ],
+      "optional_add_ons": [
+        "配套 Reels script",
+        "Story sequence companion content",
+        "Content calendar for carousel series"
+      ]
+    },
+    {
+      "id": "tax-client-intake",
+      "name": "Tax Client Intake System",
+      "description": "Automated pre-appointment intake workflow for individual tax clients (1040 filers). Collects documents, runs OCR, generates organizer PDFs, and integrates with HubSpot/Google Sheets.",
+      "typical_inclusions": [
+        "Client intake portal (responsive, mobile-friendly)",
+        "Document upload with auto-detection (W-2, 1099, 1098, K-1, 1095-A)",
+        "OCR extraction via Google Cloud Vision or Veryfi",
+        "Filing status conflict detection vs. prior year",
+        "Tax Organizer PDF generation",
+        "HubSpot custom object integration (Google Sheets fallback)",
+        "Missing documents checklist and tracking",
+        "Inactivity reminder system (24h email/SMS nudges)"
+      ],
+      "duration_range": {
+        "min_days": 21,
+        "max_days": 45
+      },
+      "exclusions": [
+        "Tax preparation or filing services",
+        "Tax advice or planning",
+        "Multi-entity or corporate return intake",
+        "Year-round client communication management",
+        "IRS e-file integration",
+        "Payment processing for tax services"
+      ],
+      "optional_add_ons": [
+        "Staff dashboard with override controls",
+        "Weekly operations reporting",
+        "Multi-language intake portal",
+        "KBA/ID verification integration"
+      ]
+    },
+    {
+      "id": "google-workspace-automation",
+      "name": "Google Workspace Automation",
+      "description": "Setup and automation of Google Workspace tasks via gws CLI — file management, email workflows, calendar automation, spreadsheet operations, and Chat messaging.",
+      "typical_inclusions": [
+        "gws CLI authentication setup",
+        "Drive file operations automation",
+        "Gmail workflow templates",
+        "Calendar event automation",
+        "Google Sheets creation and data pipelines",
+        "Chat message automation"
+      ],
+      "duration_range": {
+        "min_days": 5,
+        "max_days": 14
+      },
+      "exclusions": [
+        "Custom Google Apps Script development",
+        "Third-party app integrations beyond Workspace",
+        "Data migration from other platforms",
+        "Ongoing system administration",
+        "User training beyond initial setup"
+      ],
+      "optional_add_ons": [
+        "Custom workflow templates",
+        "Automated reporting dashboards",
+        "Multi-account setup"
+      ]
+    }
+  ]
+}

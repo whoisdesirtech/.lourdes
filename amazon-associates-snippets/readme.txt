@@ -1,5 +1,6 @@
 === Amazon Associates PHP Snippets ===
-Contributors: Antigravity
+Contributors: WhoIsDésir® Media Agency
+Donate link: mailto:digitalvurv@gmail.com
 Tags: amazon, amazon associates, affiliate, pa-api, php snippets, shortcode, amazon box
 Requires at least: 5.6
 Tested up to: 6.6
@@ -7,7 +8,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily display Amazon Associates affiliate product cards, buttons, text links, and PHP snippets on your WordPress site with Amazon PA-API 5.0 integration.
+Easily display Amazon Associates affiliate product cards, buttons, text links, and PHP snippets on your WordPress site with Amazon PA-API 5.0 integration. Developed by **WhoIsDésir® Media Agency** (Developer Contact: digitalvurv@gmail.com).
 
 == Description ==
 
