@@ -336,13 +336,16 @@ class AA_Amazon_API {
 	 * AWS Signature Version 4 Signature Generator
 	 */
 	private function generate_aws_sigv4_headers( $access_key, $secret_key, $host, $region, $uri, $target, $payload_json ) {
-		$service      = 'paapi5';
-		$algorithm    = 'AWS4-HMAC-SHA256';
-		$time         = time();
-		$amz_date     = gmdate( 'Ymd\THis\Z', $time );
-		$date_stamp   = gmdate( 'Ymd', $time );
+		$access_key = trim( (string) $access_key, " \t\n\r\0\x0B'\"" );
+		$secret_key = trim( (string) $secret_key, " \t\n\r\0\x0B'\"" );
 
-		$canonical_uri        = $uri;
+		$service    = 'paapi5';
+		$algorithm  = 'AWS4-HMAC-SHA256';
+		$time       = time();
+		$amz_date   = gmdate( 'Ymd\THis\Z', $time );
+		$date_stamp = gmdate( 'Ymd', $time );
+
+		$canonical_uri         = $uri;
 		$canonical_querystring = '';
 
 		$headers = array(
@@ -355,7 +358,7 @@ class AA_Amazon_API {
 
 		ksort( $headers );
 
-		$canonical_headers = '';
+		$canonical_headers  = '';
 		$signed_headers_arr = array();
 		foreach ( $headers as $key => $val ) {
 			$canonical_headers  .= $key . ':' . trim( $val ) . "\n";
@@ -390,12 +393,12 @@ class AA_Amazon_API {
 			'Signature=' . $signature;
 
 		return array(
-			'Content-Encoding' => 'amz-1.0',
-			'Content-Type'     => 'application/json; charset=UTF-8',
-			'Host'             => $host,
-			'X-Amz-Date'       => $amz_date,
-			'X-Amz-Target'     => $target,
-			'Authorization'    => $authorization,
+			'content-encoding' => 'amz-1.0',
+			'content-type'     => 'application/json; charset=UTF-8',
+			'host'             => strtolower( $host ),
+			'x-amz-date'       => $amz_date,
+			'x-amz-target'     => $target,
+			'authorization'    => $authorization,
 		);
 	}
 
