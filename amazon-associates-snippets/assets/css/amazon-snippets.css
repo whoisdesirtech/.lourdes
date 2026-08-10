@@ -267,6 +267,25 @@
 	}
 }
 
+/* Amazon Product Comparison Grid */
+.amazon-comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+    margin: 30px 0;
+}
+
+.amazon-comparison-item {
+    min-width: 0;
+}
+
+@media only screen and (max-width: 767px) {
+    .amazon-comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ==========================================================================
    3. ADMIN PANEL STYLING
    ========================================================================== */

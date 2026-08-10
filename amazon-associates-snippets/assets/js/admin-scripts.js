@@ -80,6 +80,8 @@ jQuery(document).ready(function ($) {
 		$('#sc-btn').text('[amazon_button asin="' + asin + '" text="Check Price on Amazon"]');
 		$('#php-btn').text("<?php echo aa_render_button( '" + asin + "', 'Check Price on Amazon' ); ?>");
 
+		$('#sc-comp').text('[amazon_comparison products="' + asin + ',B09B2W5X1S"]');
+
 		$('#php-raw').text("<?php\n$product = aa_get_product_data( '" + asin + "' );\nif ( $product ) {\n    echo esc_html( $product['title'] ) . ' - ' . esc_html( $product['price'] );\n}\n?>");
 	});
 

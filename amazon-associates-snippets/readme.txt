@@ -4,7 +4,7 @@ Donate link: mailto:digitalvurv@gmail.com
 Tags: amazon, amazon associates, affiliate, pa-api, php snippets, shortcode, amazon box
 Requires at least: 5.6
 Tested up to: 6.6
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,7 @@ Easily display Amazon Associates affiliate product cards, buttons, text links, a
   * `[amazon_box asin="B08N5WRWNW"]` - Product Showcase Card.
   * `[amazon_button asin="B08N5WRWNW" text="Check Price on Amazon"]` - Amazon CTA Button.
   * `[amazon_link asin="B08N5WRWNW" text="View Product"]` - Inline Affiliate Link.
+  * `[amazon_comparison products="ASIN1,ASIN2"]` - Side-by-side product comparison grid layout.
   * `[amazon_grid asins="ASIN1,ASIN2,ASIN3"]` - Multi-product responsive grid layout.
 * **Transient Caching**: Automatic WordPress transient caching (configurable 24h default) to prevent Amazon API rate limits and deliver lightning-fast page loading.
 * **Graceful Fallback**: Works immediately even before API credentials are approved by automatically generating direct Amazon affiliate links with your Partner Tag.
@@ -44,6 +45,10 @@ No! If you haven't received API access yet, the plugin operates in Fallback Mode
 Go to **Settings > Amazon Snippets > PHP Snippet Generator**. Enter an ASIN to instantly generate clean PHP code snippets that you can paste into your theme's `single.php` or inside plugins like Code Snippets.
 
 == Changelog ==
+
+= 1.1.0 - August 9, 2026 =
+* Added `[amazon_comparison products="ASIN1,ASIN2"]` shortcode and responsive side-by-side comparison grid CSS rules.
+* Updated OAuth 2.0 Access Token authentication support.
 
 = 1.0.0 =
 * Initial public release with PA-API 5.0 SigV4 client, transient caching, shortcodes, and admin snippet generator.

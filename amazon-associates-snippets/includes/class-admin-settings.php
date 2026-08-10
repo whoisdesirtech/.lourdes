@@ -297,7 +297,16 @@ class AA_Admin_Settings {
 					</div>
 				</div>
 
-				<h3 style="margin-top: 20px;">3. Direct PHP Data Fetch</h3>
+				<h3 style="margin-top: 20px;">3. Product Comparison Grid</h3>
+				<div class="aa-code-preview-block">
+					<label>Shortcode:</label>
+					<div class="aa-code-copy-container">
+						<code id="sc-comp">[amazon_comparison products="B08N5WRWNW,B09B2W5X1S"]</code>
+						<button type="button" class="button aa-copy-btn" data-target="sc-comp">Copy Shortcode</button>
+					</div>
+				</div>
+
+				<h3 style="margin-top: 20px;">4. Direct PHP Data Fetch</h3>
 				<div class="aa-code-preview-block">
 					<div class="aa-code-copy-container">
 						<code id="php-raw">&lt;?php

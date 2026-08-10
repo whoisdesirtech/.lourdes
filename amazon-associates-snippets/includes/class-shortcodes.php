@@ -14,6 +14,7 @@ class AA_Shortcodes {
 		add_shortcode( 'amazon_button', array( __CLASS__, 'render_button_shortcode' ) );
 		add_shortcode( 'amazon_link', array( __CLASS__, 'render_link_shortcode' ) );
 		add_shortcode( 'amazon_grid', array( __CLASS__, 'render_grid_shortcode' ) );
+		add_shortcode( 'amazon_comparison', array( __CLASS__, 'amazon_comparison_shortcode' ) );
 	}
 
 	/**
@@ -109,6 +110,44 @@ class AA_Shortcodes {
 		foreach ( $asin_list as $asin ) {
 			$output .= aa_render_product_box( $asin );
 		}
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Render Product Comparison Grid: [amazon_comparison products="ASIN1,ASIN2"]
+	 */
+	public static function amazon_comparison_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'products' => '',
+			),
+			$atts,
+			'amazon_comparison'
+		);
+
+		$asins = array_filter(
+			array_map(
+				'trim',
+				explode( ',', $atts['products'] )
+			)
+		);
+
+		if ( empty( $asins ) ) {
+			return '';
+		}
+
+		$output = '<div class="amazon-comparison-grid">';
+
+		foreach ( $asins as $asin ) {
+			$output .= '<div class="amazon-comparison-item">';
+			$output .= do_shortcode(
+				'[amazon_box asin="' . esc_attr( $asin ) . '"]'
+			);
+			$output .= '</div>';
+		}
+
 		$output .= '</div>';
 
 		return $output;
