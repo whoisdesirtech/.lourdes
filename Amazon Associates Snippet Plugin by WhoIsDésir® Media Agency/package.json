@@ -1,7 +1,7 @@
 {
   "name": "amazon-associates-php-snippets",
-  "version": "1.4.0",
-  "description": "WordPress plugin that adds Amazon PA-API shortcodes and comparison grid.",
+  "version": "1.5.0",
+  "description": "WordPress plugin that adds Amazon Creators API shortcodes, OAuth 2.0 token caching, and comparison grid.",
   "private": true,
   "scripts": {
     "test": "./vendor/bin/phpunit",
