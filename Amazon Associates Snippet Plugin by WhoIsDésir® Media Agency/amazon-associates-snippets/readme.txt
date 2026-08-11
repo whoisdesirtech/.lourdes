@@ -4,7 +4,7 @@ Donate link: mailto:digitalvurv@gmail.com
 Tags: amazon, amazon associates, affiliate, pa-api, php snippets, shortcode, amazon box
 Requires at least: 5.6
 Tested up to: 6.6
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,12 @@ No! If you haven't received API access yet, the plugin operates in Fallback Mode
 Go to **Settings > Amazon Snippets > PHP Snippet Generator**. Enter an ASIN to instantly generate clean PHP code snippets that you can paste into your theme's `single.php` or inside plugins like Code Snippets.
 
 == Changelog ==
+
+= 1.5.1 - August 11, 2026 =
+* Restored the OAuth 2.0 Access Token (Bearer) field on the Creators API Credentials tab so you can paste an existing token and use it directly.
+* A manually pasted Bearer token now takes priority over the automatic client-credentials token flow and is used by the API tester and product shortcodes.
+* Improved API error reporting to surface the Amazon-provided error message (message / error_description / error fields) instead of a generic HTTP status.
+* Added PHPUnit coverage for the manual Bearer token override (50 tests total).
 
 = 1.5.0 - August 11, 2026 =
 * Migrated API client from PA-API 5.0 (SigV4) to the Amazon Creators API with OAuth 2.0 client-credentials authentication.

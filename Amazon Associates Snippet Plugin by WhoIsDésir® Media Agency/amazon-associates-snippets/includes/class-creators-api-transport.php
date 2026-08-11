@@ -81,7 +81,11 @@ abstract class AA_Creators_API_Transport {
 	 * @return AA_Creators_API_Transport
 	 */
 	public static function create( $oauth_client = null ) {
-		if ( self::sdk_is_available() ) {
+		// A manually pasted Bearer token must be used directly, which the
+		// built-in HTTP transport supports via the OAuth client. When no
+		// manual token is set the official SDK transport is preferred.
+		$manual_token = trim( (string) get_option( 'aa_oauth_access_token', '' ) );
+		if ( self::sdk_is_available() && empty( $manual_token ) ) {
 			return new AA_Creators_API_Sdk_Transport( $oauth_client );
 		}
 		return new AA_Creators_API_Http_Transport( $oauth_client );
@@ -95,8 +99,19 @@ abstract class AA_Creators_API_Transport {
 	 * @return string
 	 */
 	protected function api_error_message( $decoded, $status ) {
-		if ( is_array( $decoded ) && ! empty( $decoded['errors'][0]['message'] ) ) {
-			return $decoded['errors'][0]['message'];
+		if ( is_array( $decoded ) ) {
+			if ( ! empty( $decoded['errors'][0]['message'] ) ) {
+				return $decoded['errors'][0]['message'];
+			}
+			if ( ! empty( $decoded['message'] ) && is_string( $decoded['message'] ) ) {
+				return $decoded['message'];
+			}
+			if ( ! empty( $decoded['error_description'] ) ) {
+				return $decoded['error_description'];
+			}
+			if ( ! empty( $decoded['error'] ) && is_string( $decoded['error'] ) ) {
+				return $decoded['error'];
+			}
 		}
 		return sprintf(
 			// translators: %d is the HTTP status code.

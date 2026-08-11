@@ -25,7 +25,7 @@ class AA_Admin_Settings {
 			}
 
 			// Credential changes invalidate any cached OAuth access token.
-			if ( in_array( $option, array( 'aa_credential_id', 'aa_credential_secret', 'aa_credential_version' ), true ) ) {
+			if ( in_array( $option, array( 'aa_credential_id', 'aa_credential_secret', 'aa_credential_version', 'aa_oauth_access_token' ), true ) ) {
 				delete_transient( 'aa_creators_access_token' );
 			}
 		}
@@ -50,6 +50,7 @@ class AA_Admin_Settings {
 		register_setting( 'aa_snippets_credentials_options', 'aa_credential_id', array( $this, 'sanitize_key_raw' ) );
 		register_setting( 'aa_snippets_credentials_options', 'aa_credential_secret', array( $this, 'sanitize_key_raw' ) );
 		register_setting( 'aa_snippets_credentials_options', 'aa_credential_version', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_access_token', 'sanitize_textarea_field' );
 		register_setting( 'aa_snippets_credentials_options', 'aa_partner_tag', 'sanitize_text_field' );
 		register_setting( 'aa_snippets_credentials_options', 'aa_marketplace', 'sanitize_text_field' );
 		register_setting( 'aa_snippets_credentials_options', 'aa_cache_expiry', 'absint' );
@@ -112,6 +113,7 @@ class AA_Admin_Settings {
 		$credential_id      = get_option( 'aa_credential_id', '' );
 		$credential_secret  = get_option( 'aa_credential_secret', '' );
 		$credential_version = get_option( 'aa_credential_version', '' );
+		$oauth_access_token = get_option( 'aa_oauth_access_token', '' );
 		$partner_tag        = get_option( 'aa_partner_tag', '' );
 		$marketplace        = get_option( 'aa_marketplace', 'US' );
 		$cache_expiry       = get_option( 'aa_cache_expiry', 24 );
@@ -156,6 +158,15 @@ class AA_Admin_Settings {
 						<input type="text" name="aa_credential_version" id="aa_credential_version" value="<?php echo esc_attr( $credential_version ); ?>" class="small-text" placeholder="3.1" />
 						<p class="description">
 							<?php esc_html_e( 'Assigned when you create credentials. NA store = 3.1, EU store = 3.2, Far East store = 3.3 (legacy v2.1 / v2.2 / v2.3 also supported). Credentials work across all marketplaces.', 'amazon-associates-snippets' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="aa_oauth_access_token"><?php esc_html_e( 'OAuth 2.0 Access Token (Bearer)', 'amazon-associates-snippets' ); ?></label></th>
+					<td>
+						<textarea name="aa_oauth_access_token" id="aa_oauth_access_token" rows="3" class="large-text" placeholder="Atza|..." autocomplete="off"><?php echo esc_textarea( $oauth_access_token ); ?></textarea>
+						<p class="description">
+							<?php esc_html_e( 'Optional. Paste an existing OAuth 2.0 Bearer access token to use it directly instead of the client-credentials flow. Leave empty to auto-fetch and cache a token from your Credential ID / Secret above.', 'amazon-associates-snippets' ); ?>
 						</p>
 					</td>
 				</tr>

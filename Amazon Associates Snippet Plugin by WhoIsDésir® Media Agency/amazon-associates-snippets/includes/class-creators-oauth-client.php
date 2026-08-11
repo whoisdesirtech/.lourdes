@@ -43,11 +43,28 @@ class AA_Creators_OAuth_Client {
 
 	/**
 	 * Whether Creators API credentials have been configured.
+	 *
+	 * Returns true when a manually pasted OAuth 2.0 Bearer token is set or
+	 * when the full client-credentials (Credential ID / Secret / Version)
+	 * triplet has been provided.
 	 */
 	public function has_credentials() {
-		return ! empty( $this->get_credential_id() )
-			&& ! empty( $this->get_credential_secret() )
-			&& ! empty( $this->get_credential_version() );
+		return ! empty( $this->get_manual_token() )
+			|| (
+				! empty( $this->get_credential_id() )
+				&& ! empty( $this->get_credential_secret() )
+				&& ! empty( $this->get_credential_version() )
+			);
+	}
+
+	/**
+	 * Get a manually pasted OAuth 2.0 Bearer access token, if set.
+	 *
+	 * When provided, this token is used directly and bypasses the
+	 * client-credentials token flow entirely.
+	 */
+	public function get_manual_token() {
+		return trim( (string) get_option( 'aa_oauth_access_token', '' ) );
 	}
 
 	/**
@@ -78,6 +95,11 @@ class AA_Creators_OAuth_Client {
 	 * @return string|false
 	 */
 	public function get_token() {
+		$manual = $this->get_manual_token();
+		if ( ! empty( $manual ) ) {
+			return $manual;
+		}
+
 		$cached = get_transient( self::TOKEN_TRANSIENT );
 
 		if ( is_array( $cached ) && ! empty( $cached['token'] ) ) {

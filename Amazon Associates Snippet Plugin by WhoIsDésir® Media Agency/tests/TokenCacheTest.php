@@ -50,6 +50,41 @@ class TokenCacheTest extends TestCase {
         $this->assertFalse($client->get_token());
     }
 
+    public function testManualBearerTokenTakesPriority() {
+        aa_test_set_option('aa_oauth_access_token', 'Atza|manual-token-123');
+        $client = new Token_Requesting_OAuth_Client(array());
+
+        $this->assertSame('Atza|manual-token-123', $client->get_token());
+        $this->assertSame(0, $client->request_count, 'A manually pasted Bearer token must be returned without any token request.');
+    }
+
+    public function testManualTokenCountsAsConfiguredCredentials() {
+        aa_test_set_option('aa_oauth_access_token', 'Atza|manual-token-123');
+        $client = new AA_Creators_OAuth_Client();
+
+        $this->assertTrue($client->has_credentials());
+    }
+
+    public function testNoManualTokenFallsBackToClientCredentialsFlow() {
+        $client = new AA_Creators_OAuth_Client();
+        $this->assertFalse($client->has_credentials());
+        $this->assertSame('', $client->get_manual_token());
+    }
+
+    public function testGetTokenPrefersManualTokenOverClientCredentials() {
+        aa_test_set_option('aa_credential_id', 'credential-id-123');
+        aa_test_set_option('aa_credential_secret', 'credential-secret-456');
+        aa_test_set_option('aa_credential_version', '3.1');
+        aa_test_set_option('aa_oauth_access_token', 'Atza|manual-override');
+
+        $client = new Token_Requesting_OAuth_Client(array(
+            array('access_token' => 'token-1', 'expires_in' => 3600),
+        ));
+
+        $this->assertSame('Atza|manual-override', $client->get_token());
+        $this->assertSame(0, $client->request_count, 'Manual token must override the client-credentials flow.');
+    }
+
     public function testTokenIsCachedAndReused() {
         $this->configureCredentials();
         $client = new Token_Requesting_OAuth_Client(array(

@@ -1,4 +1,4 @@
-# Amazon Associates PHP Snippets (v1.5.0)
+# Amazon Associates PHP Snippets (v1.5.1)
 
 **Amazon Associates PHP Snippets** is a high-performance WordPress plugin for affiliate marketers, bloggers, and web developers integrating the Amazon Creators API.
 
@@ -6,14 +6,11 @@ Developed by **WhoIsDésir® Media Agency** (Developer Contact: `digitalvurv@gma
 
 ---
 
-## What's New in Version 1.5.0
+## What's New in Version 1.5.1
 
-* **Creators API Migration**: Moved from PA-API 5.0 (SigV4) to the Amazon Creators API with OAuth 2.0 client-credentials authentication.
-* **v2 + v3 Credential Support**: Works with both Creators API v3.x (LwA token endpoint) and legacy v2.x (Cognito token endpoint) credentials.
-* **Hybrid Transport**: Uses the official Creators API PHP SDK when installed via Composer, with an automatic fallback to a built-in WordPress HTTP client — no hard dependencies.
-* **lowerCamelCase Requests + Normalizer**: GetItems calls now use Creators API payloads, and a response normalization layer gives shortcodes a stable product structure.
-* **Token Caching**: OAuth access tokens are cached in transients with a 60-second pre-expiry refresh buffer.
-* **46 automated PHPUnit tests** covering token caching, request construction, response normalization, and fallback behavior.
+* **Manual OAuth 2.0 Bearer Token**: The Access Token (Bearer) field is back on the Credentials tab — paste an existing token to use it directly instead of the client-credentials flow.
+* **Token Override Priority**: A manually pasted token now takes priority over the automatic client-credentials flow.
+* **Better Error Diagnostics**: API failures now surface Amazon's provided error message (e.g. `message` / `error_description`) instead of a generic HTTP status.
 
 ---
 
