@@ -393,12 +393,12 @@ class AA_Amazon_API {
 			'Signature=' . $signature;
 
 		return array(
-			'content-encoding' => 'amz-1.0',
-			'content-type'     => 'application/json; charset=UTF-8',
-			'host'             => strtolower( $host ),
-			'x-amz-date'       => $amz_date,
-			'x-amz-target'     => $target,
-			'authorization'    => $authorization,
+			'Content-Encoding' => 'amz-1.0',
+			'Content-Type'     => 'application/json; charset=UTF-8',
+			'Host'             => $host,
+			'X-Amz-Date'       => $amz_date,
+			'X-Amz-Target'     => $target,
+			'Authorization'    => $authorization,
 		);
 	}
 
