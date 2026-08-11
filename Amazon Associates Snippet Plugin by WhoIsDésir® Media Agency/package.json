@@ -1,0 +1,12 @@
+{
+  "name": "amazon-associates-php-snippets",
+  "version": "1.4.0",
+  "description": "WordPress plugin that adds Amazon PA-API shortcodes and comparison grid.",
+  "private": true,
+  "scripts": {
+    "test": "./vendor/bin/phpunit",
+    "bump-version": "bash scripts/bump-version.sh"
+  },
+  "author": "WhoIsDésir® Media Agency",
+  "license": "GPL-2.0-or-later"
+}

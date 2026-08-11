@@ -1,0 +1,12 @@
+{
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit",
+    "bump-version": "bash scripts/bump-version.sh"
+  },
+  "require": {
+    "tims/amazon-creatorsapi-php-sdk": "^1.3"
+  }
+}
