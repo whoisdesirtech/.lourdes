@@ -37,13 +37,17 @@ class AA_Admin_Settings {
 		);
 	}
 
+	public function sanitize_key_raw( $key ) {
+		return trim( (string) $key );
+	}
+
 	public function register_settings() {
 		// Group 1: Credentials & API Settings
 		register_setting( 'aa_snippets_credentials_options', 'aa_auth_mode', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_credentials_options', 'aa_access_key', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_credentials_options', 'aa_secret_key', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_client_id', 'sanitize_text_field' );
-		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_client_secret', 'sanitize_text_field' );
+		register_setting( 'aa_snippets_credentials_options', 'aa_access_key', array( $this, 'sanitize_key_raw' ) );
+		register_setting( 'aa_snippets_credentials_options', 'aa_secret_key', array( $this, 'sanitize_key_raw' ) );
+		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_client_id', array( $this, 'sanitize_key_raw' ) );
+		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_client_secret', array( $this, 'sanitize_key_raw' ) );
 		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_access_token', 'sanitize_textarea_field' );
 		register_setting( 'aa_snippets_credentials_options', 'aa_oauth_refresh_token', 'sanitize_textarea_field' );
 		register_setting( 'aa_snippets_credentials_options', 'aa_partner_tag', 'sanitize_text_field' );

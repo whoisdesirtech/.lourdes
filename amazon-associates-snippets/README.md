@@ -1,4 +1,4 @@
-# Amazon Associates PHP Snippets (v1.3.0)
+# Amazon Associates PHP Snippets (v1.4.0)
 
 **Amazon Associates PHP Snippets** is a high-performance WordPress plugin for affiliate marketers, bloggers, and web developers integrating Amazon Product Advertising API 5.0 (PA-API 5.0).
 
@@ -6,12 +6,12 @@ Developed by **WhoIsDésir® Media Agency** (Developer Contact: `digitalvurv@gma
 
 ---
 
-## What's New in Version 1.3.0
+## What's New in Version 1.4.0
 
-* **Image Generation Fix**: Resolved issue where missing API credentials or failed API requests caused product cards/grids to render without images.
-* **Bundled Fallback Placeholder Image**: Included `assets/img/placeholder.png` so cards and comparison grids always render complete visual cards in Fallback Mode.
-* **Visual Fallback Notice**: Product cards operating in Fallback Mode display a subtle `Fallback Mode` badge notice with tooltip explanations.
-* **Automated Testing Suite**: Integrated PHPUnit, Composer, and `npm test` configuration for continuous integration testing.
+* **AWS Secret Key Base64 Fix**: Resolved sanitization bug where `sanitize_text_field` mutated base64 AWS Secret Access Key characters (`+`, `/`, `=`).
+* **Settings Option Group Separation**: Split credentials and display settings into distinct WordPress option groups to prevent cross-tab option erasure.
+* **SigV4 Header Refactor**: Updated HTTP request header generator for complete cURL and PA-API 5.0 signature verification compatibility.
+* **Automatic Cache Invalidation**: Added automatic transient purging on option updates.
 
 ---
 

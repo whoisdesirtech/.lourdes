@@ -4,7 +4,7 @@ Donate link: mailto:digitalvurv@gmail.com
 Tags: amazon, amazon associates, affiliate, pa-api, php snippets, shortcode, amazon box
 Requires at least: 5.6
 Tested up to: 6.6
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,6 +45,12 @@ No! If you haven't received API access yet, the plugin operates in Fallback Mode
 Go to **Settings > Amazon Snippets > PHP Snippet Generator**. Enter an ASIN to instantly generate clean PHP code snippets that you can paste into your theme's `single.php` or inside plugins like Code Snippets.
 
 == Changelog ==
+
+= 1.4.0 - August 11, 2026 =
+* Fixed AWS Secret Key sanitization bug where sanitize_text_field corrupted base64 characters (+, /, =).
+* Separated settings into independent options groups to prevent cross-tab settings erasure.
+* Refactored AWS SigV4 request signer to strictly conform to PA-API 5.0 canonical specification.
+* Added auto-purge transient cache hook whenever credentials or options are updated.
 
 = 1.3.0 - August 10, 2026 =
 * Fixed image generation issue when API calls fail or credentials are not yet configured.
