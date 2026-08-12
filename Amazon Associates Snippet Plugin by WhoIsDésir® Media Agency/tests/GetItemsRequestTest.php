@@ -93,6 +93,85 @@ class GetItemsRequestTest extends TestCase {
         $this->assertSame('partnerTag is invalid', $result->get_error_message());
     }
 
+    public function testExpiredTokenRetriesOnceWithFreshToken() {
+        $oauth = new Refreshable_OAuth_Client();
+        $oauth->manual_token = 'Atza|expired';
+        $oauth->refresh_token = 'fresh-token';
+
+        $transport = new Queueing_Http_Transport($oauth, array(
+            aa_creators_http_response(401, array(
+                'errors' => array(array('code' => 'TokenInvalid', 'message' => 'Token has expired')),
+            )),
+            $this->okResponse(),
+        ));
+
+        $result = $transport->get_items(array('B08N5WRWNW'), 'www.amazon.com', 'jeanfils-20');
+
+        $this->assertFalse(is_wp_error($result));
+        $this->assertSame(2, $transport->get_call_count());
+        $this->assertSame('Bearer fresh-token', $transport->calls[1]['headers']['Authorization']);
+        $this->assertSame(1, $oauth->refresh_count, 'Cached token should be invalidated before the retry.');
+    }
+
+    public function testExpiredManualTokenWithoutCredentialsReturnsClearError() {
+        $oauth = new Refreshable_OAuth_Client();
+        $oauth->manual_token = 'Atza|expired';
+        $oauth->refresh_token = '';
+        $oauth->credentials_configured = false;
+
+        $transport = new Queueing_Http_Transport($oauth, array(
+            aa_creators_http_response(401, array(
+                'errors' => array(array('code' => 'TokenInvalid', 'message' => 'Token has expired')),
+            )),
+        ));
+
+        $result = $transport->get_items(array('B08N5WRWNW'), 'www.amazon.com', 'jeanfils-20');
+
+        $this->assertTrue(is_wp_error($result));
+        $this->assertSame('creators_api_token_expired', $result->get_error_code());
+        $this->assertStringContainsString('manually pasted', $result->get_error_message());
+        $this->assertSame(1, $transport->get_call_count(), 'No retry without credentials to refresh with.');
+    }
+
+    public function testTokenRetryFailureReturnsError() {
+        $oauth = new Refreshable_OAuth_Client();
+        $oauth->manual_token = 'Atza|expired';
+        $oauth->refresh_token = 'also-bad';
+
+        $transport = new Queueing_Http_Transport($oauth, array(
+            aa_creators_http_response(401, array(
+                'errors' => array(array('message' => 'Token has expired')),
+            )),
+            aa_creators_http_response(401, array(
+                'errors' => array(array('message' => 'Token has expired')),
+            )),
+        ));
+
+        $result = $transport->get_items(array('B08N5WRWNW'), 'www.amazon.com', 'jeanfils-20');
+
+        $this->assertTrue(is_wp_error($result));
+        $this->assertSame('creators_api_token_expired', $result->get_error_code());
+        $this->assertSame(2, $transport->get_call_count());
+    }
+
+    public function testNonTokenErrorIsNotRetried() {
+        $oauth = new Refreshable_OAuth_Client();
+        $oauth->manual_token = 'Atza|expired';
+        $oauth->refresh_token = 'fresh-token';
+
+        $transport = new Queueing_Http_Transport($oauth, array(
+            aa_creators_http_response(400, array(
+                'errors' => array(array('message' => 'partnerTag is invalid')),
+            )),
+        ));
+
+        $result = $transport->get_items(array('B08N5WRWNW'), 'www.amazon.com', 'bad-tag');
+
+        $this->assertTrue(is_wp_error($result));
+        $this->assertSame('creators_api_error', $result->get_error_code());
+        $this->assertSame(1, $transport->get_call_count(), 'Non-token errors must not trigger a retry.');
+    }
+
     public function testInvalidJsonResponseReturnsWpError() {
         $transport = new Recording_Http_Transport(
             new Fake_OAuth_Client('test-token'),

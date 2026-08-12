@@ -3,7 +3,7 @@
  * Plugin Name:       Amazon Associates PHP Snippets
  * Plugin URI:        https://example.com/amazon-associates-snippets
  * Description:       Integrates the Amazon Creators API into WordPress. Provides PHP snippet helpers, shortcodes, and product cards with OAuth 2.0 authentication, transient token caching, and FTC compliance.
-* Version:           1.5.1
+* Version:           1.5.2
  * Release Date:      August 11, 2026
  * Author:            WhoIsDésir® Media Agency
  * Author URI:        mailto:digitalvurv@gmail.com
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'AA_SNIPPETS_VERSION', '1.5.1' );
+define( 'AA_SNIPPETS_VERSION', '1.5.2' );
 define( 'AA_SNIPPETS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'AA_SNIPPETS_URL', plugin_dir_url( __FILE__ ) );
 define( 'AA_SNIPPETS_BASENAME', plugin_basename( __FILE__ ) );

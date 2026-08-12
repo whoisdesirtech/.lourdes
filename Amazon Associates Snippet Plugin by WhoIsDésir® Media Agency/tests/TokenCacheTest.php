@@ -85,6 +85,33 @@ class TokenCacheTest extends TestCase {
         $this->assertSame(0, $client->request_count, 'Manual token must override the client-credentials flow.');
     }
 
+    public function testGetTokenPreferFreshBypassesManualToken() {
+        aa_test_set_option('aa_oauth_access_token', 'Atza|manual-token-123');
+        aa_test_set_option('aa_credential_id', 'credential-id-123');
+        aa_test_set_option('aa_credential_secret', 'credential-secret-456');
+        aa_test_set_option('aa_credential_version', '3.1');
+
+        $client = new Token_Requesting_OAuth_Client(array(
+            array('access_token' => 'fresh-token-789', 'expires_in' => 3600),
+        ));
+
+        $this->assertSame('fresh-token-789', $client->get_token(true));
+        $this->assertSame(1, $client->request_count, 'A fresh token request must bypass the manual token.');
+    }
+
+    public function testHasClientCredentialsReflectsConfiguredTriplet() {
+        $client = new AA_Creators_OAuth_Client();
+        $this->assertFalse($client->has_client_credentials());
+
+        aa_test_set_option('aa_credential_id', 'credential-id-123');
+        aa_test_set_option('aa_credential_secret', 'credential-secret-456');
+        $this->assertFalse($client->has_client_credentials(), 'Missing version means no client credentials.');
+
+        aa_test_set_option('aa_credential_version', '3.1');
+        $this->assertTrue($client->has_client_credentials());
+        $this->assertTrue($client->has_credentials());
+    }
+
     public function testTokenIsCachedAndReused() {
         $this->configureCredentials();
         $client = new Token_Requesting_OAuth_Client(array(

@@ -13,7 +13,7 @@ class Fake_OAuth_Client extends AA_Creators_OAuth_Client {
         $this->token = (string) $token;
     }
 
-    public function get_token() {
+    public function get_token($prefer_fresh = false) {
         return $this->token;
     }
 }
@@ -78,6 +78,66 @@ class Recording_Http_Transport extends AA_Creators_API_Http_Transport {
             'body'    => $body,
         );
         return $this->response;
+    }
+}
+
+/**
+ * OAuth client that returns a manual token unless a fresh token is requested.
+ */
+class Refreshable_OAuth_Client extends AA_Creators_OAuth_Client {
+    public $manual_token = '';
+    public $refresh_token = '';
+    public $refresh_count = 0;
+    public $credentials_configured = true;
+
+    public function get_manual_token() {
+        return $this->manual_token;
+    }
+
+    public function has_client_credentials() {
+        return $this->credentials_configured;
+    }
+
+    public function get_token($prefer_fresh = false) {
+        if ('' !== $this->manual_token && !$prefer_fresh) {
+            return $this->manual_token;
+        }
+        return $this->refresh_token;
+    }
+
+    public function clear_cached_token() {
+        $this->refresh_count++;
+    }
+}
+
+/**
+ * HTTP transport that pops queued responses per call and records calls.
+ */
+class Queueing_Http_Transport extends AA_Creators_API_Http_Transport {
+    public $calls = array();
+    private $responses;
+
+    public function __construct($oauth_client, array $responses) {
+        parent::__construct($oauth_client);
+        $this->responses = $responses;
+    }
+
+    public function get_call_count() {
+        return count($this->calls);
+    }
+
+    protected function post_json($url, array $headers, $body) {
+        $this->calls[] = array(
+            'url'     => $url,
+            'headers' => $headers,
+            'body'    => $body,
+        );
+
+        if (empty($this->responses)) {
+            return aa_creators_http_response(500, array('message' => 'No response queued'));
+        }
+
+        return array_shift($this->responses);
     }
 }
 

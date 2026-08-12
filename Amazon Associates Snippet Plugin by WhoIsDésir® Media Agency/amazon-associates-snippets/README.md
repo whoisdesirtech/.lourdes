@@ -1,4 +1,4 @@
-# Amazon Associates PHP Snippets (v1.5.1)
+# Amazon Associates PHP Snippets (v1.5.2)
 
 **Amazon Associates PHP Snippets** is a high-performance WordPress plugin for affiliate marketers, bloggers, and web developers integrating the Amazon Creators API.
 
@@ -6,11 +6,10 @@ Developed by **WhoIsDésir® Media Agency** (Developer Contact: `digitalvurv@gma
 
 ---
 
-## What's New in Version 1.5.1
+## What's New in Version 1.5.2
 
-* **Manual OAuth 2.0 Bearer Token**: The Access Token (Bearer) field is back on the Credentials tab — paste an existing token to use it directly instead of the client-credentials flow.
-* **Token Override Priority**: A manually pasted token now takes priority over the automatic client-credentials flow.
-* **Better Error Diagnostics**: API failures now surface Amazon's provided error message (e.g. `message` / `error_description`) instead of a generic HTTP status.
+* **Automatic Token Recovery**: If the Creators API rejects the access token ("Token has expired"), the plugin now invalidates the cached token and retries once with a freshly requested token, so shortcodes and the API tester keep working.
+* **Clear Manual-Token Guidance**: When a manually pasted Bearer token has expired and no Credential ID / Secret are configured, a clear message tells you to update the Access Token field instead of showing a generic error.
 
 ---
 

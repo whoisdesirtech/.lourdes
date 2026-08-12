@@ -103,10 +103,14 @@ perl -i -pe "s/^Stable tag:.*/Stable tag: $NEW/" "$README_TXT"
 perl -i -pe "s/\(v[0-9]+\.[0-9]+\.[0-9]+\)/(v$NEW)/" "$README_MD"
 
 # ---- readme.txt: insert changelog entry ------------------------------------
-perl -0pi -e "s/== Changelog ==\n/== Changelog ==\n\n= $NEW - $DATE =\n$BULLETS\n\n/" "$README_TXT"
+# BULLETS is passed via the environment (not interpolated into the perl
+# source) so commit subjects containing "/" or other delimiters cannot break
+# the s/// expression.
+export BULLETS
+perl -0pi -e "s/== Changelog ==\n/== Changelog ==\n\n= $NEW - $DATE =\n\$ENV{BULLETS}\n\n/" "$README_TXT"
 
 # ---- README.md: replace the "What's New" section ---------------------------
-perl -0pi -e "s/## What's New.*?^---$/## What's New in Version $NEW\n\n$BULLETS\n\n---/ms" "$README_MD"
+perl -0pi -e "s/## What's New.*?^---\$/## What's New in Version $NEW\n\n\$ENV{BULLETS}\n\n---/ms" "$README_MD"
 
 # ---- Verify edits ----------------------------------------------------------
 echo ""

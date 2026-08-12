@@ -1,6 +1,6 @@
 {
   "name": "amazon-associates-php-snippets",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "WordPress plugin that adds Amazon Creators API shortcodes, OAuth 2.0 token caching, and comparison grid.",
   "private": true,
   "scripts": {

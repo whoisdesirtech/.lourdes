@@ -4,7 +4,7 @@ Donate link: mailto:digitalvurv@gmail.com
 Tags: amazon, amazon associates, affiliate, pa-api, php snippets, shortcode, amazon box
 Requires at least: 5.6
 Tested up to: 6.6
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,11 @@ No! If you haven't received API access yet, the plugin operates in Fallback Mode
 Go to **Settings > Amazon Snippets > PHP Snippet Generator**. Enter an ASIN to instantly generate clean PHP code snippets that you can paste into your theme's `single.php` or inside plugins like Code Snippets.
 
 == Changelog ==
+
+= 1.5.2 - August 12, 2026 =
+* Recover automatically from expired or rejected Creators API Bearer tokens: the cached token is invalidated and one retry is made with a freshly requested token.
+* When a manually pasted Bearer token has expired and no Credential ID / Secret are configured, a clear message now points to updating the Access Token field instead of a generic "Token has expired" error.
+* Added PHPUnit coverage for expired-token recovery (56 tests total).
 
 = 1.5.1 - August 11, 2026 =
 * Restored the OAuth 2.0 Access Token (Bearer) field on the Creators API Credentials tab so you can paste an existing token and use it directly.

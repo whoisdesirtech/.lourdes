@@ -49,12 +49,17 @@ class AA_Creators_OAuth_Client {
 	 * triplet has been provided.
 	 */
 	public function has_credentials() {
-		return ! empty( $this->get_manual_token() )
-			|| (
-				! empty( $this->get_credential_id() )
-				&& ! empty( $this->get_credential_secret() )
-				&& ! empty( $this->get_credential_version() )
-			);
+		return ! empty( $this->get_manual_token() ) || $this->has_client_credentials();
+	}
+
+	/**
+	 * Whether the full client-credentials (Credential ID / Secret / Version)
+	 * triplet has been configured so a fresh token can be requested.
+	 */
+	public function has_client_credentials() {
+		return ! empty( $this->get_credential_id() )
+			&& ! empty( $this->get_credential_secret() )
+			&& ! empty( $this->get_credential_version() );
 	}
 
 	/**
@@ -92,17 +97,22 @@ class AA_Creators_OAuth_Client {
 	 * Get a valid OAuth 2.0 access token, reusing the cached transient token
 	 * when it is still valid. Returns false when no token can be obtained.
 	 *
+	 * When $prefer_fresh is true the manually pasted token and the cached
+	 * transient token are both bypassed so a brand-new token is requested
+	 * (used to recover from an expired/rejected token).
+	 *
+	 * @param bool $prefer_fresh Force a fresh token request.
 	 * @return string|false
 	 */
-	public function get_token() {
+	public function get_token( $prefer_fresh = false ) {
 		$manual = $this->get_manual_token();
-		if ( ! empty( $manual ) ) {
+		if ( ! empty( $manual ) && ! $prefer_fresh ) {
 			return $manual;
 		}
 
 		$cached = get_transient( self::TOKEN_TRANSIENT );
 
-		if ( is_array( $cached ) && ! empty( $cached['token'] ) ) {
+		if ( ! $prefer_fresh && is_array( $cached ) && ! empty( $cached['token'] ) ) {
 			$expires_at = isset( $cached['expires_at'] ) ? (int) $cached['expires_at'] : 0;
 			if ( 0 === $expires_at || time() < $expires_at ) {
 				return $cached['token'];
