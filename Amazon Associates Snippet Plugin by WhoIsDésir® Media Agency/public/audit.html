@@ -203,6 +203,8 @@
             </div>
             <h1>Admin Access Required</h1>
             <p class="sub">This audit is confidential and available only to authorized administrators.</p>
+            <label for="adminEmail">Administrator email</label>
+            <input type="email" id="adminEmail" placeholder="admin@yourdomain.com" autocomplete="username">
             <label for="adminPass">Administrator password</label>
             <input type="password" id="adminPass" placeholder="Enter admin password" autocomplete="current-password">
             <button type="button" class="btn-primary" id="loginBtn">Sign In</button>
@@ -239,7 +241,7 @@
                 <div class="d-title">Download the full audit (PDF)</div>
                 <div class="d-sub">11 pages &middot; 11 phases &middot; competitive tables, API map, architecture &amp; data model</div>
             </div>
-            <a class="btn-download" href="/api/audit" rel="noopener">
+            <a class="btn-download" href="#" id="downloadPdfBtn" rel="noopener">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download PDF
             </a>
@@ -383,99 +385,135 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
     (function () {
-        // ---- Admin gate (server-backed) ----
-        // Login, session validation, and the PDF download are all enforced
-        // server-side via Vercel serverless functions (/api/login, /api/session,
-        // /api/logout, /api/audit). The PDF lives outside public/ and can only
-        // be downloaded with a valid HttpOnly session cookie.
-        // Change the password hash in private/auth.js (or set the
-        // AUDIT_ADMIN_PASSWORD_HASH environment variable on Vercel).
+        // ---- Admin gate (Supabase Auth + Storage) ----
+        // 1. Create a Supabase project (free tier).
+        // 2. AUTH: Authentication > Users > Add user (admin email + password),
+        //    with "Allow email sign in" enabled.
+        // 3. STORAGE: create a PRIVATE bucket, upload
+        //    private/audit/amazon-associates-plugin-audit-2026.pdf, and set
+        //    AA_BUCKET / AA_FILE below to match.
+        // 4. Paste your project URL + anon key below (anon key is public-safe).
+        // The PDF is served via a short-lived signed URL, so it stays private;
+        // no serverless functions or custom API handlers are needed.
         // -------------------------------------------------
+
+        var SUPABASE_URL = "";      // e.g. "https://xxxx.supabase.co"
+        var SUPABASE_ANON_KEY = ""; // Supabase anon public key
+        var AA_BUCKET = "audits";
+        var AA_FILE = "amazon-associates-plugin-audit-2026.pdf";
 
         var loginGate = document.getElementById("loginGate");
         var auditContent = document.getElementById("auditContent");
         var loginBtn = document.getElementById("loginBtn");
+        var adminEmail = document.getElementById("adminEmail");
         var adminPass = document.getElementById("adminPass");
         var loginError = document.getElementById("loginError");
         var logoutLink = document.getElementById("logoutLink");
-
-        function showContent() {
-            loginGate.classList.add("hidden");
-            auditContent.classList.remove("hidden");
-            logoutLink.classList.remove("hidden");
-        }
-
-        function hideContent() {
-            loginGate.classList.remove("hidden");
-            auditContent.classList.add("hidden");
-            logoutLink.classList.add("hidden");
-            adminPass.value = "";
-        }
+        var downloadBtn = document.getElementById("downloadPdfBtn");
 
         function setError(message) {
             loginError.style.display = "block";
             loginError.textContent = message;
         }
 
-        function tryLogin() {
-            var value = adminPass.value;
-            if (!value) {
-                setError("Please enter the administrator password.");
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+            loginBtn.disabled = true;
+            setError("Supabase not configured yet. Add your project URL and anon key in the page script.");
+            return;
+        }
+
+        var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function applySession(session) {
+            var authed = !!session;
+            loginGate.classList.toggle("hidden", authed);
+            auditContent.classList.toggle("hidden", !authed);
+            logoutLink.classList.toggle("hidden", !authed);
+            if (!authed) {
+                adminPass.value = "";
+            }
+        }
+
+        // Restore an existing session (e.g. page refresh).
+        supabase.auth.getSession().then(function (res) {
+            applySession(res.data.session);
+        });
+
+        // Stay in sync with auth state changes.
+        supabase.auth.onAuthStateChange(function (_event, session) {
+            applySession(session);
+        });
+
+        async function tryLogin() {
+            var email = adminEmail.value.trim();
+            var pass = adminPass.value;
+
+            if (!email || !pass) {
+                setError("Please enter your email and password.");
                 return;
             }
+
             loginBtn.disabled = true;
             loginBtn.textContent = "Signing in…";
             loginError.style.display = "none";
 
-            fetch("/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "same-origin",
-                body: JSON.stringify({ password: value })
-            }).then(function (res) {
-                return res.json().then(function (data) {
-                    return { status: res.status, data: data };
+            try {
+                var result = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: pass
                 });
-            }).then(function (result) {
-                if (result.status === 200 && result.data.ok) {
-                    loginError.style.display = "none";
-                    showContent();
-                } else {
-                    setError(result.data && result.data.error
-                        ? result.data.error
-                        : "Incorrect password. Access denied.");
+                if (result.error) {
+                    setError(result.error.message);
                 }
-            }).catch(function () {
-                setError("Sign-in service unreachable. Check that /api/login is deployed.");
-            }).finally(function () {
+                // On success onAuthStateChange reveals the content.
+            } catch (e) {
+                setError("Sign-in service unreachable. Check your Supabase config.");
+            } finally {
                 loginBtn.disabled = false;
                 loginBtn.textContent = "Sign In";
-            });
+            }
         }
 
-        // Restore session (server-verified)
-        fetch("/api/session", { method: "GET", credentials: "same-origin" })
-            .then(function (res) { return res.json(); })
-            .then(function (data) {
-                if (data.authenticated) showContent();
-            })
-            .catch(function () {
-                // Service unreachable (e.g. local file view) — stay gated.
-            });
+        async function downloadPdf() {
+            var session = (await supabase.auth.getSession()).data.session;
+            if (!session) {
+                setError("Please sign in to download the audit.");
+                return;
+            }
+
+            try {
+                var res = await supabase.storage
+                    .from(AA_BUCKET)
+                    .createSignedUrl(AA_FILE, 3600); // 1 hour, then expires
+                if (res.error) {
+                    setError("Download failed: " + res.error.message);
+                    return;
+                }
+                window.open(res.data.signedUrl, "_blank");
+            } catch (e) {
+                setError("Download failed.");
+            }
+        }
+
+        downloadBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            downloadPdf();
+        });
 
         loginBtn.addEventListener("click", tryLogin);
         adminPass.addEventListener("keydown", function (e) {
             if (e.key === "Enter") tryLogin();
         });
+        adminEmail.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") tryLogin();
+        });
 
         logoutLink.addEventListener("click", function (e) {
             e.preventDefault();
-            fetch("/api/logout", { method: "POST", credentials: "same-origin" })
-                .finally(function () {
-                    hideContent();
-                });
+            supabase.auth.signOut();
         });
     })();
 </script>
