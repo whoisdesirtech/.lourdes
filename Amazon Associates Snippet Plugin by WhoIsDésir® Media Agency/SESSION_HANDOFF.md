@@ -26,7 +26,15 @@ Code is ahead of the last release (v1.5.2) — multi-provider architecture is im
 ## Tests
 - `npm run test` (`./vendor/bin/phpunit`) — 56 tests / 173 assertions, all passing.
 
+## Hosting (Firebase Blaze)
+- Landing pages (static) + login-gated audit page, served by Firebase Hosting with an `api` Cloud Function (`functions/`) handling `/api/login`, `/api/session`, `/api/logout`, `/api/audit`.
+- Handlers live in `api/*.js` and use `private/auth.js` (SHA-256 password gate + HMAC-signed HttpOnly session cookie). `private/` is gitignored; the `predeploy` hook (`scripts/prepare-firebase.js`) stages `api/` + `private/` into `functions/` so `firebase deploy` ships the PDF and auth hash from disk.
+- Requires the Blaze (pay-as-you-go) plan for Cloud Functions. Set `AUDIT_ADMIN_PASSWORD_HASH` + `AUDIT_SESSION_SECRET` in Firebase Functions env for production.
+- Local test server: `node server.js` → http://localhost:8080/audit.html. Verified full flow (unauth 401 → login cookie → session → 8-page PDF).
+
 ## Next Steps
+- Create the Firebase project (Blaze) and run: `firebase login` → `firebase use --add` → `firebase deploy --only hosting,functions`.
+- Set `AUDIT_ADMIN_PASSWORD_HASH` (SHA-256 of the real admin password) + `AUDIT_SESSION_SECRET` in Firebase console (Functions → env).
 - Decide whether to formally bump to v1.6.0 and rebuild the zip (`bash scripts/bump-version.sh 1.6.0`).
 - Wire Walmart/Keepa credentials into the settings UI (Providers & Data tab) if those tabs aren't surfaced yet.
 - Optional: surface click-tracking stats in admin (currently only the table is written).

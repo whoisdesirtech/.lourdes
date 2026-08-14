@@ -42,6 +42,13 @@ This folder is a sub-project tracked inside the parent git repo at `~/.lourdes` 
 - Run tests: `npm run test` (runs `./vendor/bin/phpunit`)
 - Bump version + build zip: `bash scripts/bump-version.sh <new-version>`
 
+## Hosting (Firebase Blaze)
+
+- Landing pages deploy as static hosting (`firebase.json` → `public/`); the `/api/**` rewrites mount the `api` Cloud Function (v2, `functions/`).
+- `firebase deploy --only hosting,functions` runs the `predeploy` hook (`node scripts/prepare-firebase.js`) which stages `api/` + `private/` (including the PDF + auth hash) into `functions/` from disk — nothing secret is committed.
+- Requires the Firebase **Blaze** (pay-as-you-go) plan for Cloud Functions.
+- Production secrets: set `AUDIT_ADMIN_PASSWORD_HASH` and `AUDIT_SESSION_SECRET` env vars on the Firebase function (see `private/auth.js`). The session cookie is `Secure`-flagged by default.
+
 ## Conventions
 
 - PHP code follows WordPress coding standards (tabs, `AA_SNIPPETS_` prefix for constants, guarded by `ABSPATH`).
