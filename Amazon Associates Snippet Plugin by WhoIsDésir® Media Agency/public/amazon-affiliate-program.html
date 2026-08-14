@@ -608,7 +608,7 @@
             line-height: 1.65;
         }
 
-        .faq-item.open .faq-answer { max-height: 300px; }
+        .faq-item.open .faq-answer { max-height: 600px; }
 
         .faq-answer p { padding: 0 24px 20px 24px; }
 
@@ -1021,6 +1021,16 @@
             <div class="faq-item">
                 <button class="faq-question" type="button">Who can join?<span class="chevron">▾</span></button>
                 <div class="faq-answer"><p>Anyone with an audience that overlaps with WordPress users, bloggers, or affiliate marketers — websites, YouTube channels, newsletters, or communities. If your audience uses WordPress, they're a fit.</p></div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" type="button">Why do I see "Your account does not currently meet the eligibility requirements"?<span class="chevron">▾</span></button>
+                <div class="faq-answer"><p>The Amazon Creators API (which replaced PA-API 5.0) requires your Amazon Associates account to generate <strong>10 qualifying sales in the trailing 30 days</strong> before it will serve live product data. This is Amazon's account-level check — it is not a plugin or credentials problem, so it cannot be fixed in code. Once qualifying orders ship, Amazon typically restores API access automatically within about 48 hours. You can check your status anytime at <strong>Associates Central → Tools → Creators API</strong> (affiliate-program.amazon.com/creatorsapi).</p></div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" type="button">Can I still display Amazon products while I work toward API access?<span class="chevron">▾</span></button>
+                <div class="faq-answer"><p>Yes. The <strong>[amazon_button]</strong> and <strong>[amazon_link]</strong> shortcodes work with zero API access — they always produce working affiliate links. <strong>[amazon_box]</strong>, <strong>[amazon_grid]</strong>, and <strong>[amazon_comparison]</strong> gracefully fall back to a product card with your affiliate link and a placeholder image until the API is available. You can also use Amazon's own free tools — <strong>SiteStripe</strong> links or <strong>Product Links</strong> widgets from your Associates dashboard — to embed products immediately, with no API required.</p></div>
             </div>
         </section>
 

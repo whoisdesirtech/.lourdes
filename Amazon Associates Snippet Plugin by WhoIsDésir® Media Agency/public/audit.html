@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Confidential Audit — Amazon Associates PHP Snippets</title>
+    <meta name="description" content="Confidential product & architecture audit. Admin access only.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --accent-amazon: #FF9900;
+            --accent-yellow: #FFD814;
+            --accent-yellow-hover: #F7CA00;
+            --accent-blue: #38bdf8;
+            --accent-green: #22c55e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --radius-lg: 16px;
+            --radius-md: 10px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 153, 0, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(56, 189, 248, 0.12) 0%, transparent 40%);
+            z-index: 0;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+        /* Navigation */
+        nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 22px 0; flex-wrap: wrap; gap: 16px;
+        }
+        .logo-brand {
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 18px;
+        }
+        .logo-icon img { border-radius: 10px; display: block; }
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 15px; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--text-main); }
+        .btn-header {
+            background: var(--accent-yellow); color: #0f172a; border: none;
+            padding: 10px 20px; border-radius: 8px; font-weight: 700; font-size: 14px;
+            cursor: pointer; text-decoration: none; transition: background 0.2s;
+        }
+        .btn-header:hover { background: var(--accent-yellow-hover); }
+
+        /* Login gate */
+        .login-wrap { min-height: 70vh; display: flex; align-items: center; justify-content: center; }
+        .login-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg); padding: 44px 40px; max-width: 420px; width: 100%;
+            text-align: center;
+        }
+        .login-card .lock {
+            width: 56px; height: 56px; margin: 0 auto 20px;
+            background: rgba(255, 153, 0, 0.15); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-card h1 { font-size: 22px; margin-bottom: 8px; }
+        .login-card .sub { color: var(--text-muted); font-size: 14px; margin-bottom: 26px; }
+        .login-card .badge-admin {
+            display: inline-block; background: rgba(220, 38, 38, 0.15); color: #fca5a5;
+            font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+            padding: 4px 12px; border-radius: 20px; margin-bottom: 16px;
+        }
+        .login-card label { display: block; text-align: left; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+        .login-card input {
+            width: 100%; padding: 13px 16px; border-radius: 10px;
+            background: #0f172a; border: 1px solid var(--border-color); color: var(--text-main);
+            font-size: 15px; margin-bottom: 18px; font-family: 'Outfit', sans-serif;
+        }
+        .login-card input:focus { outline: none; border-color: var(--accent-amazon); }
+        .btn-primary {
+            width: 100%; padding: 14px 20px; border: none; border-radius: 10px;
+            background: var(--accent-yellow); color: #0f172a; font-weight: 700; font-size: 15px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .btn-primary:hover { background: var(--accent-yellow-hover); }
+        .login-error { color: #fca5a5; font-size: 13px; margin-top: 14px; display: none; }
+        .login-card .secure-note { margin-top: 18px; font-size: 12px; color: var(--text-muted); }
+
+        /* Content (after login) */
+        .hero { padding: 40px 0 24px; }
+        .badge-version { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+        .badge-version span.conf {
+            background: rgba(220, 38, 38, 0.18); color: #fca5a5; font-weight: 700;
+            letter-spacing: 1px; padding: 5px 12px; border-radius: 20px; font-size: 12px; text-transform: uppercase;
+        }
+        .hero h1 { font-size: 38px; line-height: 1.15; font-weight: 800; margin-bottom: 12px; }
+        .hero h1 .highlight { color: var(--accent-amazon); }
+        .hero .subtitle { font-size: 17px; color: var(--text-muted); max-width: 720px; }
+        .hero .meta { margin-top: 20px; display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--text-muted); }
+        .hero .meta strong { color: var(--text-main); }
+
+        .download-panel {
+            margin: 28px 0; padding: 26px 28px; border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(255,153,0,0.12), rgba(56,189,248,0.08));
+            border: 1px solid rgba(255,153,0,0.35);
+            display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+        }
+        .download-panel .d-title { font-size: 18px; font-weight: 700; }
+        .download-panel .d-sub { font-size: 14px; color: var(--text-muted); }
+        .btn-download {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: var(--accent-yellow); color: #0f172a; border: none;
+            padding: 14px 26px; border-radius: 10px; font-weight: 700; font-size: 15px;
+            text-decoration: none; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-download:hover { background: var(--accent-yellow-hover); }
+
+        .section { margin: 44px 0; }
+        .section-title {
+            font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--accent-amazon); margin-bottom: 18px;
+        }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); padding: 22px 22px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+        .card h3 { font-size: 16px; margin-bottom: 8px; }
+        .card p { font-size: 14px; color: var(--text-muted); }
+        .card .num {
+            display: inline-flex; width: 28px; height: 28px; align-items: center; justify-content: center;
+            background: rgba(255,153,0,0.15); color: var(--accent-amazon); border-radius: 8px;
+            font-weight: 700; font-size: 14px; margin-bottom: 10px;
+        }
+
+        .pill-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+        .pill { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+        .pill.green { background: rgba(34,197,94,0.15); color: #86efac; }
+        .pill.blue { background: rgba(56,189,248,0.15); color: #7dd3fc; }
+        .pill.red { background: rgba(220,38,38,0.15); color: #fca5a5; }
+
+        footer {
+            border-top: 1px solid var(--border-color); padding: 28px 0 36px;
+            margin-top: 60px; text-align: center; font-size: 14px; color: var(--text-muted);
+        }
+        footer a { color: var(--accent-blue); text-decoration: none; }
+
+        .hidden { display: none; }
+
+        @media (max-width: 720px) {
+            nav { flex-direction: column; align-items: flex-start; }
+            .nav-links { flex-wrap: wrap; justify-content: flex-start; gap: 16px; }
+            .hero h1 { font-size: 30px; }
+            .download-panel { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ambient-glow"></div>
+
+<div class="container">
+    <!-- Navigation -->
+    <nav>
+        <a href="amazon-plugin-landing.html" class="logo-brand">
+            <div class="logo-icon"><img src="amazon-associates-snippets/assets/logo.jpg" alt="Amazon Associates PHP Snippets Logo" width="38" height="38"></div>
+            <span>Amazon Associates PHP Snippets</span>
+        </a>
+        <div class="nav-links">
+            <a href="amazon-plugin-landing.html">Back to Site</a>
+            <a href="#" id="logoutLink" class="hidden" style="color:#fca5a5;">Log Out</a>
+        </div>
+    </nav>
+
+    <!-- Login Gate -->
+    <div id="loginGate" class="login-wrap">
+        <div class="login-card">
+            <div class="badge-admin">&#128274; Admin Only</div>
+            <div class="lock">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h1>Admin Access Required</h1>
+            <p class="sub">This audit is confidential and available only to authorized administrators.</p>
+            <label for="adminPass">Administrator password</label>
+            <input type="password" id="adminPass" placeholder="Enter admin password" autocomplete="current-password">
+            <button type="button" class="btn-primary" id="loginBtn">Sign In</button>
+            <div class="login-error" id="loginError">Incorrect password. Access denied.</div>
+            <p class="secure-note">&#128274; Session is held in your browser and cleared when you log out or close the tab.</p>
+        </div>
+    </div>
+
+    <!-- Audit Content (revealed after login) -->
+    <div id="auditContent" class="hidden">
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="badge-version">
+                <span class="conf">&#128274; Confidential &middot; Admin Only</span>
+                <span>&bull;</span>
+                <span>Version 1.5.2</span>
+                <span>&bull;</span>
+                <span>August 2026</span>
+            </div>
+            <h1>Product &amp; Architecture <span class="highlight">Audit</span></h1>
+            <p class="subtitle">An 11-phase analysis of the Amazon Associates Snippet Plugin by WhoIsDésir® Media Agency — functional inventory, competitive landscape, API ecosystem, and the 2026 go-forward roadmap.</p>
+            <div class="meta">
+                <span>Classification: <strong>Confidential</strong></span>
+                <span>Phases: <strong>11</strong></span>
+                <span>Pages: <strong>11</strong></span>
+                <span>Recommended Direction: <strong>Option B — Multi-network platform</strong></span>
+            </div>
+        </section>
+
+        <!-- Download -->
+        <div class="download-panel">
+            <div>
+                <div class="d-title">Download the full audit (PDF)</div>
+                <div class="d-sub">11 pages &middot; 11 phases &middot; competitive tables, API map, architecture &amp; data model</div>
+            </div>
+            <a class="btn-download" href="/api/audit" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download PDF
+            </a>
+        </div>
+
+        <!-- Executive Summary -->
+        <section class="section">
+            <div class="section-title">Executive Summary</div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="num">1</div>
+                    <h3>What you built</h3>
+                    <p>A tested, dependency-optional Amazon Creators API WordPress plugin: OAuth 2.0 (v2/v3), dual SDK/HTTP transports with auto token-recovery, response normalizer, 5 shortcodes, global PHP helpers, admin generator + API tester, transient caching, FTC compliance — plus a marketing site with Vercel + Postgres lead capture.</p>
+                </div>
+                <div class="card">
+                    <div class="num">2</div>
+                    <h3>Category</h3>
+                    <p>Affiliate product-display &amp; snippet toolkit for WordPress — with a provider-agnostic data layer already half-built (normalizer, facade, transport abstraction, dependency injection).</p>
+                </div>
+                <div class="card">
+                    <div class="num">3</div>
+                    <h3>Competitive gap</h3>
+                    <p>AAWP owns Amazon display, Lasso owns link management, Content Egg owns breadth-but-clunk. Nobody offers a modern provider-agnostic normalized data layer with blocks + click analytics. That gap is the opportunity.</p>
+                </div>
+                <div class="card">
+                    <div class="num">4</div>
+                    <h3>Key 2026 fact</h3>
+                    <p>Amazon retired PA-API on May 15, 2026. The Creators API is the only product-data path — your migration puts you ahead of competitors still scrambling.</p>
+                </div>
+                <div class="card">
+                    <div class="num">5</div>
+                    <h3>Recommended direction</h3>
+                    <p>Option B — a multi-network affiliate platform (Walmart, eBay, AliExpress) built on the existing provider abstraction, with comparison tables, Gutenberg blocks, Keepa price history, and click tracking.</p>
+                </div>
+                <div class="card">
+                    <div class="num">6</div>
+                    <h3>Architecture</h3>
+                    <p>Formalize a <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">ProductProvider</code> interface + registry behind a single <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">AA_Product_Api</code> facade — Amazon first, Walmart/eBay/AliExpress next.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Build vs Buy -->
+        <section class="section">
+            <div class="section-title">Build vs Buy vs Integrate</div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="num">A</div>
+                    <h3>Build yourself</h3>
+                    <p>Normalization, rendering components, Gutenberg blocks, OAuth + resilience, admin UX, PHP helper API, affiliate-URL builder, compliance.</p>
+                    <div class="pill-row"><span class="pill green">Normalizer</span><span class="pill green">Provider abstraction</span><span class="pill green">Token recovery</span><span class="pill green">Blocks</span></div>
+                </div>
+                <div class="card">
+                    <div class="num">B</div>
+                    <h3>Integrate</h3>
+                    <p>Every data source, price history (Keepa), click tracking (self-hosted table or Pretty Links), geo-targeting.</p>
+                    <div class="pill-row"><span class="pill blue">Keepa</span><span class="pill blue">Walmart/eBay/AliExpress</span><span class="pill blue">Click tracking</span><span class="pill blue">Geo</span></div>
+                </div>
+                <div class="card">
+                    <div class="num">C</div>
+                    <h3>Stop building manually</h3>
+                    <p>Product search, price-history databases, an analytics platform, geo-IP logic, scraping any retailer.</p>
+                    <div class="pill-row"><span class="pill red">No catalog DB</span><span class="pill red">No scraping</span><span class="pill red">No analytics platform</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Map preview -->
+        <section class="section">
+            <div class="section-title">API Ecosystem Preview</div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="num">1</div>
+                    <h3>Amazon Creators API <span class="pill green" style="margin-left:6px;">Official</span></h3>
+                    <p>OAuth 2.0 client-credentials (v2 Cognito / v3 LwA). 1 req/s base. 10 qualifying sales/30 days for eligibility. Replaced PA-API May 15, 2026.</p>
+                </div>
+                <div class="card">
+                    <div class="num">2</div>
+                    <h3>Walmart Content Provider API <span class="pill green" style="margin-left:6px;">Official</span></h3>
+                    <p>Real-time Product Feed API added May 2026. Commission 1–4%. Best second provider for North America via Impact.</p>
+                </div>
+                <div class="card">
+                    <div class="num">3</div>
+                    <h3>eBay Browse API + EPN <span class="pill green" style="margin-left:6px;">Official</span></h3>
+                    <p>OAuth 2.0 app tokens, free. Great for used/refurbished and curated niches.</p>
+                </div>
+                <div class="card">
+                    <div class="num">4</div>
+                    <h3>AliExpress Affiliate API <span class="pill green" style="margin-left:6px;">Official</span></h3>
+                    <p>Strongest for international / lower-AOV niches via the Open Platform.</p>
+                </div>
+                <div class="card">
+                    <div class="num">5</div>
+                    <h3>Keepa <span class="pill blue" style="margin-left:6px;">Integrate</span></h3>
+                    <p>Amazon price history, drops, BSR. ~€19–59/mo. Powers the price-trend sparkline feature publishers pay for.</p>
+                </div>
+                <div class="card">
+                    <div class="num">6</div>
+                    <h3>Rule of thumb <span class="pill red" style="margin-left:6px;">Don't scrape</span></h3>
+                    <p>Never scrape when an official API or affiliate feed exists — official sources cover ~95% of realistic use cases.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next steps -->
+        <section class="section">
+            <div class="section-title">Next 5 Development Steps</div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="num">1</div>
+                    <h3>Provider abstraction</h3>
+                    <p>Introduce <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">AA_Product_Provider</code> interface + registry; refactor <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">AA_Amazon_API</code> → <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">AA_Amazon_Provider</code>. All 56 tests stay green.</p>
+                </div>
+                <div class="card">
+                    <div class="num">2</div>
+                    <h3>Normalized data model</h3>
+                    <p>Add <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">ProductReference</code>, <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">ProductQuery</code>, <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">AA_Product_Collection</code>; emit the Phase-8 model.</p>
+                </div>
+                <div class="card">
+                    <div class="num">3</div>
+                    <h3>Walmart Provider</h3>
+                    <p>Stand up via Content Provider API + Impact tag; prove <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">[aa_comparison items="amazon:B0...,walmart:..."]</code> renders one normalized row set.</p>
+                </div>
+                <div class="card">
+                    <div class="num">4</div>
+                    <h3>Gutenberg blocks</h3>
+                    <p>Register <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">aa/box</code>, <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">aa/grid</code>, <code style="background:#0f172a;padding:2px 6px;border-radius:4px;">aa/comparison</code> rendering via shortcodes; add an "Insert Product" search modal.</p>
+                </div>
+                <div class="card">
+                    <div class="num">5</div>
+                    <h3>Cron + tracking</h3>
+                    <p>Add cron freshness-refresh (≤24h compliance), a Keepa price-history adapter, and a click-tracking table or Pretty Links integration.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Amazon Associates PHP Snippets — Confidential Audit &bull; By <strong>WhoIsDésir® Media Agency</strong> &bull; Contact: <a href="mailto:digitalvurv@gmail.com" style="color: var(--accent-blue); text-decoration: none;">digitalvurv@gmail.com</a></p>
+        </footer>
+    </div>
+</div>
+
+<script>
+    (function () {
+        // ---- Admin gate (server-backed) ----
+        // Login, session validation, and the PDF download are all enforced
+        // server-side via Vercel serverless functions (/api/login, /api/session,
+        // /api/logout, /api/audit). The PDF lives outside public/ and can only
+        // be downloaded with a valid HttpOnly session cookie.
+        // Change the password hash in private/auth.js (or set the
+        // AUDIT_ADMIN_PASSWORD_HASH environment variable on Vercel).
+        // -------------------------------------------------
+
+        var loginGate = document.getElementById("loginGate");
+        var auditContent = document.getElementById("auditContent");
+        var loginBtn = document.getElementById("loginBtn");
+        var adminPass = document.getElementById("adminPass");
+        var loginError = document.getElementById("loginError");
+        var logoutLink = document.getElementById("logoutLink");
+
+        function showContent() {
+            loginGate.classList.add("hidden");
+            auditContent.classList.remove("hidden");
+            logoutLink.classList.remove("hidden");
+        }
+
+        function hideContent() {
+            loginGate.classList.remove("hidden");
+            auditContent.classList.add("hidden");
+            logoutLink.classList.add("hidden");
+            adminPass.value = "";
+        }
+
+        function setError(message) {
+            loginError.style.display = "block";
+            loginError.textContent = message;
+        }
+
+        function tryLogin() {
+            var value = adminPass.value;
+            if (!value) {
+                setError("Please enter the administrator password.");
+                return;
+            }
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Signing in…";
+            loginError.style.display = "none";
+
+            fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "same-origin",
+                body: JSON.stringify({ password: value })
+            }).then(function (res) {
+                return res.json().then(function (data) {
+                    return { status: res.status, data: data };
+                });
+            }).then(function (result) {
+                if (result.status === 200 && result.data.ok) {
+                    loginError.style.display = "none";
+                    showContent();
+                } else {
+                    setError(result.data && result.data.error
+                        ? result.data.error
+                        : "Incorrect password. Access denied.");
+                }
+            }).catch(function () {
+                setError("Sign-in service unreachable. Check that /api/login is deployed.");
+            }).finally(function () {
+                loginBtn.disabled = false;
+                loginBtn.textContent = "Sign In";
+            });
+        }
+
+        // Restore session (server-verified)
+        fetch("/api/session", { method: "GET", credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (data.authenticated) showContent();
+            })
+            .catch(function () {
+                // Service unreachable (e.g. local file view) — stay gated.
+            });
+
+        loginBtn.addEventListener("click", tryLogin);
+        adminPass.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") tryLogin();
+        });
+
+        logoutLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            fetch("/api/logout", { method: "POST", credentials: "same-origin" })
+                .finally(function () {
+                    hideContent();
+                });
+        });
+    })();
+</script>
+
+</body>
+</html>

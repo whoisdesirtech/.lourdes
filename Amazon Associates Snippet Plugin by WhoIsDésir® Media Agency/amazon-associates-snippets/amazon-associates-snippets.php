@@ -53,12 +53,30 @@ class AA_Snippets_Plugin {
 	 * Load Includes
 	 */
 	private function load_dependencies() {
+		// Normalized product data model + provider abstraction.
+		require_once AA_SNIPPETS_PATH . 'includes/class-product-reference.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-product-query.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-product-collection.php';
+		require_once AA_SNIPPETS_PATH . 'includes/interface-product-provider.php';
+
+		// Amazon provider (refactor of the original AA_Amazon_API facade).
 		require_once AA_SNIPPETS_PATH . 'includes/class-creators-oauth-client.php';
 		require_once AA_SNIPPETS_PATH . 'includes/class-creators-api-transport.php';
 		require_once AA_SNIPPETS_PATH . 'includes/class-creators-api-sdk-transport.php';
 		require_once AA_SNIPPETS_PATH . 'includes/class-creators-api-http-transport.php';
 		require_once AA_SNIPPETS_PATH . 'includes/class-amazon-response-normalizer.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-amazon-provider.php';
 		require_once AA_SNIPPETS_PATH . 'includes/class-amazon-api.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-product-provider-registry.php';
+
+		// Additional providers + data services (graceful if a dependency is missing).
+		require_once AA_SNIPPETS_PATH . 'includes/class-walmart-api.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-walmart-provider.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-keepa-price-adapter.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-click-tracker.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-freshness-refresh.php';
+		require_once AA_SNIPPETS_PATH . 'includes/class-blocks.php';
+
 		require_once AA_SNIPPETS_PATH . 'includes/class-admin-settings.php';
 		require_once AA_SNIPPETS_PATH . 'includes/class-shortcodes.php';
 		require_once AA_SNIPPETS_PATH . 'includes/class-snippet-helpers.php';
@@ -71,6 +89,11 @@ class AA_Snippets_Plugin {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
 		add_filter( 'plugin_action_links_' . AA_SNIPPETS_BASENAME, array( $this, 'add_plugin_action_links' ) );
+
+		// Data services introduced by the 2026 multi-provider audit.
+		AA_Click_Tracker::init();
+		AA_Freshness_Refresh::init();
+		AA_Blocks::init();
 	}
 
 	/**
@@ -135,3 +158,21 @@ function aa_snippets_init() {
 	return AA_Snippets_Plugin::get_instance();
 }
 add_action( 'plugins_loaded', 'aa_snippets_init' );
+
+/**
+ * Activation: install data tables, schedule cron, flush rewrite rules.
+ */
+register_activation_hook( __FILE__, function () {
+	AA_Click_Tracker::activate();
+	AA_Freshness_Refresh::schedule();
+	AA_Product_Provider_Registry::boot();
+	flush_rewrite_rules();
+} );
+
+/**
+ * Deactivation: unschedule cron, flush rewrite rules.
+ */
+register_deactivation_hook( __FILE__, function () {
+	AA_Freshness_Refresh::unschedule();
+	flush_rewrite_rules();
+} );

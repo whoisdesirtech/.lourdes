@@ -7,3 +7,6 @@ vendor/
 node_modules/
 .phpunit.result.cache
 
+
+# Internal-only: auth secrets and audit PDFs (never commit)
+private/

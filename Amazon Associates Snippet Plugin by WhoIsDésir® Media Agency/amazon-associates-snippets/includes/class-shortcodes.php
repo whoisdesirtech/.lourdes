@@ -116,36 +116,58 @@ class AA_Shortcodes {
 	}
 
 	/**
-	 * Render Product Comparison Grid: [amazon_comparison products="ASIN1,ASIN2"]
+	 * Render Product Comparison Grid.
+	 *
+	 * Supports two forms:
+	 *   - Legacy Amazon-only: [amazon_comparison products="ASIN1,ASIN2"]
+	 *   - Multi-provider:     [amazon_comparison items="amazon:B0..,walmart:123"]
+	 *                         (also used by the aa/comparison block).
+	 *
+	 * Items are resolved through the provider registry so any registered
+	 * provider (Amazon, Walmart, ...) can participate in a single grid.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
 	 */
 	public static function amazon_comparison_shortcode( $atts ) {
 		$atts = shortcode_atts(
 			array(
 				'products' => '',
+				'items'    => '',
 			),
 			$atts,
 			'amazon_comparison'
 		);
 
-		$asins = array_filter(
-			array_map(
-				'trim',
-				explode( ',', $atts['products'] )
-			)
-		);
+		$raw = ! empty( $atts['items'] ) ? $atts['items'] : $atts['products'];
+		if ( '' === $raw ) {
+			return '';
+		}
 
-		if ( empty( $asins ) ) {
+		$parts = array_filter( array_map( 'trim', explode( ',', $raw ) ) );
+		if ( empty( $parts ) ) {
 			return '';
 		}
 
 		$output = '<div class="amazon-comparison-grid">';
 
-		foreach ( $asins as $asin ) {
-			$output .= '<div class="amazon-comparison-item">';
-			$output .= do_shortcode(
-				'[amazon_box asin="' . esc_attr( $asin ) . '"]'
-			);
-			$output .= '</div>';
+		foreach ( $parts as $part ) {
+			$ref = AA_Product_Reference::parse( $part );
+			if ( null === $ref ) {
+				continue;
+			}
+
+			$provider = AA_Product_Provider_Registry::get( $ref->get_provider() );
+			if ( null === $provider ) {
+				continue;
+			}
+
+			$item = $provider->get_product( $ref );
+			if ( $item ) {
+				$output .= '<div class="amazon-comparison-item">';
+				$output .= aa_render_product_data( $item );
+				$output .= '</div>';
+			}
 		}
 
 		$output .= '</div>';

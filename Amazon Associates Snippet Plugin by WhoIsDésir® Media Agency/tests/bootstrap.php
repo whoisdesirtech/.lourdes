@@ -78,6 +78,14 @@ if (!function_exists('add_filter')) {
     function add_filter($hook, $callback, $priority = 10, $accepted_args = 1) {}
 }
 
+if (!function_exists('register_activation_hook')) {
+    function register_activation_hook($file, $callback) {}
+}
+
+if (!function_exists('register_deactivation_hook')) {
+    function register_deactivation_hook($file, $callback) {}
+}
+
 if (!function_exists('add_shortcode')) {
     function add_shortcode($tag, $callback) {
         $GLOBALS['wp_shortcodes'][$tag] = $callback;
