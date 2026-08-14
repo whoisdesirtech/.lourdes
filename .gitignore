@@ -10,3 +10,13 @@ node_modules/
 
 # Internal-only: auth secrets and audit PDFs (never commit)
 private/
+
+# Firebase runtime artifacts (staged + installed locally, not committed)
+**/functions/node_modules/
+**/functions/api/
+**/functions/private/
+**/.firebase/
+
+# Local Firebase CLI extensions/data
+firebase-debug.log
+firebase-debug.*.log
