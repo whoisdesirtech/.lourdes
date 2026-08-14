@@ -23,12 +23,6 @@ Code is ahead of the last release (v1.5.2) — multi-provider architecture is im
 - [x] Added WP stubs (`register_activation_hook`/`register_deactivation_hook`) to `tests/bootstrap.php`
 - [ ] Version bump + release zip not yet done (keep at v1.5.2 until ready to ship)
 
-## Hosting (Vercel + Supabase)
-- Landing pages deployed as static hosting on Vercel (free Hobby tier); no serverless functions in use.
-- `public/audit.html` is the login-gated audit page — admin gate now uses **Supabase Auth** (email + password) and serves the PDF from a **private Supabase Storage bucket** via a short-lived signed URL created client-side.
-- Removed the old custom API handlers (`api/login.js`, `api/logout.js`, `api/session.js`, `api/audit.js`, `private/auth.js`) and the Node/Firebase scaffolding (`server.js`, `firebase.json`, `functions/`, `scripts/prepare-firebase.js`). No pay-as-you-go involved.
-- To finish setup: create the Supabase project, add the admin user, create the private `audits` bucket, upload `private/audit/amazon-associates-plugin-audit-2026.pdf`, then paste `SUPABASE_URL` / `SUPABASE_ANON_KEY` into the inline script in `public/audit.html`.
-
 ## Tests
 - `npm run test` (`./vendor/bin/phpunit`) — 56 tests / 173 assertions, all passing.
 

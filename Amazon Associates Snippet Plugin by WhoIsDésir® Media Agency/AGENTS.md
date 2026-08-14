@@ -19,18 +19,14 @@ This folder is a sub-project tracked inside the parent git repo at `~/.lourdes` 
   - `includes/class-snippet-helpers.php` — PHP helper functions
   - `assets/` — CSS/JS
   - `readme.txt` — WordPress.org readme
-- `public/` — marketing/landing pages (`amazon-plugin-landing.html`, `amazon-snippets.html`, `amazon-affiliate-program.html`, `audit.html`, `developer.html`). Hosted on Vercel (free tier).
-- `private/` — internal-only: `audit/` PDFs (the login-gated audit PDF is uploaded to Supabase Storage, not committed). Do not commit secrets or distribute.
+- `public/` — marketing/landing pages (`amazon-plugin-landing.html`, `amazon-snippets.html`, `amazon-affiliate-program.html`, `audit.html`, `developer.html`)
+- `api/` — Node.js service for the marketing site (`audit.js`, `login.js`, `logout.js`, `session.js`) using `private/auth.js`
+- `private/` — internal-only: `auth.js` and `audit/` PDFs. Do not commit secrets or distribute.
 - `tests/` — PHPUnit tests (bootstrap.php, TestDoubles.php)
 - `scripts/bump-version.sh` — version bump + zip build
 - `zips/` — release zips (e.g. `amazon-associates-snippets-v1.5.2.zip`)
 - `vendor/` — Composer dependencies (PHP SDK, PHPUnit)
 - `composer.json` / `package.json` — dependency + release tooling
-
-## Hosting
-
-- Landing pages + audit page: Vercel (free Hobby tier) — `public/` is deployed as static hosting.
-- `public/audit.html` admin gate: Supabase Auth (email + password) + Supabase Storage (private bucket; PDF delivered via a short-lived signed URL after sign-in). No serverless functions/custom API are used; the login lives entirely in the browser via the Supabase JS client. Configure `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `AA_BUCKET`, `AA_FILE` at the top of the inline script in `audit.html`.
 
 ## Shortcodes
 
@@ -52,8 +48,8 @@ This folder is a sub-project tracked inside the parent git repo at `~/.lourdes` 
 - When bumping a version, update in ALL of: main plugin header + `AA_SNIPPETS_VERSION` constant, `readme.txt`, `package.json`, and rebuild the zip in `zips/`.
 - OAuth token handling: transient-cached, auto-recover from expired tokens (v1.5.2 behavior). Preserve manual-token guidance messages.
 - Never log, print, or commit OAuth credentials, service accounts, or API keys. Keep them in `.env` / `private/` only.
+- Auth-gated routes in `api/` must call `auth.isAuthenticated(req)` before returning data.
 - Landing page edits go in `public/`; the plugin code stays in `amazon-associates-snippets/`.
-- The audit page admin gate uses Supabase Auth + Storage only (no custom API endpoints).
 
 ## Handoff
 
