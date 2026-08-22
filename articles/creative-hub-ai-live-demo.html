@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Hub AI — Live Demo: AI-Powered Stock Valuation &amp; Market Analysis | WhoIsDésir® Media</title>
+  <meta name="description" content="A live walkthrough of Creative Hub AI, an AI-powered tool that analyzes stock data, generates valuations, and provides market insights.">
+  <!-- WhoIsDésir Media Articles Network -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* WhoIsDésir® Media House Theme — Market Terminal accent */
+      --bg-primary: #0A0D1A;        /* Midnight Navy */
+      --bg-secondary: #12152A;      /* Deep Space */
+      --bg-surface: #1E2233;        /* Navy Card */
+      --color-mint: #ED145A;        /* Miami Pink (primary accent) */
+      --color-mint-glow: rgba(237, 20, 90, 0.30);
+      --color-signal-green: #18D8F0;/* Electric Blue (positive signal) */
+      --color-loss-red: #ea3943;    /* Market Down */
+      --color-gold: #F090C0;        /* Soft Pink (metadata highlights) */
+      --text-light: #E2E6EF;
+      --text-muted: #8891A5;
+      --text-dark: #0A0D1A;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --border-radius: 16px;
+      --border-radius-pill: 8000px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 24px 20px 60px;
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Top Nav */
+    .topnav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .topnav a { color: var(--text-muted); text-decoration: none; transition: var(--transition); }
+    .topnav a:hover { color: var(--color-mint); }
+    .brandmark { color: var(--text-light); font-weight: 700; }
+    .brandmark span { color: var(--color-mint); }
+
+    /* Ticker strip */
+    .ticker {
+      background: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      white-space: nowrap;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 10px 0;
+    }
+    .ticker-track { display: inline-block; animation: scroll 30s linear infinite; }
+    @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .up { color: var(--color-signal-green); }
+    .down { color: var(--color-loss-red); }
+
+    /* Hero */
+    header {
+      text-align: center;
+      padding: 60px 24px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(237, 20, 90, 0.14) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(24, 216, 240, 0.10) 0%, transparent 50%),
+        linear-gradient(160deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      position: relative;
+      overflow: hidden;
+    }
+    .event-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--color-mint);
+      border: 1px solid var(--color-mint);
+      border-radius: var(--border-radius-pill);
+      padding: 6px 16px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    h1 em { font-style: normal; background: linear-gradient(90deg, var(--color-mint), var(--color-signal-green)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .standfirst {
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    .meta-row {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .meta-row b { color: var(--color-gold); font-weight: 600; }
+
+    /* Article body */
+    article {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--border-radius);
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    article h2 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      margin: 34px 0 14px;
+      color: var(--color-mint);
+    }
+    article h2:first-of-type { margin-top: 0; }
+    article p { line-height: 1.75; color: #C5CBD9; margin-bottom: 16px; font-size: 1rem; }
+    article ul { margin: 0 0 16px 22px; line-height: 1.75; color: #C5CBD9; }
+    article li { margin-bottom: 8px; }
+    article strong { color: var(--text-light); }
+    .free-teaser { font-size: 1.1rem; color: var(--text-light); }
+
+    /* Paywall gate */
+    .gate-wrap { position: relative; }
+    .gate-blur { filter: blur(6px); user-select: none; pointer-events: none; opacity: 0.55; }
+    .gate-fade {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 220px;
+      background: linear-gradient(to bottom, transparent, var(--bg-secondary) 85%);
+      pointer-events: none;
+    }
+    .gate-card {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gate-inner {
+      background: linear-gradient(160deg, var(--bg-surface), var(--bg-secondary));
+      border: 1px solid var(--color-mint);
+      box-shadow: 0 0 40px var(--color-mint-glow);
+      border-radius: var(--border-radius);
+      padding: 36px 40px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+    .gate-inner h3 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .gate-inner p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+    .gate-inner input {
+      width: 100%;
+      padding: 13px 18px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--bg-primary);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .gate-inner input:focus { border-color: var(--color-mint); }
+    .btn-brand {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 35px;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--color-mint), var(--color-signal-green));
+      border: none;
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition);
+      box-shadow: 0 5px 20px var(--color-mint-glow);
+      cursor: pointer;
+    }
+    .btn-brand:hover { filter: brightness(1.12); transform: translateY(-2px); }
+    .gate-note { font-size: 0.72rem !important; margin-top: 14px !important; }
+    .unlocked-badge {
+      display: none;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--color-signal-green);
+      border: 1px dashed var(--color-signal-green);
+      border-radius: var(--border-radius-pill);
+      padding: 8px 18px;
+      margin-bottom: 20px;
+    }
+
+    /* Brand kit sections (cocacola-style) */
+    section.kit {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--border-radius);
+      padding: 35px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    section.kit > h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-mint);
+      margin-bottom: 25px;
+      border-bottom: 3px solid var(--color-mint);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .strategy-card {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 20px;
+      transition: var(--transition);
+    }
+    .strategy-card:hover { transform: translateY(-5px); border-color: var(--color-mint); }
+    .strategy-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .strategy-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.55; }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+    .color-card {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .color-card:hover { transform: scale(1.03); border-color: var(--color-mint); }
+    .color-swatch { height: 110px; width: 100%; }
+    .color-info { padding: 15px; display: flex; flex-direction: column; gap: 5px; }
+    .color-name { font-family: var(--font-heading); text-transform: uppercase; font-size: 0.9rem; font-weight: 700; }
+    .color-hex { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-mint); font-weight: 600; }
+    .color-desc { font-size: 0.73rem; color: var(--text-muted); }
+
+    .typo-showcase { display: flex; flex-direction: column; gap: 25px; }
+    .typo-row { display: flex; align-items: baseline; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 15px; flex-wrap: wrap; }
+    .typo-row:last-child { border: none; padding: 0; }
+    .typo-label { width: 170px; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); }
+    .typo-sample-h1 { font-family: var(--font-heading); font-size: 2.1rem; font-weight: 700; }
+    .typo-sample-body { font-family: var(--font-body); font-size: 1rem; color: var(--text-muted); line-height: 1.6; max-width: 700px; }
+    .typo-sample-mono { font-family: var(--font-mono); font-size: 1.4rem; color: var(--color-signal-green); }
+
+    .components-showcase { display: flex; flex-direction: column; gap: 30px; }
+    .preview-box {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .btn-outline {
+      display: inline-block;
+      padding: 14px 35px;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.18);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--color-mint); color: var(--color-mint); }
+    .stat-chip {
+      background: var(--bg-surface);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 18px 26px;
+      text-align: center;
+      min-width: 150px;
+    }
+    .stat-chip .val { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 600; color: var(--color-signal-green); }
+    .stat-chip .lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-top: 4px; }
+
+    .toast {
+      position: fixed;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--color-mint);
+      color: #ffffff;
+      font-weight: bold;
+      padding: 12px 24px;
+      border-radius: var(--border-radius-pill);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+      font-size: 0.9rem;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      line-height: 1.8;
+    }
+    footer a { color: var(--color-mint); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      article, section.kit { padding: 24px; }
+      .typo-label { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Top Nav -->
+    <nav class="topnav">
+      <a class="brandmark" href="/speaker">WhoIsDésir<span>®</span> Media</a>
+      <a href="/articles/">← All Articles</a>
+    </nav>
+
+    <!-- Live ticker (brand motif) -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>CHAI&nbsp;248.32&nbsp;<span class="up">▲+3.41%</span>&nbsp;&nbsp;&nbsp;</span><span>SPX&nbsp;6,412.08&nbsp;<span class="up">▲+0.62%</span>&nbsp;&nbsp;&nbsp;</span><span>NDX&nbsp;23,108.44&nbsp;<span class="up">▲+0.94%</span>&nbsp;&nbsp;&nbsp;</span><span>VIX&nbsp;14.21&nbsp;<span class="down">▼-2.10%</span>&nbsp;&nbsp;&nbsp;</span><span>DXY&nbsp;98.66&nbsp;<span class="down">▼-0.18%</span>&nbsp;&nbsp;&nbsp;</span><span>BTC&nbsp;118,204&nbsp;<span class="up">▲+1.87%</span>&nbsp;&nbsp;&nbsp;</span><span>CHAI&nbsp;248.32&nbsp;<span class="up">▲+3.41%</span>&nbsp;&nbsp;&nbsp;</span><span>SPX&nbsp;6,412.08&nbsp;<span class="up">▲+0.62%</span>&nbsp;&nbsp;&nbsp;</span><span>NDX&nbsp;23,108.44&nbsp;<span class="up">▲+0.94%</span>&nbsp;&nbsp;&nbsp;</span><span>VIX&nbsp;14.21&nbsp;<span class="down">▼-2.10%</span>&nbsp;&nbsp;&nbsp;</span><span>DXY&nbsp;98.66&nbsp;<span class="down">▼-0.18%</span>&nbsp;&nbsp;&nbsp;</span><span>BTC&nbsp;118,204&nbsp;<span class="up">▲+1.87%</span>&nbsp;&nbsp;&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <header>
+      <span class="event-tag">Live Demo · AI × Finance · 2025</span>
+      <h1>Creative Hub AI: A Live Walkthrough of <em>AI-Powered Stock Valuation</em></h1>
+      <p class="standfirst">How an AI analyst digests filings, prices companies, and surfaces market insights in minutes — demonstrated end to end on stage.</p>
+      <div class="meta-row">
+        <span>Format: <b>Live Demo</b></span>
+        <span>Track: <b>AI / Finance</b></span>
+        <span>Year: <b>2025</b></span>
+        <span>Series: <b>WhoIsDésir® Media</b></span>
+      </div>
+    </header>
+
+    <!-- Article -->
+    <article id="article-body">
+      <span id="unlocked-badge" class="unlocked-badge">✓ Free account active — full article unlocked</span>
+
+      <p class="free-teaser">When most people hear "AI + stocks," they picture hype. So we opened the demo with the least glamorous thing possible: a raw 10-K filing, dropped into Creative Hub AI with no preparation. Sixty seconds later the room was looking at a structured valuation summary — revenue trajectory, margin profile, debt load, and a first-pass fair-value range — and the conversation shifted from "can it do this?" to "how should I be using this?"</p>
+
+      <div class="gate-wrap" id="gate-zone">
+        <div class="gate-blur" id="gated-content">
+          <h2>What We Demoed, Step by Step</h2>
+          <p>The session followed the exact workflow an analyst would use, compressed into three moves: <strong>ingest, value, interpret</strong>.</p>
+          <ul>
+            <li><strong>Ingest.</strong> We fed the platform a mix of filings, earnings-call transcripts, and live market data. Creative Hub AI normalized everything into comparable metrics — no spreadsheet wrangling required.</li>
+            <li><strong>Value.</strong> We ran two valuation models side by side: a discounted cash flow built from AI-extracted growth and margin assumptions, and a comparables screen against sector peers. The output wasn't a single magic number; it was a defensible range with every assumption exposed and editable.</li>
+            <li><strong>Interpret.</strong> The market-insights layer flagged what actually moved: segment growth diverging from headline numbers, guidance language shifting quarter over quarter, and peer multiples re-rating after earnings.</li>
+          </ul>
+
+          <h2>The Moment That Landed</h2>
+          <p>Mid-demo, an audience member asked the platform to stress-test the DCF against a recession scenario. Assumptions were adjusted live — growth cut, discount rate raised — and the fair-value range repriced instantly. That interactivity is the point: AI here isn't a black box handing you an answer, it's a fast junior analyst whose work you interrogate until you trust it (or don't).</p>
+
+          <h2>Where AI Valuation Shines — and Where It Doesn't</h2>
+          <p>We were blunt with the room about limits. The tool excels at <strong>speed and coverage</strong>: screening hundreds of names, extracting consistent metrics, and keeping assumptions transparent. It does not replace judgment on qualitative factors — management quality, competitive moats, regulatory risk — and it can confidently extrapolate from noisy data if you let it. The workflow we teach: let AI produce the first draft of analysis, then apply the human skepticism that markets reward.</p>
+
+          <h2>Audience Q&amp;A Highlights</h2>
+          <ul>
+            <li><em>"Can it replace my advisor?"</em> — It replaces the grunt work, not the fiduciary. Use it to ask sharper questions.</li>
+            <li><em>"How current is the data?"</em> — Filings and transcripts are ingested as published; market data streams live during sessions.</li>
+            <li><em>"Does it work for small caps?"</em> — Yes, with caveats: thinner coverage means the AI flags lower-confidence outputs, which is exactly the behavior you want.</li>
+          </ul>
+
+          <h2>Key Takeaways</h2>
+          <ul>
+            <li>AI compresses days of valuation prep into minutes — but only if you check its assumptions.</li>
+            <li>Ranges beat point estimates. Any tool giving you one number is hiding its uncertainty.</li>
+            <li>The winning workflow is iterative: machine speed, human judgment, repeated.</li>
+          </ul>
+          <p style="margin-top:28px;"><em>— Presented by WhoIsDésir® Media, 2025. This article is educational and is not investment advice.</em></p>
+        </div>
+        <div class="gate-fade"></div>
+        <div class="gate-card" id="gate-card">
+          <div class="gate-inner">
+            <h3>Read the Full Recap</h3>
+            <p>Create a free WhoIsDésir® Media account to unlock the complete demo walkthrough, Q&amp;A highlights, and takeaways.</p>
+            <input type="email" id="gate-email" placeholder="you@email.com" autocomplete="email">
+            <button class="btn-brand" onclick="WDAuth.unlock()">Create Free Account &amp; Unlock</button>
+            <p class="gate-note">Free forever · No card required · Already a member? Enter your email above.<br>Members sign in via <a href="/login" style="color:var(--color-mint)">whoisdesirmediaagency.vercel.app</a></p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Brand Kit -->
+    <section class="kit">
+      <h2>Brand Kit — Creative Hub AI</h2>
+      <div class="strategy-grid">
+        <div class="strategy-card">
+          <h3>Purpose</h3>
+          <p><strong>"Institutional-grade analysis at founder speed."</strong> Make rigorous stock research accessible without dumbing it down.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Voice &amp; Tone</h3>
+          <p>Precise, transparent, quietly confident. Talks like a trusted analyst — shows its assumptions, never overpromises.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Visual Motif</h3>
+          <p>Miami neon on midnight navy: electric pink-to-cyan gradients, monospace data readouts, upward-tick geometry.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Audience</h3>
+          <p>Self-directed investors, analysts, and finance-curious founders who want speed without losing rigor.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Color Palette (Click to Copy HEX)</h2>
+      <div class="color-grid">
+        <div class="color-card" onclick="copyHex('#ED145A')">
+          <div class="color-swatch" style="background:#ED145A;"></div>
+          <div class="color-info"><span class="color-name">Miami Pink</span><span class="color-hex">#ED145A</span><span class="color-desc">Primary accent — CTAs, highlights, positive signal.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#18D8F0')">
+          <div class="color-swatch" style="background:#18D8F0;"></div>
+          <div class="color-info"><span class="color-name">Electric Blue</span><span class="color-hex">#18D8F0</span><span class="color-desc">Secondary accent — gradients, gains, unlocked states.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#F090C0')">
+          <div class="color-swatch" style="background:#F090C0;"></div>
+          <div class="color-info"><span class="color-name">Soft Pink</span><span class="color-hex">#F090C0</span><span class="color-desc">Metadata, premium callouts, hover states.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#0A0D1A')">
+          <div class="color-swatch" style="background:#0A0D1A; border-bottom:1px solid rgba(255,255,255,0.08);"></div>
+          <div class="color-info"><span class="color-name">Midnight Navy</span><span class="color-hex">#0A0D1A</span><span class="color-desc">Primary background — terminal canvas.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#12152A')">
+          <div class="color-swatch" style="background:#12152A;"></div>
+          <div class="color-info"><span class="color-name">Deep Space</span><span class="color-hex">#12152A</span><span class="color-desc">Cards, sections, elevated surfaces.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#E2E6EF')">
+          <div class="color-swatch" style="background:#E2E6EF;"></div>
+          <div class="color-info"><span class="color-name">Cloud White</span><span class="color-hex">#E2E6EF</span><span class="color-desc">Primary text, reverse typography.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Typography</h2>
+      <div class="typo-showcase">
+        <div class="typo-row">
+          <div class="typo-label">Heading Font (Outfit)</div>
+          <div class="typo-sample-h1">ANALYZE AT MARKET SPEED</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label">Data / Mono Font</div>
+          <div class="typo-sample-mono">CHAI ▲ 248.32 (+3.41%)</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label">Body Font (Inter)</div>
+          <div class="typo-sample-body">Creative Hub AI turns filings, transcripts, and live market data into transparent, editable valuations — so you spend less time preparing analysis and more time interrogating it.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Component Previews</h2>
+      <div class="components-showcase">
+        <div class="preview-box">
+          <button class="btn-brand" style="width:auto;">Run Valuation</button>
+          <button class="btn-outline">Compare Peers</button>
+        </div>
+        <div class="preview-box">
+          <div class="stat-chip"><div class="val">+3.41%</div><div class="lbl">CHAI Today</div></div>
+          <div class="stat-chip"><div class="val" style="color:var(--color-loss-red)">-0.18%</div><div class="lbl">DXY</div></div>
+          <div class="stat-chip"><div class="val" style="color:var(--color-gold)">142ms</div><div class="lbl">Avg Ingest Time</div></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Part of the <a href="/articles/">WhoIsDésir® Media Articles Network</a> ·
+      Platform: <a href="/">whoisdesirmediaagency.vercel.app</a><br>
+      Educational content only — not investment advice.
+    </footer>
+  </div>
+
+  <div id="toast" class="toast">HEX Code Copied!</div>
+
+  <script>
+    /* ============================================================
+       WhoIsDésir® Media — Free Article Gate (client-side demo)
+       PRODUCTION WIRING (when hosted on whoisdesirmediaagency.vercel.app):
+       Replace WDAuth.unlock() internals with a POST to your auth
+       endpoint (e.g. /api/auth/signup), then set the session cookie /
+       JWT returned by the server before revealing content.
+       ============================================================ */
+    const WDAuth = {
+      key: 'wd_media_free_account',
+      isUnlocked() {
+        try { return localStorage.getItem(this.key) === 'true'; } catch (e) { return false; }
+      },
+      unlock() {
+        const email = document.getElementById('gate-email').value.trim();
+        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        try { localStorage.setItem(this.key, 'true'); } catch (e) {}
+        this.reveal();
+      },
+      reveal() {
+        document.getElementById('gated-content').classList.remove('gate-blur');
+        document.querySelector('.gate-fade').style.display = 'none';
+        document.getElementById('gate-card').style.display = 'none';
+        document.getElementById('unlocked-badge').style.display = 'inline-block';
+      },
+      init() { if (this.isUnlocked()) this.reveal(); }
+    };
+    WDAuth.init();
+
+    function copyHex(hexCode) {
+      navigator.clipboard.writeText(hexCode).then(() => {
+        const toast = document.getElementById('toast');
+        toast.innerText = 'Copied Code: ' + hexCode;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+  </script>
+</body>
+</html>

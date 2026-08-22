@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhoIsDésir® Media — Articles Network</title>
+  <meta name="description" content="Event recaps, playbooks, and brand kits from WhoIsDésir® Media — free accounts unlock every article.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* WhoIsDésir® Media House Theme */
+      --bg-primary: #0A0D1A;
+      --bg-secondary: #12152A;
+      --bg-surface: #1E2233;
+      --color-pink: #ED145A;
+      --color-pink-glow: rgba(237, 20, 90, 0.28);
+      --color-blue: #18D8F0;
+      --color-blue-beach: #22ABC7;
+      --color-pink-soft: #F090C0;
+      --text-light: #E2E6EF;
+      --text-muted: #8891A5;
+      --text-dark: #0A0D1A;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --border-radius: 16px;
+      --border-radius-premium: 25px;
+      --transition: all 0.5s ease;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-secondary);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 24px 20px 60px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 32px; }
+
+    .topnav {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-heading); font-size: 0.85rem;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .topnav a { color: var(--text-muted); text-decoration: none; transition: var(--transition); }
+    .topnav a:hover { color: var(--color-pink); }
+    .brandmark { color: var(--text-light); font-weight: 700; }
+    .brandmark span { color: var(--color-pink); }
+
+    header {
+      text-align: center;
+      padding: 60px 24px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(237, 20, 90, 0.16) 0%, transparent 55%),
+        radial-gradient(circle at 85% 100%, rgba(24, 216, 240, 0.10) 0%, transparent 50%),
+        linear-gradient(160deg, var(--bg-surface) 0%, var(--bg-primary) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--border-radius);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+    h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      line-height: 1.12; margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: 0.03em;
+    }
+    h1 em { font-style: normal; background: linear-gradient(135deg, var(--color-pink), var(--color-blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .standfirst { color: var(--text-muted); max-width: 620px; margin: 0 auto; font-size: 1.05rem; line-height: 1.6; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      display: flex; flex-direction: column;
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .card:hover { transform: translateY(-8px); border-color: var(--card-accent, var(--color-pink)); box-shadow: 0 15px 35px rgba(0,0,0,0.45); }
+
+    .card-hero {
+      height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 1.5rem; letter-spacing: 1px; text-transform: uppercase;
+      text-align: center; padding: 0 20px;
+    }
+    .card-body { padding: 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .card-tag {
+      align-self: flex-start;
+      font-family: var(--font-heading);
+      font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+      border: 1px solid var(--card-accent, var(--color-pink));
+      color: var(--card-accent, var(--color-pink));
+      border-radius: 8000px; padding: 4px 12px;
+    }
+    .card-title { font-family: var(--font-heading); font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.25; }
+    .card-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.55; flex: 1; }
+    .card-meta { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-heading); }
+    .card-meta b { color: var(--card-accent, var(--color-pink)); font-weight: 600; }
+
+    .cta-strip {
+      text-align: center;
+      background: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--border-radius);
+      padding: 40px 24px;
+    }
+    .cta-strip h2 { font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 0.04em; font-size: 1.6rem; margin-bottom: 10px; }
+    .cta-strip p { color: var(--text-muted); max-width: 520px; margin: 0 auto 22px; line-height: 1.6; font-size: 0.95rem; }
+    .btn-premium {
+      display: inline-block; padding: 14px 40px;
+      font-family: var(--font-heading); font-size: 15px;
+      color: #ffffff; background: linear-gradient(135deg, var(--color-pink), var(--color-blue));
+      border-radius: var(--border-radius-premium);
+      text-transform: uppercase; font-weight: bold; letter-spacing: 1px;
+      text-decoration: none;
+      box-shadow: 0 5px 15px var(--color-pink-glow);
+      transition: var(--transition);
+    }
+    .btn-premium:hover { filter: brightness(1.12); transform: translateY(-2px); }
+
+    footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; line-height: 1.8; }
+    footer a { color: var(--color-pink); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <nav class="topnav">
+      <a class="brandmark" href="/speaker">WhoIsDésir<span>®</span> Media</a>
+      <a href="/login">Login</a>
+    </nav>
+
+    <header>
+      <h1>The Articles <em>Network</em></h1>
+      <p class="standfirst">Recaps and playbooks from our demos, panels, webinars, and workshops — each with its own brand kit. First paragraph is free; create a free account to read everything.</p>
+    </header>
+
+    <div class="grid">
+
+      <a class="card" style="--card-accent:#ED145A;" href="creative-hub-ai-live-demo.html">
+        <div class="card-hero" style="background:linear-gradient(135deg,#1E2233,#0A0D1A);color:#ED145A;">Creative Hub AI ▲</div>
+        <div class="card-body">
+          <span class="card-tag">Live Demo · AI × Finance</span>
+          <div class="card-title">AI-Powered Stock Valuation &amp; Market Analysis</div>
+          <p class="card-desc">A live walkthrough of Creative Hub AI digesting filings, pricing companies, and surfacing market insights in minutes.</p>
+          <span class="card-meta"><b>2025</b> · Read the recap →</span>
+        </div>
+      </a>
+
+      <a class="card" style="--card-accent:#18D8F0;" href="ai-in-marketing-panel.html">
+        <div class="card-hero" style="background:linear-gradient(135deg,#12152A,#0A0D1A);color:#18D8F0;">Signal Over Noise</div>
+        <div class="card-body">
+          <span class="card-tag">Industry Panel · Marketing</span>
+          <div class="card-title">AI in Marketing: What Actually Works</div>
+          <p class="card-desc">Practitioners cut through the hype on content generation, audience segmentation, and predictive analytics — with receipts.</p>
+          <span class="card-meta"><b>2025</b> · Read the recap →</span>
+        </div>
+      </a>
+
+      <a class="card" style="--card-accent:#F090C0;" href="practical-ai-workflows-entrepreneurs.html">
+        <div class="card-hero" style="background:linear-gradient(135deg,#1E2233,#12152A);color:#F090C0;">Founder Stack</div>
+        <div class="card-body">
+          <span class="card-tag">Webinar · AI Tools</span>
+          <div class="card-title">Practical AI Workflows for Entrepreneurs</div>
+          <p class="card-desc">Four systems — customer service, content production, bookkeeping, operations — rebuilt live on a founder's budget.</p>
+          <span class="card-meta"><b>2024</b> · Read the playbook →</span>
+        </div>
+      </a>
+
+      <a class="card" style="--card-accent:#22ABC7;" href="building-your-brand-digital-media.html">
+        <div class="card-hero" style="background:linear-gradient(135deg,#12152A,#0A0D1A);color:#22ABC7;">Scale The Signal</div>
+        <div class="card-body">
+          <span class="card-tag">Workshop · Brand / Content</span>
+          <div class="card-title">Building Your Brand with Digital Media</div>
+          <p class="card-desc">Digital media strategy plus an AI-assisted production line that scales output without diluting your brand's soul.</p>
+          <span class="card-meta"><b>Workshop Series</b> · Read the recap →</span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="cta-strip">
+      <h2>One Free Account. Every Article.</h2>
+      <p>The first paragraph of each piece is open to everyone. Create a free WhoIsDésir® Media account to unlock full recaps, Q&amp;A highlights, and takeaways.</p>
+      <a class="btn-premium" href="/login">Get Started Free</a>
+    </div>
+
+    <footer>
+      WhoIsDésir® Media — Creative Business Operations Platform ·
+      <a href="/">whoisdesirmediaagency.vercel.app</a> ·
+      <a href="/speaker">Speaker Page</a>
+    </footer>
+  </div>
+</body>
+</html>

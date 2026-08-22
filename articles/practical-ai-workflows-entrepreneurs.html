@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical AI Workflows for Entrepreneurs — Webinar Recap | WhoIsDésir® Media</title>
+  <meta name="description" content="A hands-on webinar walking entrepreneurs through AI tools for customer service, content production, bookkeeping, and operations.">
+  <!-- WhoIsDésir Media Articles Network -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* WhoIsDésir® Media House Theme — "Founder Stack" Webinar */
+      --bg-primary: #0A0D1A;         /* Midnight Navy */
+      --bg-secondary: #12152A;       /* Deep Space Panel */
+      --bg-surface: #1E2233;         /* Navy Card */
+      --color-teal: #ED145A;         /* Miami Pink (primary accent) */
+      --color-teal-glow: rgba(237, 20, 90, 0.30);
+      --color-amber: #18D8F0;        /* Electric Blue (momentum accent) */
+      --text-light: #ffffff;
+      --text-dark: #E2E6EF;
+      --text-muted: #8891A5;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --border-radius: 16px;
+      --border-radius-pill: 8000px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-dark);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 24px 20px 60px;
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    .container { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 32px; }
+
+    .topnav {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-heading); font-size: 0.85rem;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .topnav a { color: var(--text-muted); text-decoration: none; transition: var(--transition); }
+    .topnav a:hover { color: var(--color-teal); }
+    .brandmark { color: var(--text-light); font-weight: 700; }
+    .brandmark span { color: var(--color-teal); }
+
+    header {
+      text-align: center;
+      padding: 60px 24px;
+      background:
+        radial-gradient(circle at 12% 20%, rgba(24, 216, 240, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 88% 80%, rgba(237, 20, 90, 0.14) 0%, transparent 45%),
+        linear-gradient(160deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--border-radius);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+    .event-tag {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--color-teal);
+      border: 1px solid var(--color-teal);
+      border-radius: var(--border-radius-pill);
+      padding: 6px 16px; margin-bottom: 20px;
+    }
+    h1 { font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.14; margin-bottom: 14px; letter-spacing: -0.5px; }
+    h1 em { font-style: normal; background: linear-gradient(90deg, var(--color-teal), var(--color-amber)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .standfirst { color: var(--text-muted); max-width: 640px; margin: 0 auto; font-size: 1.05rem; line-height: 1.6; }
+    .meta-row {
+      display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+      margin-top: 24px; font-family: var(--font-heading);
+      font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .meta-row b { color: var(--color-amber); font-weight: 700; }
+
+    article {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    article h2 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem; margin: 34px 0 14px;
+      color: var(--color-teal);
+    }
+    article h2:first-of-type { margin-top: 0; }
+    article p { line-height: 1.75; color: #C5CBD9; margin-bottom: 16px; font-size: 1rem; }
+    article ul { margin: 0 0 16px 22px; line-height: 1.75; color: #C5CBD9; }
+    article li { margin-bottom: 8px; }
+    article strong { color: var(--text-light); }
+    .free-teaser { font-size: 1.1rem; color: var(--text-light); }
+
+    .gate-wrap { position: relative; }
+    .gate-blur { filter: blur(6px); user-select: none; pointer-events: none; opacity: 0.5; }
+    .gate-fade {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 220px;
+      background: linear-gradient(to bottom, transparent, var(--bg-secondary) 85%);
+      pointer-events: none;
+    }
+    .gate-card { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .gate-inner {
+      background: linear-gradient(160deg, var(--bg-surface), var(--bg-secondary));
+      border: 1px solid var(--color-teal);
+      box-shadow: 0 0 40px var(--color-teal-glow), 0 15px 35px rgba(0,0,0,0.35);
+      border-radius: var(--border-radius);
+      padding: 36px 40px; max-width: 420px; width: 100%; text-align: center;
+    }
+    .gate-inner h3 { font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); }
+    .gate-inner p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; }
+    .gate-inner input {
+      width: 100%; padding: 13px 18px; margin-bottom: 12px;
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.12);
+      background: var(--bg-primary); color: var(--text-light);
+      font-family: var(--font-body); font-size: 0.95rem; outline: none;
+    }
+    .gate-inner input:focus { border-color: var(--color-teal); }
+    .btn-brand {
+      display: inline-block; width: 100%; padding: 14px 35px;
+      font-family: var(--font-heading); font-size: 14px; font-weight: 700;
+      color: var(--text-light); background: linear-gradient(135deg, var(--color-teal), var(--color-amber));
+      border: none; border-radius: var(--border-radius-pill);
+      text-transform: uppercase; letter-spacing: 1px;
+      transition: var(--transition);
+      box-shadow: 0 5px 20px var(--color-teal-glow);
+      cursor: pointer;
+    }
+    .btn-brand:hover { filter: brightness(1.12); transform: translateY(-2px); }
+    .gate-note { font-size: 0.72rem !important; margin-top: 14px !important; }
+    .unlocked-badge {
+      display: none; text-align: center;
+      font-family: var(--font-heading);
+      font-size: 0.8rem; color: var(--color-teal);
+      border: 1px dashed var(--color-teal);
+      border-radius: var(--border-radius-pill);
+      padding: 8px 18px; margin-bottom: 20px;
+    }
+
+    section.kit {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      padding: 35px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    section.kit > h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--color-teal);
+      margin-bottom: 25px;
+      border-bottom: 3px solid var(--color-amber);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+    .strategy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .strategy-card {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 20px; transition: var(--transition);
+    }
+    .strategy-card:hover { transform: translateY(-5px); border-color: var(--color-teal); }
+    .strategy-card h3 { font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); }
+    .strategy-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.55; }
+
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+    .color-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      overflow: hidden; cursor: pointer; transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+    }
+    .color-card:hover { transform: scale(1.03); border-color: var(--color-teal); }
+    .color-swatch { height: 110px; width: 100%; }
+    .color-info { padding: 15px; display: flex; flex-direction: column; gap: 5px; }
+    .color-name { font-family: var(--font-heading); text-transform: uppercase; font-size: 0.9rem; font-weight: 700; color: var(--text-light); }
+    .color-hex { font-family: monospace; font-size: 0.85rem; color: var(--color-teal); font-weight: 600; }
+    .color-desc { font-size: 0.73rem; color: var(--text-muted); }
+
+    .typo-showcase { display: flex; flex-direction: column; gap: 25px; }
+    .typo-row { display: flex; align-items: baseline; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 15px; flex-wrap: wrap; }
+    .typo-row:last-child { border: none; padding: 0; }
+    .typo-label { width: 170px; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-family: monospace; }
+    .typo-sample-h1 { font-family: var(--font-heading); font-size: 2.1rem; font-weight: 800; color: var(--text-light); letter-spacing: -0.5px; }
+    .typo-sample-body { font-size: 1rem; color: var(--text-muted); line-height: 1.6; max-width: 700px; }
+
+    .components-showcase { display: flex; flex-direction: column; gap: 30px; }
+    .preview-box {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      padding: 30px; display: flex; justify-content: center; align-items: stretch; gap: 20px; flex-wrap: wrap;
+    }
+    .btn-outline {
+      display: inline-block; padding: 14px 35px;
+      font-family: var(--font-heading); font-size: 14px; font-weight: 700;
+      color: var(--text-light); background: transparent;
+      border: 2px solid rgba(255,255,255,0.18);
+      border-radius: var(--border-radius-pill);
+      text-transform: uppercase; transition: var(--transition); cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--color-teal); color: var(--color-teal); }
+    .workflow-chip {
+      background: var(--bg-surface); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 16px 22px; text-align: left; min-width: 170px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .workflow-chip .num { font-family: var(--font-heading); font-size: 0.7rem; font-weight: 800; color: var(--color-amber); text-transform: uppercase; letter-spacing: 1px; }
+    .workflow-chip .name { font-family: var(--font-heading); font-weight: 700; color: var(--text-light); margin-top: 4px; font-size: 0.95rem; }
+    .workflow-chip .save { font-size: 0.75rem; color: var(--color-teal); margin-top: 4px; font-weight: 600; }
+
+    .toast {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--color-teal); color: #fff;
+      font-weight: bold; padding: 12px 24px;
+      border-radius: var(--border-radius-pill);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+      opacity: 0; transition: var(--transition); z-index: 1000; font-size: 0.9rem;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; line-height: 1.8; }
+    footer a { color: var(--color-teal); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      article, section.kit { padding: 24px; }
+      .typo-label { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <nav class="topnav">
+      <a class="brandmark" href="/speaker">WhoIsDésir<span>®</span> Media</a>
+      <a href="/articles/">← All Articles</a>
+    </nav>
+
+    <header>
+      <span class="event-tag">Webinar · AI Tools · 2024</span>
+      <h1>Practical AI Workflows <em>for Entrepreneurs</em></h1>
+      <p class="standfirst">Four systems — customer service, content production, bookkeeping, and operations — rebuilt live with AI, on a founder's budget.</p>
+      <div class="meta-row">
+        <span>Format: <b>Webinar</b></span>
+        <span>Track: <b>AI Tools / Ops</b></span>
+        <span>Year: <b>2024</b></span>
+        <span>Series: <b>WhoIsDésir® Media</b></span>
+      </div>
+    </header>
+
+    <article id="article-body">
+      <span id="unlocked-badge" class="unlocked-badge">✓ Free account active — full article unlocked</span>
+
+      <p class="free-teaser">Most AI webinars show you what the tool can do. This one started where founders actually live: in the inbox, the content calendar, the shoebox of receipts. We picked four workflows that eat an entrepreneur's week and rebuilt each one live — no enterprise budgets, no data science team, just off-the-shelf tools wired together with a little discipline.</p>
+
+      <div class="gate-wrap" id="gate-zone">
+        <div class="gate-blur" id="gated-content">
+          <h2>Workflow One: Customer Service That Answers Itself</h2>
+          <p>We took a real support inbox — 60% of it was the same five questions — and built a tiered system: an AI assistant trained on the company's own docs handles tier-one replies, drafts tier-two responses for human review, and escalates anything sensitive. Result shown live: <strong>response time dropped from hours to under two minutes</strong>, and the founder stopped being the bottleneck.</p>
+          <ul>
+            <li><strong>Stack:</strong> help desk with AI reply drafting + a knowledge base synced from existing docs.</li>
+            <li><strong>Guardrail:</strong> the AI never issues refunds or makes promises — humans approve anything money touches.</li>
+          </ul>
+
+          <h2>Workflow Two: Content Production on a Calendar</h2>
+          <p>One person, publishing consistently, without burning out. The system: a monthly strategy doc written by the founder, AI-drafted first passes for each channel, and a human edit pass that protects voice. The key insight from the session — <strong>batch by energy, not by task</strong>: record once, let AI transcribe, cut down, and repurpose into posts, newsletters, and clips.</p>
+
+          <h2>Workflow Three: Bookkeeping Without the Shoebox</h2>
+          <p>The room's favorite. Receipt photos auto-captured and categorized, bank feeds reconciled weekly, and a month-end close checklist where AI flags anomalies — duplicate charges, category drift, missing invoices — before the accountant ever sees them. Not replacing your bookkeeper; <strong>making their hours cheaper and your questions smarter</strong>.</p>
+
+          <h2>Workflow Four: Operations as a Second Brain</h2>
+          <p>We closed with the least sexy, highest-leverage build: a company knowledge hub where SOPs, client notes, and decisions live in one searchable place, with AI answering "how do we do X?" from your own documentation instead of from memory. New hires onboard in days, not weeks.</p>
+
+          <h2>Audience Q&amp;A Highlights</h2>
+          <ul>
+            <li><em>"What if the AI gets customer answers wrong?"</em> — Constrain it to your docs, log every answer, review weekly until accuracy stabilizes.</li>
+            <li><em>"Budget?"</em> — Every workflow demoed runs on under $100/month combined at small-business scale.</li>
+            <li><em>"Where do I start?"</em> — Pick the workflow where you personally are the bottleneck. Automate you first.</li>
+          </ul>
+
+          <h2>Key Takeaways</h2>
+          <ul>
+            <li>Start with workflows, not tools. The tool list changes quarterly; the bottlenecks don't.</li>
+            <li>Human review is a feature, not a failure — design the approval step in from day one.</li>
+            <li>The compounding win is documentation: AI-amplified businesses run on written-down knowledge.</li>
+          </ul>
+          <p style="margin-top:28px;"><em>— Presented by WhoIsDésir® Media, 2024.</em></p>
+        </div>
+        <div class="gate-fade"></div>
+        <div class="gate-card" id="gate-card">
+          <div class="gate-inner">
+            <h3>Read the Full Playbook</h3>
+            <p>Create a free WhoIsDésir® Media account to unlock all four workflow builds, tool stacks, and Q&amp;A highlights.</p>
+            <input type="email" id="gate-email" placeholder="you@email.com" autocomplete="email">
+            <button class="btn-brand" onclick="WDAuth.unlock()">Create Free Account &amp; Unlock</button>
+            <p class="gate-note">Free forever · No card required · Already a member? Enter your email above.<br>Members sign in via <a href="/login" style="color:var(--color-teal)">whoisdesirmediaagency.vercel.app</a></p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section class="kit">
+      <h2>Brand Kit — "Founder Stack" Webinar Series</h2>
+      <div class="strategy-grid">
+        <div class="strategy-card">
+          <h3>Purpose</h3>
+          <p><strong>"Big-company leverage, small-team budget."</strong> Show the exact builds, not the theory.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Voice &amp; Tone</h3>
+          <p>Warm, practical, zero jargon. Talks like a mentor over coffee who happens to be great with tools.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Visual Motif</h3>
+          <p>Miami studio dark: midnight navy canvases, builder-pink CTAs, electric-blue momentum markers, notebook clarity.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Audience</h3>
+          <p>Solo founders and small teams wearing every hat, who want systems that give them their week back.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Color Palette (Click to Copy HEX)</h2>
+      <div class="color-grid">
+        <div class="color-card" onclick="copyHex('#ED145A')">
+          <div class="color-swatch" style="background:#ED145A;"></div>
+          <div class="color-info"><span class="color-name">Miami Pink</span><span class="color-hex">#ED145A</span><span class="color-desc">Primary accent — CTAs, headings, links.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#18D8F0')">
+          <div class="color-swatch" style="background:#18D8F0;"></div>
+          <div class="color-info"><span class="color-name">Electric Blue</span><span class="color-hex">#18D8F0</span><span class="color-desc">Momentum highlights, numbers, progress markers.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#0A0D1A')">
+          <div class="color-swatch" style="background:#0A0D1A; border-bottom:1px solid rgba(255,255,255,0.08);"></div>
+          <div class="color-info"><span class="color-name">Midnight Navy</span><span class="color-hex">#0A0D1A</span><span class="color-desc">Primary background canvas.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#12152A')">
+          <div class="color-swatch" style="background:#12152A;"></div>
+          <div class="color-info"><span class="color-name">Deep Space</span><span class="color-hex">#12152A</span><span class="color-desc">Sections, cards, elevated surfaces.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#1E2233')">
+          <div class="color-swatch" style="background:#1E2233;"></div>
+          <div class="color-info"><span class="color-name">Navy Card</span><span class="color-hex">#1E2233</span><span class="color-desc">Secondary panels, inputs, chips.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#E2E6EF')">
+          <div class="color-swatch" style="background:#E2E6EF;"></div>
+          <div class="color-info"><span class="color-name">Cloud White</span><span class="color-hex">#E2E6EF</span><span class="color-desc">Primary text, headings, footers.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Typography</h2>
+      <div class="typo-showcase">
+        <div class="typo-row">
+          <div class="typo-label">Heading Font (Outfit)</div>
+          <div class="typo-sample-h1">BUILD THE LEVERAGE</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label">Body Font (Inter)</div>
+          <div class="typo-sample-body">The Founder Stack series rebuilds the four workflows every entrepreneur dreads — support, content, books, ops — using affordable tools and a human-in-the-loop design that survives real life.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Component Previews</h2>
+      <div class="components-showcase">
+        <div class="preview-box">
+          <button class="btn-brand" style="width:auto;">Get the Playbook</button>
+          <button class="btn-outline">Replay Webinar</button>
+        </div>
+        <div class="preview-box">
+          <div class="workflow-chip"><div class="num">01 · Support</div><div class="name">AI First Responder</div><div class="save">Hours → 2 min replies</div></div>
+          <div class="workflow-chip"><div class="num">02 · Content</div><div class="name">Batch &amp; Repurpose</div><div class="save">1 recording → 12 assets</div></div>
+          <div class="workflow-chip"><div class="num">03 · Books</div><div class="name">Auto Close</div><div class="save">Month-end in 1 hour</div></div>
+          <div class="workflow-chip"><div class="num">04 · Ops</div><div class="name">Second Brain</div><div class="save">Onboard in days</div></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Part of the <a href="/articles/">WhoIsDésir® Media Articles Network</a> ·
+      Platform: <a href="/">whoisdesirmediaagency.vercel.app</a>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast">HEX Code Copied!</div>
+
+  <script>
+    /* ============================================================
+       WhoIsDésir® Media — Free Article Gate (client-side demo)
+       PRODUCTION WIRING (when hosted on whoisdesirmediaagency.vercel.app):
+       Replace WDAuth.unlock() internals with a POST to your auth
+       endpoint (e.g. /api/auth/signup), then set the session cookie /
+       JWT returned by the server before revealing content.
+       ============================================================ */
+    const WDAuth = {
+      key: 'wd_media_free_account',
+      isUnlocked() {
+        try { return localStorage.getItem(this.key) === 'true'; } catch (e) { return false; }
+      },
+      unlock() {
+        const email = document.getElementById('gate-email').value.trim();
+        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        try { localStorage.setItem(this.key, 'true'); } catch (e) {}
+        this.reveal();
+      },
+      reveal() {
+        document.getElementById('gated-content').classList.remove('gate-blur');
+        document.querySelector('.gate-fade').style.display = 'none';
+        document.getElementById('gate-card').style.display = 'none';
+        document.getElementById('unlocked-badge').style.display = 'inline-block';
+      },
+      init() { if (this.isUnlocked()) this.reveal(); }
+    };
+    WDAuth.init();
+
+    function copyHex(hexCode) {
+      navigator.clipboard.writeText(hexCode).then(() => {
+        const toast = document.getElementById('toast');
+        toast.innerText = 'Copied Code: ' + hexCode;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building Your Brand with Digital Media — Workshop Recap | WhoIsDésir® Media</title>
+  <meta name="description" content="A hands-on workshop on digital media strategy and using AI-assisted tools to scale content production without losing your brand's soul.">
+  <!-- WhoIsDésir Media Articles Network -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* WhoIsDésir® Media House Theme */
+      --bg-primary: #0A0D1A;        /* Midnight Navy */
+      --bg-secondary: #12152A;      /* Deep Space Panel */
+      --bg-surface: #1E2233;        /* Navy Card */
+      --color-gold: #ED145A;        /* Miami Pink (primary accent) */
+      --color-gold-hover: #FF3D79;
+      --color-gold-glow: rgba(237, 20, 90, 0.30);
+      --color-blue: #18D8F0;        /* Electric Blue (secondary accent) */
+      --text-light: #E2E6EF;
+      --text-muted: #8891A5;
+      --text-dark: #0A0D1A;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --border-radius: 16px;
+      --border-radius-premium: 25px;
+      --transition: all 0.5s ease;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-secondary);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 24px 20px 60px;
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    .container { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 32px; }
+
+    .topnav {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-heading); font-size: 0.85rem;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .topnav a { color: var(--text-muted); text-decoration: none; transition: var(--transition); }
+    .topnav a:hover { color: var(--color-gold); }
+    .brandmark { color: var(--text-light); font-weight: 700; }
+    .brandmark span { color: var(--color-gold); }
+
+    header {
+      text-align: center;
+      padding: 60px 24px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(237, 20, 90, 0.15) 0%, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(24, 216, 240, 0.10) 0%, transparent 50%),
+        linear-gradient(160deg, var(--bg-surface) 0%, var(--bg-primary) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--border-radius);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .event-tag {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--color-gold);
+      border: 1px solid var(--color-gold);
+      border-radius: var(--border-radius-premium);
+      padding: 6px 18px; margin-bottom: 22px;
+    }
+    h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      line-height: 1.12; margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: 0.03em;
+    }
+    h1 em { font-style: normal; background: linear-gradient(135deg, var(--color-gold), var(--color-blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .standfirst { color: var(--text-muted); max-width: 640px; margin: 0 auto; font-size: 1.05rem; line-height: 1.6; }
+    .meta-row {
+      display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+      margin-top: 24px; font-family: var(--font-heading);
+      font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .meta-row b { color: var(--color-gold); font-weight: 600; }
+
+    article {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    article h2 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem; margin: 34px 0 14px;
+      color: var(--color-gold);
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    article h2:first-of-type { margin-top: 0; }
+    article p { line-height: 1.75; color: #C5CBD9; margin-bottom: 16px; font-size: 1rem; }
+    article ul { margin: 0 0 16px 22px; line-height: 1.75; color: #C5CBD9; }
+    article li { margin-bottom: 8px; }
+    article strong { color: var(--text-light); }
+    .free-teaser { font-size: 1.1rem; color: var(--text-light); }
+
+    .gate-wrap { position: relative; }
+    .gate-blur { filter: blur(6px); user-select: none; pointer-events: none; opacity: 0.5; }
+    .gate-fade {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 220px;
+      background: linear-gradient(to bottom, transparent, var(--bg-primary) 85%);
+      pointer-events: none;
+    }
+    .gate-card { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .gate-inner {
+      background: linear-gradient(160deg, var(--bg-surface), var(--bg-primary));
+      border: 1px solid var(--color-gold);
+      box-shadow: 0 0 40px var(--color-gold-glow);
+      border-radius: var(--border-radius);
+      padding: 36px 40px; max-width: 420px; width: 100%; text-align: center;
+    }
+    .gate-inner h3 { font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .gate-inner p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; }
+    .gate-inner input {
+      width: 100%; padding: 13px 18px; margin-bottom: 12px;
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.12);
+      background: var(--bg-secondary); color: var(--text-light);
+      font-family: var(--font-body); font-size: 0.95rem; outline: none;
+    }
+    .gate-inner input:focus { border-color: var(--color-gold); }
+    .btn-premium {
+      display: inline-block; width: 100%; padding: 14px 35px;
+      font-family: var(--font-heading); font-size: 15px;
+      color: #ffffff; background: linear-gradient(135deg, var(--color-gold), var(--color-blue));
+      border: none; border-radius: var(--border-radius-premium);
+      text-transform: uppercase; font-weight: bold; letter-spacing: 1px;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px var(--color-gold-glow);
+      cursor: pointer;
+    }
+    .btn-premium:hover { filter: brightness(1.12); transform: translateY(-2px); }
+    .gate-note { font-size: 0.72rem !important; margin-top: 14px !important; }
+    .unlocked-badge {
+      display: none; text-align: center;
+      font-family: var(--font-heading);
+      font-size: 0.8rem; color: var(--color-gold);
+      border: 1px dashed var(--color-gold);
+      border-radius: var(--border-radius-premium);
+      padding: 8px 18px; margin-bottom: 20px;
+    }
+
+    section.kit {
+      background-color: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--border-radius);
+      padding: 35px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    section.kit > h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--color-gold);
+      margin-bottom: 25px;
+      border-bottom: 3px solid var(--color-gold);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+    .strategy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .strategy-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 20px; transition: var(--transition);
+    }
+    .strategy-card:hover { transform: translateY(-5px); border-color: var(--color-gold); }
+    .strategy-card h3 { font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .strategy-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.55; }
+
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+    .color-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--border-radius);
+      overflow: hidden; cursor: pointer; transition: var(--transition);
+    }
+    .color-card:hover { transform: scale(1.03); border-color: var(--color-gold); }
+    .color-swatch { height: 110px; width: 100%; }
+    .color-info { padding: 15px; display: flex; flex-direction: column; gap: 5px; }
+    .color-name { font-family: var(--font-heading); text-transform: uppercase; font-size: 0.9rem; font-weight: 600; }
+    .color-hex { font-family: monospace; font-size: 0.85rem; color: var(--color-gold); font-weight: 600; }
+    .color-desc { font-size: 0.73rem; color: var(--text-muted); }
+
+    .typo-showcase { display: flex; flex-direction: column; gap: 25px; }
+    .typo-row { display: flex; align-items: baseline; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 15px; flex-wrap: wrap; }
+    .typo-row:last-child { border: none; padding: 0; }
+    .typo-label { width: 170px; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-family: monospace; }
+    .typo-sample-h1 { font-family: var(--font-heading); font-size: 2.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+    .typo-sample-body { font-size: 1rem; color: var(--text-muted); line-height: 1.6; max-width: 700px; }
+
+    .components-showcase { display: flex; flex-direction: column; gap: 30px; }
+    .preview-box {
+      background-color: var(--bg-secondary);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--border-radius);
+      padding: 30px; display: flex; justify-content: center; align-items: stretch; gap: 20px; flex-wrap: wrap;
+    }
+    .btn-outline-lux {
+      display: inline-block; padding: 14px 35px;
+      font-family: var(--font-heading); font-size: 14px;
+      color: var(--text-light); background: transparent;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: var(--border-radius-premium);
+      text-transform: uppercase; transition: var(--transition); cursor: pointer;
+    }
+    .btn-outline-lux:hover { border-color: var(--color-gold); color: var(--color-gold); }
+    .pillar-chip {
+      background: var(--bg-primary); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 12px; padding: 16px 22px; text-align: left; min-width: 170px;
+    }
+    .pillar-chip .num { font-family: var(--font-heading); font-size: 0.7rem; color: var(--color-gold); text-transform: uppercase; letter-spacing: 1px; }
+    .pillar-chip .name { font-family: var(--font-heading); font-weight: 600; margin-top: 4px; font-size: 0.95rem; text-transform: uppercase; }
+    .pillar-chip .save { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+
+    .toast {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--color-gold); color: #ffffff;
+      font-weight: bold; padding: 12px 24px;
+      border-radius: var(--border-radius-premium);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+      opacity: 0; transition: var(--transition); z-index: 1000; font-size: 0.9rem;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; line-height: 1.8; }
+    footer a { color: var(--color-gold); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      article, section.kit { padding: 24px; }
+      .typo-label { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <nav class="topnav">
+      <a class="brandmark" href="/speaker">WhoIsDésir<span>®</span> Media</a>
+      <a href="/articles/">← All Articles</a>
+    </nav>
+
+    <header>
+      <span class="event-tag">Marketing Workshop · Content Strategy</span>
+      <h1>Building Your Brand with <em>Digital Media</em></h1>
+      <p class="standfirst">A working session on digital media strategy — and how to use AI-assisted tools to scale content production without diluting the brand you built.</p>
+      <div class="meta-row">
+        <span>Format: <b>Workshop</b></span>
+        <span>Track: <b>Brand / Content</b></span>
+        <span>Series: <b>WhoIsDésir® Media</b></span>
+      </div>
+    </header>
+
+    <article id="article-body">
+      <span id="unlocked-badge" class="unlocked-badge">✓ Free account active — full article unlocked</span>
+
+      <p class="free-teaser">Every brand in the room had the same fear: that scaling content means becoming generic. So this workshop was built around a single promise — you will leave with a system that produces more than you do now, sounds more like you than you do on your busy weeks, and never posts anything you wouldn't sign your name to.</p>
+
+      <div class="gate-wrap" id="gate-zone">
+        <div class="gate-blur" id="gated-content">
+          <h2>Exercise One: The Brand Spine</h2>
+          <p>Before touching any tool, every participant wrote three sentences: what the brand believes, who it serves, and what it refuses to be. This "spine" became the filter for everything after — including the AI prompts. The lesson that stuck: <strong>AI amplifies whatever identity you feed it</strong>. Feed it mush, get mush at scale.</p>
+
+          <h2>Exercise Two: The Content Pillars Audit</h2>
+          <p>Participants mapped their existing output against four pillars — expertise, story, proof, and community. Most discovered they post 80% expertise and almost no proof or community, which explains feeds that feel like lectures. Each attendee left with a rebalanced monthly calendar weighted toward their weakest pillar.</p>
+
+          <h2>Exercise Three: The AI-Assisted Production Line</h2>
+          <p>Then we built the machine. One flagship piece of long-form content per week, decomposed by AI into channel-native derivatives — carousel, short video script, newsletter section, quote card — each edited through the brand-voice guidelines established in Exercise One.</p>
+          <ul>
+            <li><strong>Capture once:</strong> a single 45-minute recording becomes the raw material for the week.</li>
+            <li><strong>Transcribe &amp; extract:</strong> AI pulls themes, quotes, and hooks from the transcript.</li>
+            <li><strong>Draft in voice:</strong> prompts carry the brand spine and three sample posts written by the human.</li>
+            <li><strong>Edit with taste:</strong> nothing publishes without a human pass. Non-negotiable.</li>
+          </ul>
+
+          <h2>The Consistency Question</h2>
+          <p>The workshop's most debated moment: can AI-assisted brands stay consistent? Our answer from live client work — consistency comes from <strong>writing down your voice</strong> (vocabulary, rhythm, forbidden phrases) and enforcing it mechanically. Ironically, teams using documented voice guides with AI drift less than teams freelancing it manually.</p>
+
+          <h2>Audience Q&amp;A Highlights</h2>
+          <ul>
+            <li><em>"How much time does this actually save?"</em> — Teams report 6–10 hours weekly saved at equal or better output quality within two months.</li>
+            <li><em>"What about my industry — it's regulated?"</em> — Add a compliance checklist as an explicit gate before scheduling; AI drafts, humans certify.</li>
+            <li><em>"Video too?"</em> — Start with scripts and captions; synthetic avatars are optional garnish, not the meal.</li>
+          </ul>
+
+          <h2>Key Takeaways</h2>
+          <ul>
+            <li>Define the brand spine first — it is the prompt behind every prompt.</li>
+            <li>Rebalance toward proof and community content; expertise alone reads as noise.</li>
+            <li>Capture once, derive many: one recording should feed five channels.</li>
+            <li>A documented brand voice is the difference between scaling and dissolving.</li>
+          </ul>
+          <p style="margin-top:28px;"><em>— Presented by WhoIsDésir® Media.</em></p>
+        </div>
+        <div class="gate-fade"></div>
+        <div class="gate-card" id="gate-card">
+          <div class="gate-inner">
+            <h3>Read the Full Workshop Recap</h3>
+            <p>Create a free WhoIsDésir® Media account to unlock all exercises, the production-line build, and Q&amp;A highlights.</p>
+            <input type="email" id="gate-email" placeholder="you@email.com" autocomplete="email">
+            <button class="btn-premium" onclick="WDAuth.unlock()">Create Free Account &amp; Unlock</button>
+            <p class="gate-note">Free forever · No card required · Already a member? Enter your email above.<br>Members sign in via <a href="/login" style="color:var(--color-gold)">whoisdesirmediaagency.vercel.app</a></p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section class="kit">
+      <h2>Brand Kit — WhoIsDésir® Media Workshops</h2>
+      <div class="strategy-grid">
+        <div class="strategy-card">
+          <h3>Purpose</h3>
+          <p><strong>"Scale the signal, keep the soul."</strong> Teach creators to grow output with AI while sounding more like themselves.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Voice &amp; Tone</h3>
+          <p>Confident, polished, generous. Premium energy with working-class work ethic — luxury look, builder hands.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Visual Motif</h3>
+          <p>Midnight navy canvases, Miami Pink accents with electric blue highlights, compressed uppercase headlines, pill-shaped actions.</p>
+        </div>
+        <div class="strategy-card">
+          <h3>Audience</h3>
+          <p>Personal brands, founders, and creative businesses ready to treat content as infrastructure, not improvisation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Color Palette (Click to Copy HEX)</h2>
+      <div class="color-grid">
+        <div class="color-card" onclick="copyHex('#ED145A')">
+          <div class="color-swatch" style="background:#ED145A;"></div>
+          <div class="color-info"><span class="color-name">Miami Pink</span><span class="color-hex">#ED145A</span><span class="color-desc">Primary accent — CTAs, highlights, prestige marks.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#18D8F0')">
+          <div class="color-swatch" style="background:#18D8F0;"></div>
+          <div class="color-info"><span class="color-name">Electric Blue</span><span class="color-hex">#18D8F0</span><span class="color-desc">Secondary accent — gradients, hover glow.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#0A0D1A')">
+          <div class="color-swatch" style="background:#0A0D1A; border-bottom:1px solid rgba(255,255,255,0.08);"></div>
+          <div class="color-info"><span class="color-name">Midnight Navy</span><span class="color-hex">#0A0D1A</span><span class="color-desc">Primary canvas — headers, cards, depth.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#12152A')">
+          <div class="color-swatch" style="background:#12152A;"></div>
+          <div class="color-info"><span class="color-name">Deep Space</span><span class="color-hex">#12152A</span><span class="color-desc">Main background surface.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#1E2233')">
+          <div class="color-swatch" style="background:#1E2233;"></div>
+          <div class="color-info"><span class="color-name">Navy Card</span><span class="color-hex">#1E2233</span><span class="color-desc">Forms, interactive fields, chips.</span></div>
+        </div>
+        <div class="color-card" onclick="copyHex('#8891A5')">
+          <div class="color-swatch" style="background:#8891A5;"></div>
+          <div class="color-info"><span class="color-name">Steel Muted</span><span class="color-hex">#8891A5</span><span class="color-desc">Secondary text, borders, captions.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Typography</h2>
+      <div class="typo-showcase">
+        <div class="typo-row">
+          <div class="typo-label">Heading Font (Outfit)</div>
+          <div class="typo-sample-h1">SCALE THE SIGNAL</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label">Body Font (Inter)</div>
+          <div class="typo-sample-body">WhoIsDésir® Media workshops pair premium brand strategy with practical AI-assisted production systems — so your content grows louder without growing less like you.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit">
+      <h2>Component Previews</h2>
+      <div class="components-showcase">
+        <div class="preview-box">
+          <button class="btn-premium" style="width:auto;">Get the Recap</button>
+          <button class="btn-outline-lux">Book a Workshop</button>
+        </div>
+        <div class="preview-box">
+          <div class="pillar-chip"><div class="num">Pillar 01</div><div class="name">Expertise</div><div class="save">Teach what you know</div></div>
+          <div class="pillar-chip"><div class="num">Pillar 02</div><div class="name">Story</div><div class="save">Show the journey</div></div>
+          <div class="pillar-chip"><div class="num">Pillar 03</div><div class="name">Proof</div><div class="save">Results, receipts</div></div>
+          <div class="pillar-chip"><div class="num">Pillar 04</div><div class="name">Community</div><div class="save">Celebrate your people</div></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Part of the <a href="/articles/">WhoIsDésir® Media Articles Network</a> ·
+      Platform: <a href="/">whoisdesirmediaagency.vercel.app</a>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast">HEX Code Copied!</div>
+
+  <script>
+    /* ============================================================
+       WhoIsDésir® Media — Free Article Gate (client-side demo)
+       PRODUCTION WIRING (when hosted on whoisdesirmediaagency.vercel.app):
+       Replace WDAuth.unlock() internals with a POST to your auth
+       endpoint (e.g. /api/auth/signup), then set the session cookie /
+       JWT returned by the server before revealing content.
+       ============================================================ */
+    const WDAuth = {
+      key: 'wd_media_free_account',
+      isUnlocked() {
+        try { return localStorage.getItem(this.key) === 'true'; } catch (e) { return false; }
+      },
+      unlock() {
+        const email = document.getElementById('gate-email').value.trim();
+        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        try { localStorage.setItem(this.key, 'true'); } catch (e) {}
+        this.reveal();
+      },
+      reveal() {
+        document.getElementById('gated-content').classList.remove('gate-blur');
+        document.querySelector('.gate-fade').style.display = 'none';
+        document.getElementById('gate-card').style.display = 'none';
+        document.getElementById('unlocked-badge').style.display = 'inline-block';
+      },
+      init() { if (this.isUnlocked()) this.reveal(); }
+    };
+    WDAuth.init();
+
+    function copyHex(hexCode) {
+      navigator.clipboard.writeText(hexCode).then(() => {
+        const toast = document.getElementById('toast');
+        toast.innerText = 'Copied Code: ' + hexCode;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+  </script>
+</body>
+</html>
